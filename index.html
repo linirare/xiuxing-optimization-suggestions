@@ -6,275 +6,442 @@
 <title>gh.lirare.xyz</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@200;300;400;500&family=Inter:wght@200;300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@200;300;400&family=Inter:wght@200;300;400;500&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
 
   :root {
-    --bg: #000;
-    --text: rgba(255,255,255,0.92);
-    --dim: rgba(255,255,255,0.45);
-    --faint: rgba(255,255,255,0.2);
-    --hairline: rgba(255,255,255,0.06);
-    --hover: rgba(255,255,255,0.08);
+    --bg: #050508;
   }
 
   body {
     background: var(--bg);
     font-family: 'Inter', 'Noto Sans SC', -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif;
-    color: var(--text);
+    color: #fff;
     min-height: 100vh;
     -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    letter-spacing: 0.02em;
+    cursor: none;
     overflow-x: hidden;
   }
 
-  /* ===== Ambient Light ===== */
-  .light-source {
+  /* ===== Custom Cursor ===== */
+  .cursor {
     position: fixed;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 100vw;
-    max-width: 1200px;
-    height: 70vh;
-    background: radial-gradient(ellipse at 50% 100%, rgba(120,120,140,0.06) 0%, transparent 60%);
+    width: 8px; height: 8px;
+    background: rgba(255,255,255,0.9);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    mix-blend-mode: difference;
+    transition: width 0.2s, height 0.2s;
+  }
+  .cursor-ring {
+    position: fixed;
+    width: 40px; height: 40px;
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: width 0.3s, height 0.3s, border-color 0.3s;
+  }
+  .cursor-ring.hover {
+    width: 64px; height: 64px;
+    border-color: rgba(255,255,255,0.5);
+  }
+
+  /* ===== Light Source ===== */
+  .ambient-bottom {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    height: 55vh;
+    background: radial-gradient(ellipse at 50% 100%, rgba(180,180,200,0.07) 0%, rgba(100,100,130,0.03) 35%, transparent 70%);
     pointer-events: none;
     z-index: 0;
   }
+  .ambient-top {
+    position: fixed;
+    top: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 600px; height: 300px;
+    background: radial-gradient(ellipse at 50% 0%, rgba(160,160,200,0.04) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ===== Menu Toggle ===== */
+  .menu-btn {
+    position: fixed;
+    top: 40px; left: 40px;
+    z-index: 100;
+    width: 44px; height: 44px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 6px;
+    background: none; border: none;
+    cursor: none;
+    padding: 0;
+  }
+  .menu-btn span {
+    display: block;
+    width: 22px; height: 1px;
+    background: rgba(255,255,255,0.5);
+    transition: all 0.3s ease;
+    transform-origin: center;
+  }
+  .menu-btn:hover span { background: rgba(255,255,255,0.9); }
 
   /* ===== Main Layout ===== */
   .main {
     position: relative;
     z-index: 1;
-    max-width: 800px;
+    max-width: 1000px;
     margin: 0 auto;
-    padding: 12vh 32px 10vh;
+    padding: 16vh 48px 10vh;
   }
 
-  /* ===== Header ===== */
-  .header {
-    margin-bottom: 16vh;
+  /* ===== Logo / Header ===== */
+  .logo-wrap {
+    margin-bottom: 20vh;
+    position: relative;
   }
 
-  .header .tagline {
-    font-size: clamp(0.65rem, 0.9vw, 0.72rem);
-    font-weight: 400;
-    letter-spacing: 0.35em;
-    color: var(--faint);
-    margin-bottom: 2.5rem;
-  }
-
-  .header h1 {
-    font-size: clamp(2.2rem, 5vw, 3.6rem);
+  .logo {
+    font-size: clamp(3.5rem, 8vw, 6.5rem);
     font-weight: 200;
-    line-height: 1.15;
-    letter-spacing: -0.02em;
-    color: rgba(255,255,255,0.9);
-    max-width: 20ch;
+    letter-spacing: -0.03em;
+    line-height: 0.95;
+    color: #fff;
+    position: relative;
+    display: inline-block;
+    will-change: transform;
   }
 
-  /* ===== Project Grid ===== */
-  .grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1px;
-    margin-bottom: 10vh;
+  .logo-shadow {
+    position: absolute;
+    bottom: -60px;
+    left: 0;
+    width: 100%;
+    height: 120px;
+    background: linear-gradient(to top, rgba(180,180,210,0.12) 0%, transparent 100%);
+    filter: blur(30px);
+    pointer-events: none;
+  }
+
+  /* ===== Project List ===== */
+  .projects {
+    display: flex;
+    flex-direction: column;
   }
 
   .project {
     position: relative;
-    padding: 40px 28px;
+    display: grid;
+    grid-template-columns: 48px 1fr auto;
+    align-items: center;
+    gap: 32px;
+    padding: 32px 0;
     text-decoration: none;
-    color: inherit;
-    border-bottom: 1px solid var(--hairline);
-    transition: background 0.4s ease;
+    color: #fff;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    transition: all 0.4s ease;
+    will-change: transform;
   }
 
-  .project::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(ellipse at 50% 0%, rgba(255,255,255,0.03) 0%, transparent 70%);
-    opacity: 0;
-    transition: opacity 0.5s ease;
-  }
-
-  .project:hover {
-    background: var(--hover);
-  }
-
-  .project:hover::after {
-    opacity: 1;
-  }
-
-  .project .index {
+  .project .num {
     font-size: 0.65rem;
     font-weight: 400;
-    letter-spacing: 0.25em;
-    color: var(--faint);
-    margin-bottom: 2rem;
+    letter-spacing: 0.3em;
+    color: rgba(255,255,255,0.18);
+    transition: color 0.4s ease;
   }
 
+  .project .info { min-width: 0; }
+
   .project .title {
-    font-size: 1.25rem;
+    font-size: 1.5rem;
     font-weight: 300;
     letter-spacing: -0.01em;
-    color: rgba(255,255,255,0.9);
-    margin-bottom: 0.6rem;
-    line-height: 1.3;
+    margin-bottom: 4px;
+    transition: all 0.4s ease;
   }
 
   .project .desc {
-    font-size: 0.82rem;
+    font-size: 0.78rem;
     font-weight: 300;
-    color: var(--dim);
-    line-height: 1.7;
-    max-width: 24ch;
+    color: rgba(255,255,255,0.3);
+    letter-spacing: 0.02em;
+    transition: color 0.4s ease;
   }
 
-  /* ===== Section Title ===== */
-  .section-title {
-    font-size: 0.65rem;
-    font-weight: 400;
-    letter-spacing: 0.35em;
-    color: var(--faint);
-    margin-bottom: 2rem;
-    padding-bottom: 1.2rem;
-    border-bottom: 1px solid var(--hairline);
+  .project .arrow {
+    font-size: 1.1rem;
+    font-weight: 200;
+    color: rgba(255,255,255,0.15);
+    transition: all 0.4s ease;
+  }
+
+  .project:hover {
+    padding-left: 16px;
+    border-bottom-color: rgba(255,255,255,0.12);
+  }
+  .project:hover .num { color: rgba(255,255,255,0.5); }
+  .project:hover .title { letter-spacing: 0.01em; }
+  .project:hover .desc { color: rgba(255,255,255,0.5); }
+  .project:hover .arrow { color: rgba(255,255,255,0.6); transform: translateX(4px); }
+
+  /* ===== Glass shard canvas ===== */
+  #glass-canvas {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.5;
   }
 
   /* ===== Footer ===== */
   .footer {
-    margin-top: 14vh;
-    padding-top: 2rem;
-    border-top: 1px solid var(--hairline);
-    font-size: 0.7rem;
-    font-weight: 300;
-    letter-spacing: 0.2em;
-    color: var(--faint);
+    margin-top: 16vh;
+    padding-top: 24px;
+    border-top: 1px solid rgba(255,255,255,0.05);
     display: flex;
     justify-content: space-between;
+    font-size: 0.65rem;
+    font-weight: 300;
+    letter-spacing: 0.25em;
+    color: rgba(255,255,255,0.15);
   }
+  .footer a { color: inherit; text-decoration: none; transition: color 0.3s; }
+  .footer a:hover { color: rgba(255,255,255,0.4); }
 
-  .footer a {
-    color: var(--dim);
-    text-decoration: none;
-    transition: color 0.3s;
-  }
-
-  .footer a:hover { color: rgba(255,255,255,0.7); }
-
-  /* ===== Cursor Glow ===== */
-  .cursor-glow {
-    position: fixed;
-    width: 400px;
-    height: 400px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(255,255,255,0.025) 0%, transparent 60%);
-    pointer-events: none;
-    z-index: 0;
-    transform: translate(-50%, -50%);
-    opacity: 0;
-    transition: opacity 0.3s;
-  }
-
-  @media (max-width: 640px) {
-    .grid {
-      grid-template-columns: 1fr;
-    }
-    .main {
-      padding: 8vh 20px 8vh;
-    }
-    .header {
-      margin-bottom: 10vh;
-    }
-    .project {
-      padding: 28px 16px;
-    }
-    .footer {
-      flex-direction: column;
-      gap: 8px;
-    }
+  @media (max-width: 768px) {
+    body { cursor: auto; }
+    .cursor, .cursor-ring { display: none; }
+    .main { padding: 10vh 24px 8vh; }
+    .logo-wrap { margin-bottom: 12vh; }
+    .logo { font-size: clamp(2.5rem, 10vw, 4rem); }
+    .project { grid-template-columns: 32px 1fr; gap: 16px; padding: 24px 0; }
+    .project .arrow { display: none; }
+    .project:hover { padding-left: 0; }
+    .menu-btn { top: 24px; left: 24px; }
   }
 </style>
 </head>
 <body>
 
-<div class="light-source"></div>
-<div class="cursor-glow" id="glow"></div>
+<div class="ambient-bottom"></div>
+<div class="ambient-top"></div>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<canvas id="glass-canvas"></canvas>
+
+<button class="menu-btn">
+  <span></span>
+  <span></span>
+</button>
 
 <main class="main">
 
-  <header class="header">
-    <div class="tagline">GH.LIRARE.XYZ</div>
-    <h1>游戏社群数据<br>分析与产品洞察</h1>
-  </header>
+  <div class="logo-wrap">
+    <h1 class="logo" id="logo">
+      游戏社群<br>
+      数据洞察
+    </h1>
+    <div class="logo-shadow"></div>
+  </div>
 
-  <div class="section-title">报告</div>
-
-  <div class="grid">
+  <div class="projects">
 
     <a class="project" href="https://linirare.github.io/xiuxing-chat-report/">
-      <div class="index">01</div>
-      <div class="title">修行那些年 · 聊天分析</div>
-      <div class="desc">活跃度趋势、话题分布、关键词追踪与运营建议</div>
+      <span class="num">01</span>
+      <div class="info">
+        <div class="title">修行那些年 · 聊天分析</div>
+        <div class="desc">活跃度趋势、话题分布、关键词追踪与运营建议</div>
+      </div>
+      <span class="arrow">→</span>
     </a>
 
     <a class="project" href="https://linirare.github.io/xiuxing-chat-analytics/">
-      <div class="index">02</div>
-      <div class="title">修行那些年 · 深度分析</div>
-      <div class="desc">多维度数据挖掘、用户行为画像、情感趋势</div>
+      <span class="num">02</span>
+      <div class="info">
+        <div class="title">修行那些年 · 深度分析</div>
+        <div class="desc">多维度数据挖掘、用户行为画像、情感趋势变化</div>
+      </div>
+      <span class="arrow">→</span>
     </a>
 
     <a class="project" href="https://linirare.github.io/game-chat-report/">
-      <div class="index">03</div>
-      <div class="title">游戏聊天报告 v1</div>
-      <div class="desc">多游戏社群数据汇总与横向对比</div>
+      <span class="num">03</span>
+      <div class="info">
+        <div class="title">游戏聊天报告 v1</div>
+        <div class="desc">多游戏社群数据汇总与横向对比</div>
+      </div>
+      <span class="arrow">→</span>
     </a>
 
     <a class="project" href="https://linirare.github.io/game-chat-report-v2/">
-      <div class="index">04</div>
-      <div class="title">游戏聊天报告 v2</div>
-      <div class="desc">新版多游戏分析、改进的可视化呈现</div>
+      <span class="num">04</span>
+      <div class="info">
+        <div class="title">游戏聊天报告 v2</div>
+        <div class="desc">新版多游戏分析、改进的可视化呈现</div>
+      </div>
+      <span class="arrow">→</span>
     </a>
 
     <a class="project" href="https://linirare.github.io/chat-analysis-report/">
-      <div class="index">05</div>
-      <div class="title">通用聊天分析</div>
-      <div class="desc">跨游戏汇总、情感分析、高频话题提炼</div>
+      <span class="num">05</span>
+      <div class="info">
+        <div class="title">通用聊天分析</div>
+        <div class="desc">跨游戏汇总、情感分析、高频话题提炼</div>
+      </div>
+      <span class="arrow">→</span>
     </a>
 
     <a class="project" href="https://linirare.github.io/qq-txt-report/">
-      <div class="index">06</div>
-      <div class="title">QQ 群聊纯文本报告</div>
-      <div class="desc">原始消息文本存档、全文检索</div>
+      <span class="num">06</span>
+      <div class="info">
+        <div class="title">QQ 群聊纯文本报告</div>
+        <div class="desc">原始消息文本存档、全文检索</div>
+      </div>
+      <span class="arrow">→</span>
     </a>
 
-    <a class="project" href="suggestions.html" style="grid-column: 1 / -1;">
-      <div class="index">07</div>
-      <div class="title">修行那些年 · 产品优化建议</div>
-      <div class="desc">13 条 P0-P2 优化方向，基于社群反馈整理</div>
+    <a class="project" href="suggestions.html">
+      <span class="num">07</span>
+      <div class="info">
+        <div class="title">修行那些年 · 产品优化建议</div>
+        <div class="desc">13 条 P0-P2 优化方向，基于玩家社群反馈整理</div>
+      </div>
+      <span class="arrow">→</span>
     </a>
 
   </div>
 
   <footer class="footer">
     <span>GITHUB PAGES</span>
-    <a href="https://github.com/linirare/xiuxing-optimization-suggestions">gh.lirare.xyz</a>
+    <a href="https://github.com/linirare/xiuxing-optimization-suggestions">@gh.lirare.xyz</a>
   </footer>
 
 </main>
 
 <script>
-  const glow = document.getElementById('glow');
+  // ===== Custom Cursor =====
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let cx = 0, cy = 0, rx = 0, ry = 0;
+
   document.addEventListener('mousemove', (e) => {
-    glow.style.left = e.clientX + 'px';
-    glow.style.top = e.clientY + 'px';
-    glow.style.opacity = '1';
+    cx = e.clientX; cy = e.clientY;
+    cursor.style.left = cx + 'px';
+    cursor.style.top = cy + 'px';
   });
-  document.addEventListener('mouseleave', () => { glow.style.opacity = '0'; });
+
+  function animateRing() {
+    rx += (cx - rx) * 0.12;
+    ry += (cy - ry) * 0.12;
+    ring.style.left = rx + 'px';
+    ring.style.top = ry + 'px';
+    requestAnimationFrame(animateRing);
+  }
+  animateRing();
+
+  // Ring hover effect on links
+  document.querySelectorAll('a, .menu-btn').forEach(el => {
+    el.addEventListener('mouseenter', () => ring.classList.add('hover'));
+    el.addEventListener('mouseleave', () => ring.classList.remove('hover'));
+  });
+
+  // ===== Glass Shard Canvas =====
+  const canvas = document.getElementById('glass-canvas');
+  const ctx = canvas.getContext('2d');
+  let shards = [];
+  let mouseX = -1000, mouseY = -1000;
+  let targetMX = 0, targetMY = 0;
+
+  function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  // Create shards
+  function createShards() {
+    shards = [];
+    const cols = 12, rows = 8;
+    const w = canvas.width / cols;
+    const h = canvas.height / rows;
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < cols; c++) {
+        shards.push({
+          x: c * w + w/2,
+          y: r * h + h/2,
+          ox: c * w + w/2,
+          oy: r * h + h/2,
+          w: w + 2,
+          h: h + 2,
+          vx: 0, vy: 0,
+          alpha: 0
+        });
+      }
+    }
+  }
+  createShards();
+  window.addEventListener('resize', createShards);
+
+  document.addEventListener('mousemove', (e) => {
+    targetMX = e.clientX;
+    targetMY = e.clientY;
+  });
+
+  function draw(time) {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    mouseX += (targetMX - mouseX) * 0.08;
+    mouseY += (targetMY - mouseY) * 0.08;
+
+    const maxDist = 320;
+    const maxAlpha = 0.12;
+
+    for (let s of shards) {
+      const dx = s.ox - mouseX;
+      const dy = s.oy - mouseY;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+
+      let alpha = 0;
+      if (dist < maxDist) {
+        alpha = (1 - dist / maxDist) * maxAlpha;
+        const angle = Math.atan2(dy, dx);
+        const push = (1 - dist / maxDist) * 12;
+        s.x = s.ox + Math.cos(angle) * push;
+        s.y = s.oy + Math.sin(angle) * push;
+      } else {
+        s.x += (s.ox - s.x) * 0.1;
+        s.y += (s.oy - s.y) * 0.1;
+      }
+
+      s.alpha += (alpha - s.alpha) * 0.15;
+
+      if (s.alpha > 0.003) {
+        ctx.fillStyle = `rgba(255,255,255,${s.alpha})`;
+        ctx.fillRect(s.x - s.w/2, s.y - s.h/2, s.w, s.h);
+      }
+    }
+
+    requestAnimationFrame(draw);
+  }
+  requestAnimationFrame(draw);
+
+  // ===== Logo Parallax =====
+  const logo = document.getElementById('logo');
+  document.addEventListener('mousemove', (e) => {
+    const x = (e.clientX / window.innerWidth - 0.5) * 8;
+    const y = (e.clientY / window.innerHeight - 0.5) * 6;
+    logo.style.transform = `translate(${x}px, ${y}px)`;
+  });
 </script>
 
 </body>
