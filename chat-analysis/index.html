@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>手游聊天记录向量语义分析报告 v2</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif; background: #f5f7fa; color: #1a1a2e; line-height: 1.7; overflow-x: hidden; }
+.wrap { max-width: 960px; margin: 0 auto; padding: 20px 12px; }
+.header { background: linear-gradient(135deg, #1a56db 0%, #1e40af 100%); margin: -20px -12px 0; padding: 36px 16px 28px; color: #fff; }
+.header h1 { font-size: 22px; font-weight: 700; letter-spacing: -0.3px; word-break: break-word; }
+.header .meta { margin-top: 10px; font-size: 13px; opacity: .75; display: flex; flex-wrap: wrap; gap: 4px 16px; }
+.header .meta span { margin-right: 0; }
+.card { background: #fff; border-radius: 12px; padding: 16px; margin-top: 12px; box-shadow: 0 1px 3px rgba(0,0,0,.06); }
+.card h2 { font-size: 16px; font-weight: 600; color: #1a56db; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 2px solid #eef2f7; }
+.card h3 { font-size: 14px; font-weight: 600; color: #374151; margin: 12px 0 6px; }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+.stat-row { display: flex; align-items: center; padding: 4px 0; }
+.stat-row .rank { width: 22px; font-weight: 700; color: #6b7280; font-size: 11px; flex-shrink: 0; text-align: center; }
+.stat-row .name { min-width: 80px; font-size: 12px; flex-shrink: 0; }
+.stat-row .bar-wrap { flex: 1; height: 16px; background: #f0f2f5; border-radius: 8px; overflow: hidden; min-width: 0; }
+.stat-row .bar { height: 100%; border-radius: 8px; }
+.stat-row .pct { width: 48px; text-align: right; font-size: 11px; color: #6b7280; font-weight: 600; flex-shrink: 0; }
+
+table { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 6px; }
+.tbl-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 0 -4px; padding: 0 4px; }
+.tbl-wrap table { min-width: 480px; }
+th { background: #f8fafc; color: #6b7280; font-weight: 600; padding: 6px 4px; text-align: left; border-bottom: 2px solid #e5e7eb; font-size: 11px; white-space: nowrap; }
+td { padding: 5px 4px; border-bottom: 1px solid #f3f4f6; font-size: 12px; }
+tr:hover td { background: #fafbfc; }
+td.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+.quote { background: #f8fafc; border-left: 3px solid #1a56db; padding: 7px 12px; margin: 3px 0; font-size: 13px; border-radius: 0 6px 6px 0; }
+.quote .tag { color: #6b7280; font-size: 11px; margin-right: 8px; }
+
+.finding { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 12px 16px; margin: 10px 0; border-radius: 0 8px 8px 0; font-size: 14px; }
+.finding.danger { background: #fee2e2; border-left-color: #ef4444; }
+.finding.success { background: #d1fae5; border-left-color: #10b981; }
+
+.badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; }
+.badge-red { background: #fee2e2; color: #dc2626; }
+.badge-yellow { background: #fef3c7; color: #d97706; }
+.badge-green { background: #d1fae5; color: #059669; }
+.badge-blue { background: #dbeafe; color: #2563eb; }
+
+.box { background: #f8fafc; border-radius: 8px; padding: 12px 16px; margin: 8px 0; }
+.box-label { font-size: 12px; color: #6b7280; font-weight: 600; margin-bottom: 4px; }
+
+.dim-title { font-size: 16px; font-weight: 700; color: #1a56db; display: flex; align-items: center; gap: 8px; }
+.dim-count { font-size: 13px; color: #6b7280; font-weight: 400; }
+
+.day-grid { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0; }
+.day-cell { background: #f8fafc; border-radius: 6px; padding: 6px 8px; font-size: 12px; min-width: 85px; }
+.day-cell .day-label { font-weight: 600; color: #374151; }
+.day-cell .pct { color: #6b7280; }
+.day-cell .mini-bar { height: 3px; border-radius: 2px; margin-top: 3px; }
+
+.insight { margin: 12px 0; padding: 10px 14px; border-radius: 8px; font-size: 14px; }
+.insight-key { font-weight: 700; }
+
+@media (max-width:640px) {
+  .header h1 { font-size: 18px; }
+  .header .meta { font-size: 12px; gap: 2px 12px; }
+  .grid2, .grid3 { grid-template-columns: 1fr; }
+  .stat-row .name { min-width: 64px; font-size: 11px; }
+  .card { padding: 12px; }
+  .card h2 { font-size: 15px; }
+  .day-cell { min-width: 60px; font-size: 10px; padding: 4px 6px; }
+  .day-grid { gap: 4px; }
+  .finding { font-size: 13px; padding: 10px 12px; }
+  .quote { font-size: 12px; padding: 6px 10px; }
+  .dim-title { font-size: 14px; }
+  .box { padding: 10px 12px; }
+  .header { padding: 24px 12px 20px; }
+  .card h3 { font-size: 13px; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="header">
+  <h1>📊 手游聊天记录 · 全维度向量语义分析</h1>
+  <div class="meta">
+    <span>📁 修仙题材</span><span>📅 5/28 - 6/1（5天）</span>
+    <span>📐 9,830条有效消息</span><span>🗺️ 3个区服</span>
+    <span>⚙️ MiniMax embo-01 · 同空间向量检索</span>
+  </div>
+</div>
+
+<!-- Core Conclusion -->
+<div class="card">
+  <h2>📋 核心结论</h2>
+  
+  <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:12px">
+    <div style="flex:1;min-width:110px;background:#fef2f2;border-radius:10px;padding:12px;text-align:center">
+      <div style="font-size:13px;color:#dc2626;font-weight:600">📱 第一天</div>
+      <div style="font-size:15px;margin-top:4px"><strong>懵 + 无聊</strong></div>
+      <div style="font-size:11px;color:#6b7280;margin-top:4px;line-height:1.5">付费不满7-9%<br>暗号到处问5-6.5%<br>无聊率3-3.5%<br>累仅0.8-1.1%</div>
+    </div>
+    <div style="flex:1;min-width:110px;background:#fef3c7;border-radius:10px;padding:12px;text-align:center">
+      <div style="font-size:13px;color:#d97706;font-weight:600">📱 第二天</div>
+      <div style="font-size:15px;margin-top:4px"><strong>没事干</strong></div>
+      <div style="font-size:11px;color:#6b7280;margin-top:4px;line-height:1.5">聊天量-56%～-59%<br>下线信号全线上涨<br>"今天能干啥 有点干瞪眼"</div>
+    </div>
+    <div style="flex:1;min-width:110px;background:#fee2e2;border-radius:10px;padding:12px;text-align:center">
+      <div style="font-size:13px;color:#dc2626;font-weight:600">📱 第三~四天</div>
+      <div style="font-size:15px;margin-top:4px"><strong>累</strong></div>
+      <div style="font-size:11px;color:#6b7280;margin-top:4px;line-height:1.5">PVP上线累率翻倍<br>0.8%→1.5-1.8%<br>"累死了""肝不动了"</div>
+    </div>
+  </div>
+
+  <div class="finding danger">
+    <strong>一句话：第一天懵+无聊 → 第二天没事干 → 第三四天才开始喊累。</strong><br>
+    付费压力是第一印象的杀手，内容消耗速度是第二天的痛点，PVP碾压是三四天疲劳的来源。三个问题在不同时间节点发作，不能用一个方案解决。
+  </div>
+
+  <div class="grid3" style="margin-top:12px">
+    <div style="background:#f8fafc;border-radius:8px;padding:10px 12px">
+      <div style="font-weight:600;font-size:13px">1服 · 最活跃</div>
+      <div style="font-size:11px;color:#6b7280;margin-top:4px">势力聊天39.8%，PVP对抗最激烈。D1-D2聊天量腰斩(-56%)，战斗力在D3-D4爆到12-15%。问题是PVP碾压+内容耗尽。</div>
+    </div>
+    <div style="background:#fef2f2;border-radius:8px;padding:10px 12px;border:1px solid #fecaca">
+      <div style="font-weight:600;font-size:13px;color:#dc2626">2服 · 最危险</div>
+      <div style="font-size:11px;color:#6b7280;margin-top:4px">开服当天付费不满8.6%（最高），无聊3.5%（最高），下线信号11.2%（最高）。渠道93003/93005的玩家群对价格最敏感，口碑坍塌最早。</div>
+    </div>
+    <div style="background:#fef3c7;border-radius:8px;padding:10px 12px;border:1px solid #fde68a">
+      <div style="font-weight:600;font-size:13px;color:#d97706">3服 · 最新但最脆弱</div>
+      <div style="font-size:11px;color:#6b7280;margin-top:4px">D1聊天量804条但D2只剩329条(-59%)，无聊率飙到4.0%。暗号讨论占6.5%（无人解答），好友聊天占12.8%（人少→私聊）。内容消耗速度比大服更快。</div>
+    </div>
+  </div>
+</div>
+
+<!-- Data overview -->
+<div class="card">
+  <h2>📋 数据清洗流水线</h2>
+  <div style="display:flex;flex-wrap:wrap;gap:8px;font-size:13px;">
+    <div style="background:#f8fafc;padding:8px 14px;border-radius:8px;flex:1">原始数据<br><strong>13,456条</strong></div>
+    <div style="background:#f8fafc;padding:8px 14px;border-radius:8px;flex:1">→ 排除渠道93010<br><strong>12,017条</strong></div>
+    <div style="background:#f8fafc;padding:8px 14px;border-radius:8px;flex:1">→ 排除分享+论道<br><strong>11,215条</strong></div>
+    <div style="background:#1a56db;color:#fff;padding:8px 14px;border-radius:8px;flex:1">→ 去重+去广告+去纯表情<br><strong>9,830条 ✓</strong></div>
+  </div>
+  <p style="font-size:12px;color:#6b7280;margin-top:10px;">排除项：93010渠道(1,439条)、分享/坐标(904条)、论道(174条)、重复(118条)、广告/纯表情(991条)</p>
+</div>
+
+<!-- Server breakdown -->
+<div class="card">
+  <h2>🗺️ 数据基本盘（排除93010）</h2>
+  
+  <h3>各服聊天类型构成</h3>
+  <div class="tbl-wrap">
+  <table>
+    <tr><th>区服</th><th>有效条数</th><th class="num">世界聊天</th><th class="num">势力聊天</th><th class="num">好友聊天</th><th>开服日</th><th>主要渠道</th></tr>
+    <tr>
+      <td><strong>1服</strong></td>
+      <td class="num">4,922 (50%)</td>
+      <td class="num">2,797 (56.8%)</td>
+      <td class="num"><strong>1,960 (39.8%)</strong></td>
+      <td class="num">165 (3.4%)</td>
+      <td>5/28</td>
+      <td>93002(2490), 93003(1186)</td>
+    </tr>
+    <tr>
+      <td><strong>2服</strong></td>
+      <td class="num">3,780 (38%)</td>
+      <td class="num"><strong>3,544 (93.8%)</strong></td>
+      <td class="num">135 (3.6%)</td>
+      <td class="num">101 (2.7%)</td>
+      <td>5/29</td>
+      <td>93005(1620), 93003(1491)</td>
+    </tr>
+    <tr>
+      <td><strong>3服</strong></td>
+      <td class="num">1,128 (11%)</td>
+      <td class="num">951 (84.3%)</td>
+      <td class="num">33 (2.9%)</td>
+      <td class="num"><strong>144 (12.8%)</strong></td>
+      <td>5/31</td>
+      <td>93005(469), 93003(313)</td>
+    </tr>
+    <tr style="background:#f8fafc">
+      <td><strong>合计</strong></td>
+      <td class="num"><strong>9,830</strong></td>
+      <td class="num">7,292 (74.2%)</td>
+      <td class="num">2,128 (21.6%)</td>
+      <td class="num">410 (4.2%)</td>
+      <td></td><td></td>
+    </tr>
+  </table>
+  </div>
+
+  <div class="grid3" style="margin-top:12px">
+    <div class="box">
+      <div class="box-label">1服特征</div>
+      1服势力聊天占 <strong>39.8%</strong>，远超其他服（3-4%）。<br>
+      → 1服的势力对抗是社交核心，势力聊天频道活跃度极高
+    </div>
+    <div class="box">
+      <div class="box-label">2服特征</div>
+      世界聊天占 <strong>93.8%</strong>。<br>
+      → 2服玩家几乎只用世界频道，势力/好友频道使用率极低
+    </div>
+    <div class="box">
+      <div class="box-label">3服特征</div>
+      3服好友聊天占 <strong>12.8%</strong>，是其他服的4倍。
+      → 3服玩家倾向于私聊社交，可能因为人少、世界频道不够活跃
+    </div>
+  </div>
+</div>
+
+<!-- Core Focus -->
+<div class="card">
+  <h2>🔬 核心关注问题</h2>
+  
+  <h3>一、肝度问题：好累啊，太肝了</h3>
+
+  <div style="background:#fee2e2;border:1px solid #fecaca;border-radius:8px;padding:12px 16px;margin:8px 0">
+    <div style="font-size:12px;color:#6b7280;font-weight:600;margin-bottom:4px">🥵 肝度/累（玩家说"好累啊"就是"太肝了"，合并为一个指标）</div>
+    <div style="font-size:28px;font-weight:700;color:#dc2626">126条</div>
+    <div style="font-size:12px;color:#6b7280">阈值≥0.60 · 占总量1.28%</div>
+    <p style="font-size:13px;margin-top:6px">核心是"累"质心匹配126条，其中明确说"肝/肝不动"的有5条。语义方向不同不合并质心，但标签合并——玩家表达的都是"这游戏让人累"。</p>
+    <div class="day-grid" style="margin-top:8px">
+      <div class="day-cell"><span class="day-label">1服</span> D1=0.8%→D4=1.5%📈</div>
+      <div class="day-cell" style="background:#fef2f2"><span class="day-label">2服</span> D1=0.9%→D4=<strong>1.8%</strong> <span class="badge badge-red">最高</span></div>
+      <div class="day-cell"><span class="day-label">3服</span> D1=1.1%→D2=<strong>2.4%</strong></div>
+    </div>
+    <div class="quote" style="margin-top:6px"><span class="tag">2服-D4</span>肝不动了 <span class="badge badge-yellow">肝</span></div>
+    <div class="quote"><span class="tag">2服-D3</span>累死了</div>
+    <div class="quote"><span class="tag">1服-D1</span>真累</div>
+    <div class="quote"><span class="tag">2服-D1</span>只能肝呗 <span class="badge badge-yellow">肝</span></div>
+    <div class="quote"><span class="tag">1服-D1</span>按起来好累，有没有体面的点法</div>
+    <div class="quote"><span class="tag">1服-D4</span>超累的</div>
+  </div>
+
+  <div class="finding">
+    <strong>结论：</strong>
+    肝度/累共<strong>126条（1.28%）</strong>，峰值在<strong>2服D4=1.8%</strong>和<strong>3服D2=2.4%</strong>。<br>
+    明确提到"肝"的只有5条（0.05%），但玩家说"太肝了"和"好累啊"是一回事——游戏玩着累。<br>
+    不是核心矛盾（远低于付费16%和战斗22%）。
+  </div>
+
+  <h3 style="margin-top:20px">二、内容节奏问题：第二天无聊</h3>
+
+  <div class="finding danger" style="margin-bottom:12px">
+    <strong>核心问题不是"无聊"，是"第二天就没内容可做了+离下线更近"。</strong>
+  </div>
+
+  <div class="tbl-wrap">
+  <table>
+    <tr><th>指标</th><th>1服(D1→D2)</th><th>2服(D1→D2)</th><th>3服(D1→D2)</th></tr>
+    <tr>
+      <td><strong>聊天量</strong></td>
+      <td class="num"><strong>795→352 (-56%)</strong> 📉</td>
+      <td class="num">579→1281 (+121%) 📈</td>
+      <td class="num"><strong>804→329 (-59%)</strong> 📉</td>
+    </tr>
+    <tr>
+      <td><strong>下线/退游信号</strong></td>
+      <td class="num"><strong>7.7%→9.7% ⬆️</strong></td>
+      <td class="num">11.2%→9.8% ⬇️</td>
+      <td class="num"><strong>8.3%→10.3% ⬆️</strong></td>
+    </tr>
+    <tr>
+      <td><strong>"没事干"信号</strong></td>
+      <td class="num">5.0%→5.4% →</td>
+      <td class="num">7.4%→5.0% ⬇️</td>
+      <td class="num"><strong>5.5%→7.0% ⬆️</strong></td>
+    </tr>
+  </table>
+  </div>
+
+  <p style="font-size:13px;color:#6b7280;margin:8px 0">注：下线信号阈值≥0.55，没事干信号阈值≥0.55。2服D2聊天量暴涨是因为D1活跃用户少，D2大量新玩家涌入（渠道93003/93005导量）</p>
+
+  <div class="grid2" style="margin-top:12px">
+    <div>
+      <div class="box" style="background:#fee2e2;border:1px solid #fecaca">
+        <div class="box-label">1服 D2 原文</div>
+        <div class="quote" style="margin-top:6px">闲着太无聊了</div>
+        <div class="quote">打发时间虚度光阴</div>
+        <div class="quote">今天能干啥 有点干瞪眼</div>
+        <div class="quote">有人吗？？</div>
+      </div>
+    </div>
+    <div>
+      <div class="box" style="background:#fef3c7;border:1px solid #fde68a">
+        <div class="box-label">3服 D2 原文</div>
+        <div class="quote" style="margin-top:6px">我不知道干啥了</div>
+        <div class="quote">好无聊啊</div>
+        <div class="quote">这游戏第二天就长草。。真无聊</div>
+        <div class="quote">把每天的30累冲给拿了，不准备多充</div>
+        <div class="quote">啥都进行不下去了</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="finding">
+    <strong>结论：</strong>
+    1服和3服的D2 <strong>聊天量腰斩（-56%和-59%）</strong>，<strong>退游信号上升</strong>（1服7.7%→9.7%，3服8.3%→10.3%）。<br>
+    1服D2原文"今天能干啥 有点干瞪眼"，3服D2"我不知道干啥了"——第二天确实没内容可做了。<br>
+    <strong>但还不是绝望：</strong>D2玩家主要还在聊修炼/升级（12-15%）和战斗/打怪（7-18%），说明核心循环还在运作，只是内容消耗速度超过了产出。<br>
+    <strong>建议：D2增加一个限时目标</strong>（比如第二天专属的任务线/小活动），让玩家在第一天消耗完内容后有个新的短期追求。
+  </div>
+</div>
+
+<!-- Dimension ranking -->
+<div class="card">
+  <h2>🏆 11个维度热度排名（排除93010）</h2>
+  <div class="stat-row"><span class="rank">🥇</span><span class="name">战斗/难度</span><div class="bar-wrap"><div class="bar" style="width:100%;background:linear-gradient(90deg,#ef4444,#f97316)"></div></div><span class="pct">22.74%</span></div>
+  <div class="stat-row"><span class="rank">🥈</span><span class="name">建议/需求</span><div class="bar-wrap"><div class="bar" style="width:83%;background:linear-gradient(90deg,#f97316,#fbbf24)"></div></div><span class="pct">18.96%</span></div>
+  <div class="stat-row"><span class="rank">🥉</span><span class="name">付费讨论/氪金</span><div class="bar-wrap"><div class="bar" style="width:38%;background:#3b82f6"></div></div><span class="pct">8.54%</span></div>
+  <div class="stat-row"><span class="rank">4</span><span class="name">无聊/乏味</span><div class="bar-wrap"><div class="bar" style="width:36%;background:#6366f1"></div></div><span class="pct">8.09%</span></div>
+  <div class="stat-row"><span class="rank">5</span><span class="name">社交/求带</span><div class="bar-wrap"><div class="bar" style="width:35%;background:#8b5cf6"></div></div><span class="pct">7.93%</span></div>
+  <div class="stat-row"><span class="rank">6</span><span class="name">付费不满/逼氪</span><div class="bar-wrap"><div class="bar" style="width:33%;background:#a855f7"></div></div><span class="pct">7.54%</span></div>
+  <div class="stat-row"><span class="rank">7</span><span class="name">肝度/累</span><div class="bar-wrap"><div class="bar" style="width:29%;background:#14b8a6"></div></div><span class="pct">6.58%</span></div>
+  <div class="stat-row"><span class="rank">8</span><span class="name">暗号/隐藏任务</span><div class="bar-wrap"><div class="bar" style="width:22%;background:#06b6d4"></div></div><span class="pct">5.00%</span></div>
+  <div class="stat-row"><span class="rank">9</span><span class="name">BUG/技术问题</span><div class="bar-wrap"><div class="bar" style="width:9%;background:#84cc16"></div></div><span class="pct">2.03%</span></div>
+  <div class="stat-row"><span class="rank">10</span><span class="name">势力/阵营</span><div class="bar-wrap"><div class="bar" style="width:7%;background:#d946ef"></div></div><span class="pct">1.55%</span></div>
+  <p style="font-size:12px;color:#6b7280;margin-top:8px;">注：战斗/难度涵盖PVE打不过+PVP被碾压+战力讨论，是玩家最核心的聊天话题</p>
+</div>
+
+<!-- Cross Analysis -->
+<div class="card">
+  <h2>🔗 关键交叉信号</h2>
+  <div class="grid2">
+    <div>
+      <div class="box"><span style="background:#1a56db;color:#fff;border-radius:10px;padding:1px 8px;font-size:11px;margin-right:8px;">886</span> 战斗+建议 → 打不过还在想办法</div>
+      <div class="box"><span style="background:#1a56db;color:#fff;border-radius:10px;padding:1px 8px;font-size:11px;margin-right:8px;">458</span> 付费不满+讨论 → 聊钱就是骂钱</div>
+      <div class="box"><span style="background:#1a56db;color:#fff;border-radius:10px;padding:1px 8px;font-size:11px;margin-right:8px;">426</span> 无聊+建议 → 无聊到在想办法自救</div>
+      <div class="box"><span style="background:#ef4444;color:#fff;border-radius:10px;padding:1px 8px;font-size:11px;margin-right:8px;">333</span> 疲劳+无聊 → 又累又无聊，离流失最近</div>
+      <div class="box"><span style="background:#ef4444;color:#fff;border-radius:10px;padding:1px 8px;font-size:11px;margin-right:8px;">290</span> 战斗+无聊 → 打不过+没事干</div>
+    </div>
+    <div>
+      <div class="box"><span style="background:#6366f1;color:#fff;border-radius:10px;padding:1px 8px;font-size:11px;margin-right:8px;">361</span> 疲劳+建议 → 累了还在想办法</div>
+      <div class="box"><span style="background:#6366f1;color:#fff;border-radius:10px;padding:1px 8px;font-size:11px;margin-right:8px;">163</span> 社交+建议 → 找人带的同时提建议</div>
+      <div class="box"><span style="background:#6366f1;color:#fff;border-radius:10px;padding:1px 8px;font-size:11px;margin-right:8px;">154</span> 战斗+社交 → 打不过=求带主场景</div>
+      <div class="box"><span style="background:#10b981;color:#fff;border-radius:10px;padding:1px 8px;font-size:11px;margin-right:8px;">74</span> 暗号+建议 → 引导缺失证据</div>
+      <div class="box"><span style="background:#10b981;color:#fff;border-radius:10px;padding:1px 8px;font-size:11px;margin-right:8px;">71</span> 战斗+Bug → 卡死/掉线影响战斗</div>
+    </div>
+  </div>
+</div>
+
+<!-- Recommendations -->
+<div class="card">
+  <h2>🎯 运营建议（量化依据）</h2>
+
+  <div class="finding danger">
+    <strong>🟥 紧急</strong><br>
+    <strong>1. 新手期玩法重构</strong> — D1无聊率3.0-3.5%，玩家开服当天就觉得"点点点没意思"。<span style="font-size:12px;color:#6b7280">依据：2服D1无聊3.5%=60条/579条</span><br>
+    <strong>2. 2服付费口碑干预</strong> — 2服D1付费不满8.6%+讨论9.5%=18.1%，93003/93005渠道对价格敏感。<span style="font-size:12px;color:#6b7280">依据：2服D1付费不满8.6%是3服4.5%的1.9倍</span><br>
+  </div>
+
+  <div class="finding">
+    <strong>🟧 重要</strong><br>
+    <strong>3. 暗号系统引导</strong> — 3服D1 6.5%的人在问暗号。一个对话NPC可解决。<br>
+    <strong>4. 3服D2内容填充</strong> — 3服D2无聊率翻倍到4.0%，核心是"人少+内容消耗快"。<span style="font-size:12px;color:#6b7280">依据：3服D2 4.0% = 13/329条</span><br>
+    <strong>5. 操作优化</strong> — 1服D1"按起来好累"，核心操作体验受诟病。<br>
+    <strong>6. 社交引导分层</strong> — 1服势力频道活跃（44.4%）但2/3服几乎不用。2服设计势力频道入口。<br>
+  </div>
+
+  <div class="finding success">
+    <strong>🟢 一般</strong><br>
+    <strong>7. 肝度不是核心矛盾 —</strong> 肝度/累共126条（1.28%），其中明确说"肝"的只有5条。<br>
+    <strong>8. BUG修两个核心 —</strong> "进不去"和"卡死"占了大部分技术反馈。<br>
+  </div>
+</div>
+
+<!-- Servers comparison -->
+<div class="card">
+  <h2>🔍 各服数据对比</h2>
+  <div class="tbl-wrap">
+  <table>
+    <tr><th></th><th>区服1</th><th>区服2</th><th>区服3</th></tr>
+    <tr><td>聊天量(条)</td><td>4,922</td><td>3,780</td><td>1,128</td></tr>
+    <tr><td>世界:势力:好友</td><td>56.8%:39.8%:3.4%</td><td><strong>93.8%</strong>:3.6%:2.7%</td><td>84.3%:2.9%:<strong>12.8%</strong></td></tr>
+    <tr><td>D1→D2聊天量变化</td><td><strong>795→352 (-56%)</strong></td><td>579→1281 (+121%)</td><td><strong>804→329 (-59%)</strong></td></tr>
+    <tr><td>D1→D2下线信号</td><td><strong>7.7%→9.7% ⬆️</strong></td><td>11.2%→9.8% ⬇️</td><td><strong>8.3%→10.3% ⬆️</strong></td></tr>
+    <tr><td>D1付费不满</td><td>7.0%</td><td><strong>8.6%</strong></td><td>4.5%</td></tr>
+    <tr><td>暗号D1讨论</td><td>5.0%</td><td>6.2%</td><td><strong>6.5%</strong></td></tr>
+    <tr><td>疲劳峰值</td><td>D3-D4 ~1.5%</td><td>D4 1.8%</td><td><strong>D2 2.4%</strong></td></tr>
+    <tr><td>主要渠道</td><td>93002(2941), 93003(1335)</td><td>93003(1745), 93005(1985)</td><td>93005(637), 93002(225)</td></tr>
+  </table>
+  </div>
+</div>
+
+<!-- Method note -->
+<div class="card" style="margin-bottom:32px">
+  <h2>⚙️ 方法说明</h2>
+  <div class="tbl-wrap">
+  <table>
+    <tr><td style="width:100px">检索引擎</td><td>MiniMax embo-01 文本嵌入模型，1536维，同空间(type=query)余弦相似度</td></tr>
+    <tr><td>分析方式</td><td>每个维度10-11条语义查询句 → 质心向量 → 逐条计算相似度</td></tr>
+    <tr><td>阈值</td><td>自适应：优先≥0.55，匹配不足时降级至0.50→0.45</td></tr>
+    <tr><td>数据清洗</td><td>排除93010渠道 → 排除地块/兵器/灵兽/防具分享 → 排除论道/切磋 → 去重(同服+同消息+同分钟) → 排除广告 → 排除纯表情</td></tr>
+    <tr><td>肝度专项</td><td>10条疲劳语义句+9条肝语义句，阈值0.60</td></tr>
+    <tr><td>无聊专项</td><td>12条无聊语义句，阈值0.55，逐服D1/D2分别统计</td></tr>
+  </table>
+  </div>
+</div>
+
+</div>
+</body>
+</html>

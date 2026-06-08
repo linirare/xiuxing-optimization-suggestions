@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>《修行那些年》服务器聊天分析 v2</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;background:#0b1120;color:#e2e8f0;padding:16px}
+.container{max-width:1280px;margin:0 auto}
+.header{text-align:center;padding:36px 20px;background:linear-gradient(135deg,#111827,#1e293b);border-radius:14px;margin-bottom:20px}
+.header h1{font-size:22px;font-weight:700;background:linear-gradient(135deg,#60a5fa,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:4px}
+.header .sub{font-size:12px;color:#64748b}
+/* Tabs */
+.tabs{display:flex;gap:2px;margin-bottom:16px;background:#111827;border-radius:10px;padding:3px;flex-wrap:wrap}
+.tab-btn{padding:8px 14px;border:none;background:transparent;color:#94a3b8;font-size:13px;cursor:pointer;border-radius:8px;transition:all 0.15s;white-space:nowrap}
+.tab-btn:hover{background:#1e293b;color:#e2e8f0}
+.tab-btn.active{background:#3b82f6;color:#fff;font-weight:600}
+.tab-content{display:none}
+.tab-content.active{display:block}
+/* Section */
+.section{background:#111827;border-radius:10px;padding:18px;margin-bottom:16px}
+.section h2{font-size:15px;font-weight:600;margin-bottom:12px;color:#f1f5f9;padding-bottom:8px;border-bottom:1px solid #1e293b}
+.section h3{font-size:13px;font-weight:600;color:#cbd5e1;margin:12px 0 8px}
+/* Overview */
+.ov-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-bottom:14px}
+.ov-card{background:#1a2332;border-radius:8px;padding:14px;text-align:center}
+.ov-card .num{font-size:26px;font-weight:700;color:#60a5fa}
+.ov-card .srv{font-size:12px;color:#64748b;margin-top:2px}
+.ov-card .lbl{font-size:10px;color:#475569;margin-top:2px}
+.ov-card.detail{text-align:left}
+.ov-card.detail .row{display:flex;justify-content:space-between;font-size:12px;padding:3px 0;color:#94a3b8}
+.ov-card.detail .row .v{color:#60a5fa}
+/* Day cards */
+.day-section{margin-bottom:14px}
+.day-header{display:flex;align-items:center;gap:10px;padding:12px 16px;background:#1a2332;border-radius:10px 10px 0 0;flex-wrap:wrap}
+.day-header .day-title{font-size:15px;font-weight:600;color:#f1f5f9}
+.day-header .day-date{font-size:11px;color:#64748b}
+.day-header .mood-badge{font-size:11px;padding:2px 8px;border-radius:8px;font-weight:500}
+.day-header .day-stats{font-size:11px;color:#64748b}
+.day-body{background:#111827;border-radius:0 0 10px 10px;padding:14px 16px}
+.sent-row{display:flex;height:6px;border-radius:3px;overflow:hidden;margin:6px 0 10px}
+.sent-pos{background:#22c55e}
+.sent-neu{background:#eab308}
+.sent-neg{background:#ef4444}
+.sent-labels{display:flex;gap:14px;font-size:10px;color:#64748b;margin-bottom:8px}
+.topics{display:flex;flex-wrap:wrap;gap:4px;margin:6px 0}
+.topic-tag{font-size:10px;padding:2px 8px;border-radius:10px;background:#1e293b;color:#94a3b8}
+.feedback-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:8px 0}
+.fb-box{padding:10px;border-radius:6px;font-size:11px;line-height:1.5}
+.fb-pos{background:rgba(34,197,94,0.08);border-left:2px solid #22c55e}
+.fb-neg{background:rgba(239,68,68,0.08);border-left:2px solid #ef4444}
+.fb-box h4{font-size:11px;margin-bottom:4px;opacity:.7}
+.fb-box li{padding:3px 0;border-bottom:1px solid rgba(255,255,255,.04);list-style:none}
+.pain-list{list-style:none}
+.pain-item{padding:6px 10px;margin:3px 0;border-radius:5px;font-size:11px;line-height:1.4;border-left:2px solid}
+.pain-high{border-color:#ef4444;background:rgba(239,68,68,.06)}
+.pain-mid{border-color:#eab308;background:rgba(234,179,8,.06)}
+.pain-low{border-color:#22c55e;background:rgba(34,197,94,.06)}
+.pain-item .ev{color:#64748b;font-size:10px;margin-top:2px}
+.sug-list{list-style:none}
+.sug-item{padding:5px 8px;margin:3px 0;border-radius:5px;background:rgba(96,165,250,.05);font-size:11px;border-left:2px solid #60a5fa}
+.sug-item .player{color:#64748b;font-size:10px}
+.quote-box{margin:8px 0;padding:10px 14px;background:rgba(96,165,250,.06);border-radius:6px;border-left:2px solid #60a5fa;font-size:12px;color:#cbd5e1;font-style:italic}
+.quote-box .ql{font-size:10px;color:#64748b;margin-bottom:2px}
+.signal-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:8px 0}
+.signal-card{padding:10px;border-radius:6px;font-size:11px}
+.signal-fatigue{background:rgba(234,179,8,.06);border-left:2px solid #eab308}
+.signal-boredom{background:rgba(147,51,234,.06);border-left:2px solid #9333ea}
+.signal-card h4{font-size:11px;margin-bottom:4px}
+.signal-card .ex{color:#64748b;font-size:10px;margin-top:4px}
+/* Cross-server */
+.cs-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.cs-card{padding:14px;border-radius:8px;background:#1a2332}
+.cs-card h3{font-size:13px;font-weight:600;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid #1e293b}
+.cs-card p,.cs-card li{font-size:12px;color:#94a3b8;line-height:1.6;margin:3px 0}
+.cs-card ul{list-style:none;padding:0}
+.cs-card li{padding:4px 0;border-bottom:1px solid rgba(255,255,255,.03)}
+/* Expandable evidence */
+.ev-toggle{font-size:11px;color:#60a5fa;cursor:pointer;display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:4px;background:rgba(96,165,250,.08);margin-top:6px;user-select:none;border:none}
+.ev-toggle:hover{background:rgba(96,165,250,.15)}
+.ev-content{max-height:0;overflow:hidden;transition:max-height .25s ease}
+.ev-content.open{max-height:800px}
+.ev-inner{padding:8px 10px;margin-top:4px;border-radius:6px;background:rgba(0,0,0,.2);font-size:11px;color:#94a3b8;line-height:1.6}
+.ev-inner .quote{padding:3px 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.ev-inner .quote:last-child{border:none}
+.ev-inner .reason{color:#cbd5e1;margin-bottom:6px}
+.ev-inner .data-ref{margin-bottom:8px;padding:6px 8px;background:rgba(59,130,246,0.05);border-radius:4px;font-size:10px;color:#64748b;line-height:1.5;font-family:monospace}
+/* Portrait */
+.portrait-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.portrait-card{padding:14px;border-radius:8px;background:#1a2332}
+.portrait-card h3{font-size:13px;font-weight:600;margin-bottom:8px}
+.portrait-card .type{display:inline-block;font-size:10px;padding:2px 8px;border-radius:6px;background:#3b82f6;color:#fff;margin:2px}
+.portrait-card p{font-size:12px;color:#94a3b8;line-height:1.6;margin:4px 0}
+.rec-list{list-style:none}
+.rec-list li{padding:6px 10px;margin:4px 0;border-radius:6px;background:rgba(96,165,250,.06);font-size:12px;border-left:2px solid #60a5fa}
+.dim-bar-wrap{display:flex;align-items:center;gap:10px;padding:5px 0}
+.dim-bar-bg{height:16px;background:#1e293b;border-radius:8px;overflow:hidden;flex:1}
+.dim-bar-fill{height:100%;border-radius:8px}
+.dim-medal{width:22px;text-align:center;font-size:15px}
+.dim-name{font-size:12px;color:#f1f5f9;min-width:80px}
+.dim-pct{font-size:11px;color:#94a3b8;min-width:36px;text-align:right}
+.xsignal-card{padding:12px;border-radius:8px;background:#1a2332;margin:6px 0}
+.xsignal-card .pair{font-size:13px;font-weight:600;color:#f1f5f9}
+.xsignal-card .interp{font-size:11px;color:#60a5fa;margin:4px 0}
+.xsignal-card .xsamples{font-size:10px;color:#64748b;line-height:1.6}
+.xsignal-card .xcount{font-size:22px;font-weight:700;color:#a78bfa;text-align:center}
+.method-box{padding:14px;border-radius:8px;background:#1a2332;font-size:11px;color:#94a3b8;line-height:1.7}
+.method-box code{padding:1px 5px;background:#0b1120;border-radius:3px;color:#60a5fa;font-size:10px}
+.footer{text-align:center;font-size:10px;color:#475569;padding:16px}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1>⚔️ 《修行那些年》服务器聊天分析 v2</h1>
+    <div class="sub">按区服·开服天数 · DeepSeek 语义分析 · 含跨服深度洞察</div>
+  </div>
+  <div class="tabs"><button class="tab-btn active" onclick="switchTab(0)">📊 总览</button>
+<button class="tab-btn" onclick="switchTab(1)">1区</button>
+<button class="tab-btn" onclick="switchTab(2)">2区</button>
+<button class="tab-btn" onclick="switchTab(3)">3区</button>
+</div>
+  <div class="tab-content active" id="tab-0">
+      <div class="section">
+        <h2>📊 数据总览</h2>
+        <div class="ov-grid"><div class="ov-card detail">
+          <div class="srv" style="font-weight:600;font-size:14px;color:#f1f5f9;margin-bottom:4px">1区</div>
+          <div class="row"><span>消息总量</span><span class="v">5793</span></div>
+          <div class="row"><span>玩家数</span><span class="v">282</span></div>
+          <div class="row"><span>🌍 世界</span><span class="v">3251</span></div>
+          <div class="row"><span>⚔️ 国家(势力)</span><span class="v">2354</span></div>
+          <div class="row"><span>💬 好友</span><span class="v">188</span></div>
+        </div><div class="ov-card detail">
+          <div class="srv" style="font-weight:600;font-size:14px;color:#f1f5f9;margin-bottom:4px">2区</div>
+          <div class="row"><span>消息总量</span><span class="v">4423</span></div>
+          <div class="row"><span>玩家数</span><span class="v">285</span></div>
+          <div class="row"><span>🌍 世界</span><span class="v">4113</span></div>
+          <div class="row"><span>⚔️ 国家(势力)</span><span class="v">188</span></div>
+          <div class="row"><span>💬 好友</span><span class="v">122</span></div>
+        </div><div class="ov-card detail">
+          <div class="srv" style="font-weight:600;font-size:14px;color:#f1f5f9;margin-bottom:4px">3区</div>
+          <div class="row"><span>消息总量</span><span class="v">1386</span></div>
+          <div class="row"><span>玩家数</span><span class="v">297</span></div>
+          <div class="row"><span>🌍 世界</span><span class="v">1145</span></div>
+          <div class="row"><span>⚔️ 国家(势力)</span><span class="v">45</span></div>
+          <div class="row"><span>💬 好友</span><span class="v">196</span></div>
+        </div></div>
+        <p style="font-size:12px;color:#64748b;">全区服合计: 11602 条消息, 864 名玩家 (已排除93010渠道+系统分享消息)</p>
+      </div>
+      <div class="section"><h2>📊 各区服每日聊天类型占比</h2><div style="font-size:10px;color:#64748b;margin-bottom:8px">百分比 = 该类型消息数 / 当日总消息数</div><div style="margin-bottom:14px"><div style="font-size:12px;font-weight:600;color:#f1f5f9;margin-bottom:4px">1区</div><table style="width:100%;border-collapse:collapse;font-size:12px">
+      <thead><tr style="border-bottom:1px solid #1e293b">
+        <th style="padding:4px 6px;text-align:left;font-size:10px;color:#64748b">天数</th>
+        <th style="padding:4px 6px;text-align:left;font-size:10px;color:#64748b">日期</th>
+        <th style="padding:4px 6px;text-align:left;font-size:10px;color:#64748b">总量</th>
+        <th style="padding:4px 6px;text-align:left;font-size:10px;color:#64748b">世界</th>
+        <th style="padding:4px 6px;text-align:left;font-size:10px;color:#64748b">国家</th>
+        <th style="padding:4px 6px;text-align:left;font-size:10px;color:#64748b">好友</th>
+      </tr></thead>
+      <tbody><tr>
+          <td style="padding:4px 6px;font-size:11px;color:#f1f5f9">第1天</td>
+          <td style="padding:4px 6px;font-size:10px;color:#64748b">05/28</td>
+          <td style="padding:4px 6px;font-size:11px;color:#94a3b8">885</td>
+          <td style="padding:4px 6px;font-size:11px;color:#60a5fa">837 (95%)</td>
+          <td style="padding:4px 6px;font-size:11px;color:#f59e0b">4 (0%)</td>
+          <td style="padding:4px 6px;font-size:11px;color:#34d399">44 (5%)</td>
+        </tr><tr>
+          <td style="padding:4px 6px;font-size:11px;color:#f1f5f9">第2天</td>
+          <td style="padding:4px 6px;font-size:10px;color:#64748b">05/29</td>
+          <td style="padding:4px 6px;font-size:11px;color:#94a3b8">444</td>
+          <td style="padding:4px 6px;font-size:11px;color:#60a5fa">372 (84%)</td>
+          <td style="padding:4px 6px;font-size:11px;color:#f59e0b">68 (15%)</td>
+          <td style="padding:4px 6px;font-size:11px;color:#34d399">4 (1%)</td>
+        </tr><tr>
+          <td style="padding:4px 6px;font-size:11px;color:#f1f5f9">第3天</td>
+          <td style="padding:4px 6px;font-size:10px;color:#64748b">05/30</td>
+          <td style="padding:4px 6px;font-size:11px;color:#94a3b8">1479</td>
+          <td style="padding:4px 6px;font-size:11px;color:#60a5fa">754 (51%)</td>
+          <td style="padding:4px 6px;font-size:11px;color:#f59e0b">709 (48%)</td>
+          <td style="padding:4px 6px;font-size:11px;color:#34d399">16 (1%)</td>
+        </tr><tr>
+          <td style="padding:4px 6px;font-size:11px;color:#f1f5f9">第4天</td>
+          <td style="padding:4px 6px;font-size:10px;color:#64748b">05/31</td>
+          <td style="padding:4px 6px;font-size:11px;color:#94a3b8">1726</td>
+          <td style="padding:4px 6px;font-size:11px;color:#60a5fa">919 (53%)</td>
+          <td style="padding:4px 6px;font-size:11px;color:#f59e0b">725 (42%)</td>
+          <td style="padding:4px 6px;font-size:11px;color:#34d399">82 (5%)</td>
+        </tr><tr>
+          <td style="padding:4px 6px;font-size:11px;color:#f1f5f9">第5天</td>
+          <td style="padding:4px 6px;font-size:10px;color:#64748b">06/01</td>
+          <td style="padding:4px 6px;font-size:11px;color:#94a3b8">1259</td>
+          <td style="padding:4px 6px;font-size:11px;color:#60a5fa">369 (29%)</td>
+          <td style="padding:4px 6px;font-size:11px;color:#f59e0b">848 (67%)</td>
+          <td style="padding:4px 6px;font-size:11px;color:#34d399">42 (3%)</td>
+        </tr><tr style="border-top:2px solid #3b82f6;background:rgba(59,130,246,0.06)">
+      <td style="padding:4px 6px;font-size:11px;color:#60a5fa;font-weight:600">合计/均值</td>
+      <td style="padding:4px 6px;font-size:10px;color:#64748b">5天</td>
+      <td style="padding:4px 6px;font-size:11px;color:#e2e8f0;font-weight:600">5793</td>
+      <td style="padding:4px 6px;font-size:11px;color:#60a5fa;font-weight:600">3251 (56%)</td>
+      <td style="padding:4px 6px;font-size:11px;color:#f59e0b;font-weight:600">2354 (41%)</td>
+      <td style="padding:4px 6px;font-size:11px;color:#34d399;font-weight:600">188 (3%)</td>
+    </tr></tbody>
+    </table><div style="margin-top:2px"><ul style="margin:6px 0 0;padding:0 0 0 14px;font-size:11px;color:#94a3b8;line-height:1.7"><li>世界聊天是主要沟通方式，平均占比 62%</li><li>聊天总量增长显著（42%），第1天 885条 → 第5天 1259条</li><li>世界聊天占比下降，从第1天 95% → 第5天 29%</li><li>势力聊天在第5天达峰值 67%，可能存在帮派活动节点</li><li>开服第1天世界聊天占比 95%，与后续均值 54% 差异明显，初期社交模式不同</li></ul></div></div><div style="margin-bottom:14px"><div style="font-size:12px;font-weight:600;color:#f1f5f9;margin-bottom:4px">2区</div><table style="width:100%;border-collapse:collapse;font-size:12px">
+      <thead><tr style="border-bottom:1px solid #1e293b">
+        <th style="padding:4px 6px;text-align:left;font-size:10px;color:#64748b">天数</th>
+        <th style="padding:4px 6px;text-align:left;font-size:10px;color:#64748b">日期</th>
+        <th style="padding:4px 6px;text-align:left;font-size:10px;color:#64748b">总量</th>
+        <th style="padding:4px 6px;text-align:left;font-size:10px;color:#64748b">世界</th>
+        <th style="padding:4px 6px;text-align:left;font-size:10px;color:#64748b">国家</th>
+        <th style="padding:4px 6px;text-align:left;font-size:10px;color:#64748b">好友</th>
+      </tr></thead>
+      <tbody><tr>
+          <td style="padding:4px 6px;font-size:11px;color:#f1f5f9">第1天</td>
+          <td style="padding:4px 6px;font-size:10px;color:#64748b">05/29</td>
+          <td style="padding:4px 6px;font-size:11px;color:#94a3b8">680</td>
+          <td style="padding:4px 6px;font-size:11px;color:#60a5fa">639 (94%)</td>
+          <td style="padding:4px 6px;font-size:11px;color:#f59e0b">11 (2%)</td>
+          <td style="padding:4px 6px;font-size:11px;color:#34d399">30 (4%)</td>
+        </tr><tr>
+          <td style="padding:4px 6px;font-size:11px;color:#f1f5f9">第2天</td>
+          <td style="padding:4px 6px;font-size:10px;color:#64748b">05/30</td>
+          <td style="padding:4px 6px;font-size:11px;color:#94a3b8">1508</td>
+          <td style="padding:4px 6px;font-size:11px;color:#60a5fa">1373 (91%)</td>
+          <td style="padding:4px 6px;font-size:11px;color:#f59e0b">70 (5%)</td>
+          <td style="padding:4px 6px;font-size:11px;color:#34d399">65 (4%)</td>
+        </tr><tr>
+          <td style="padding:4px 6px;font-size:11px;color:#f1f5f9">第3天</td>
+          <td style="padding:4px 6px;font-size:10px;color:#64748b">05/31</td>
+          <td style="padding:4px 6px;font-size:11px;color:#94a3b8">1767</td>
+          <td style="padding:4px 6px;font-size:11px;color:#60a5fa">1647 (93%)</td>
+          <td style="padding:4px 6px;font-size:11px;color:#f59e0b">93 (5%)</td>
+          <td style="padding:4px 6px;font-size:11px;color:#34d399">27 (2%)</td>
+        </tr><tr>
+          <td style="padding:4px 6px;font-size:11px;color:#f1f5f9">第4天</td>
+          <td style="padding:4px 6px;font-size:10px;color:#64748b">06/01</td>
+          <td style="padding:4px 6px;font-size:11px;color:#94a3b8">468</td>
+          <td style="padding:4px 6px;font-size:11px;color:#60a5fa">454 (97%)</td>
+          <td style="padding:4px 6px;font-size:11px;color:#f59e0b">14 (3%)</td>
+          <td style="padding:4px 6px;font-size:11px;color:#34d399">0 (0%)</td>
+        </tr><tr style="border-top:2px solid #3b82f6;background:rgba(59,130,246,0.06)">
+      <td style="padding:4px 6px;font-size:11px;color:#60a5fa;font-weight:600">合计/均值</td>
+      <td style="padding:4px 6px;font-size:10px;color:#64748b">4天</td>
+      <td style="padding:4px 6px;font-size:11px;color:#e2e8f0;font-weight:600">4423</td>
+      <td style="padding:4px 6px;font-size:11px;color:#60a5fa;font-weight:600">4113 (93%)</td>
+      <td style="padding:4px 6px;font-size:11px;color:#f59e0b;font-weight:600">188 (4%)</td>
+      <td style="padding:4px 6px;font-size:11px;color:#34d399;font-weight:600">122 (3%)</td>
+    </tr></tbody>
+    </table><div style="margin-top:2px"><ul style="margin:6px 0 0;padding:0 0 0 14px;font-size:11px;color:#94a3b8;line-height:1.7"><li>世界聊天是主要沟通方式，平均占比 94%</li><li>聊天总量萎缩显著（31%），第1天 680条 → 第4天 468条</li></ul></div></div><div style="margin-bottom:14px"><div style="font-size:12px;font-weight:600;color:#f1f5f9;margin-bottom:4px">3区</div><table style="width:100%;border-collapse:collapse;font-size:12px">
+      <thead><tr style="border-bottom:1px solid #1e293b">
+        <th style="padding:4px 6px;text-align:left;font-size:10px;color:#64748b">天数</th>
+        <th style="padding:4px 6px;text-align:left;font-size:10px;color:#64748b">日期</th>
+        <th style="padding:4px 6px;text-align:left;font-size:10px;color:#64748b">总量</th>
+        <th style="padding:4px 6px;text-align:left;font-size:10px;color:#64748b">世界</th>
+        <th style="padding:4px 6px;text-align:left;font-size:10px;color:#64748b">国家</th>
+        <th style="padding:4px 6px;text-align:left;font-size:10px;color:#64748b">好友</th>
+      </tr></thead>
+      <tbody><tr>
+          <td style="padding:4px 6px;font-size:11px;color:#f1f5f9">第1天</td>
+          <td style="padding:4px 6px;font-size:10px;color:#64748b">05/31</td>
+          <td style="padding:4px 6px;font-size:11px;color:#94a3b8">972</td>
+          <td style="padding:4px 6px;font-size:11px;color:#60a5fa">899 (92%)</td>
+          <td style="padding:4px 6px;font-size:11px;color:#f59e0b">9 (1%)</td>
+          <td style="padding:4px 6px;font-size:11px;color:#34d399">64 (7%)</td>
+        </tr><tr>
+          <td style="padding:4px 6px;font-size:11px;color:#f1f5f9">第2天</td>
+          <td style="padding:4px 6px;font-size:10px;color:#64748b">06/01</td>
+          <td style="padding:4px 6px;font-size:11px;color:#94a3b8">414</td>
+          <td style="padding:4px 6px;font-size:11px;color:#60a5fa">246 (59%)</td>
+          <td style="padding:4px 6px;font-size:11px;color:#f59e0b">36 (9%)</td>
+          <td style="padding:4px 6px;font-size:11px;color:#34d399">132 (32%)</td>
+        </tr><tr style="border-top:2px solid #3b82f6;background:rgba(59,130,246,0.06)">
+      <td style="padding:4px 6px;font-size:11px;color:#60a5fa;font-weight:600">合计/均值</td>
+      <td style="padding:4px 6px;font-size:10px;color:#64748b">2天</td>
+      <td style="padding:4px 6px;font-size:11px;color:#e2e8f0;font-weight:600">1386</td>
+      <td style="padding:4px 6px;font-size:11px;color:#60a5fa;font-weight:600">1145 (83%)</td>
+      <td style="padding:4px 6px;font-size:11px;color:#f59e0b;font-weight:600">45 (3%)</td>
+      <td style="padding:4px 6px;font-size:11px;color:#34d399;font-weight:600">196 (14%)</td>
+    </tr></tbody>
+    </table><div style="margin-top:2px"><ul style="margin:6px 0 0;padding:0 0 0 14px;font-size:11px;color:#94a3b8;line-height:1.7"><li>世界聊天是主要沟通方式，平均占比 76%</li><li>聊天总量萎缩显著（57%），第1天 972条 → 第2天 414条</li><li>世界聊天占比下降，从第1天 92% → 第2天 59%</li><li>好友私聊占比稳定在 19% 左右，玩家深度社交需求较强</li><li>开服第1天世界聊天占比 92%，与后续均值 59% 差异明显，初期社交模式不同</li></ul></div></div><div style="margin-top:8px;padding:8px 10px;background:rgba(96,165,250,0.04);border-radius:6px;border-left:2px solid #3b82f6"><div style="font-size:11px;color:#60a5fa;font-weight:600;margin-bottom:2px">📌 跨服对比</div><ul style="margin:6px 0 0;padding:0 0 0 14px;font-size:11px;color:#94a3b8;line-height:1.7"><li>1区聊天量增长最猛（42%），社区活跃度提升最快</li><li>3区聊天量萎缩明显（57%），需关注玩家留存</li><li>2区偏好世界聊天（平均 94%），1区更倾向势力/私聊</li><li>1区势力聊天在第5天异常活跃（67%），可能有组织性活动</li></ul></div></div><div class="section">
+          <h2>🔍 跨服核心洞察</h2>
+          <div class="cs-grid"><div class="cs-card">
+              <h3>😰 肝度分析</h3>
+              <p>玩家普遍感到肝度较高，尤其在资源获取和活动安排上存在明显疲劳感，但不同服表现有差异。</p>
+              <ul><li>1区: 第[2, 3, 4]天出现, 峰值第2天 — 资源获取和BOSS难度导致持续疲劳</li><li>2区: 第[1, 2, 3]天出现, 峰值第2天 — 突破材料和抽卡爆率引发高疲劳</li><li>3区: 第[1, 2]天出现, 峰值第1天 — 新手资源管理困难但疲劳度较低</li></ul>
+              <p style="margin-top:6px;color:#eab308;font-size:12px">🔑 资源获取难度是跨服疲劳的核心驱动因素，需优化突破材料和抽卡爆率。</p>
+              <button class="ev-toggle" data-ev="ev-f" onclick="toggleEvidence('ev-f')">+ 查看推理证据</button>
+              <div class="ev-content" id="ev-f"><div class="ev-inner"><div class="data-ref">📊 疲劳(😰) / 无聊(😐) 信号数（来自每日分析结果）:
+1区: D1😰2😐3 | D2😰3😐2 | D3😰3😐2 | D4😰3😐1 | D5😰3😐2<br>2区: D1😰3😐4 | D2😰5😐2 | D3😰3😐1 | D4😰3😐1<br>3区: D1😰3😐2 | D2😰2😐4</div><div class="reason">🧠 1区第2-4天疲劳度持续为3，伴随负面情绪，主要因资源获取难和BOSS难度高；2区第2天疲劳度高达5，因元婴突破资源难获取和抽卡爆率低；3区疲劳度相对较低（2-3），但第2天出现玩法单一问题。跨服共性为资源获取和活动安排导致疲劳。</div><div class="quote">🔍 [1区 第3天 @武当王也丶] 自游戏有些东西好难得 (0.63)</div><div class="quote">🔍 [3区 第2天 @王霂微] 感觉装备获取挺困难的。 (0.60)</div><div class="quote">🔍 [1区 第2天 @骆若末] 技能还有次数限制啊？ (0.58)</div></div></div>
+            </div><div class="cs-card">
+              <h3>😐 内容节奏</h3>
+              <p>内容节奏前期过快导致玩家感到无聊，尤其在第二天出现明显长草期。</p>
+              <ul><li>第1天 (1区、2区): 前期内容单调，资源获取困难导致体验差</li><li>第2天 (3区): 第二天出现长草期，玩法单一</li></ul>
+              <p style="margin-top:6px;color:#9333ea;font-size:12px">🔑 无聊感在第二天集中爆发，主要因内容消耗过快且缺乏持续玩法支撑。</p>
+              <button class="ev-toggle" data-ev="ev-c" onclick="toggleEvidence('ev-c')">+ 查看推理证据</button>
+              <div class="ev-content" id="ev-c"><div class="ev-inner"><div class="data-ref">📊 疲劳(😰) / 无聊(😐) 信号数（来自每日分析结果）:
+1区: D1😰2😐3 | D2😰3😐2 | D3😰3😐2 | D4😰3😐1 | D5😰3😐2<br>2区: D1😰3😐4 | D2😰5😐2 | D3😰3😐1 | D4😰3😐1<br>3区: D1😰3😐2 | D2😰2😐4</div><div class="reason">🧠 1区第1天无聊度3，第2-3天降至2，因前期玩法单调；2区第1天无聊度高达4，因资源获取困难导致内容体验差；3区第2天无聊度4，因玩法单一。跨服共性为第二天出现内容断层。</div><div class="quote">🔍 [1区 第1天 @柒] 连点器无聊打发时间 (0.71)</div><div class="quote">🔍 [1区 第4天 @紫月] 就是有些时候活动多的时候有点烦 (0.66)</div><div class="quote">🔍 [3区 第2天 @大鱼鱼] 这游戏第二天就长草。。。真无聊 (0.64)</div></div></div>
+            </div></div></div><div class="section">
+              <h2>📐 玩家关注维度排名</h2>
+              <div style="font-size:10px;color:#64748b;margin-bottom:8px">基于语义向量对每条消息进行10个维度的分类（自适应阈值0.55→0.50→0.45）</div>
+              <div class="dim-bar-wrap">
+                  <div class="dim-medal">🥇</div>
+                  <div class="dim-name">🐛 BUG/技术问题</div>
+                  <div class="dim-bar-bg"><div class="dim-bar-fill" style="width:47.2%;background:#3b82f6"></div></div>
+                  <div class="dim-pct">23.6%</div>
+                  <div style="font-size:10px;color:#64748b;min-width:45px;text-align:right">2665条</div>
+                </div><div class="dim-bar-wrap">
+                  <div class="dim-medal">🥈</div>
+                  <div class="dim-name">💢 付费不满(负面)</div>
+                  <div class="dim-bar-bg"><div class="dim-bar-fill" style="width:43.6%;background:#22c55e"></div></div>
+                  <div class="dim-pct">21.8%</div>
+                  <div style="font-size:10px;color:#64748b;min-width:45px;text-align:right">2462条</div>
+                </div><div class="dim-bar-wrap">
+                  <div class="dim-medal">🥉</div>
+                  <div class="dim-name">⚔️ 战斗/难度</div>
+                  <div class="dim-bar-bg"><div class="dim-bar-fill" style="width:38.9%;background:#f59e0b"></div></div>
+                  <div class="dim-pct">19.4%</div>
+                  <div style="font-size:10px;color:#64748b;min-width:45px;text-align:right">2196条</div>
+                </div><div class="dim-bar-wrap">
+                  <div class="dim-medal">4️⃣</div>
+                  <div class="dim-name">🤝 社交/求带</div>
+                  <div class="dim-bar-bg"><div class="dim-bar-fill" style="width:36.6%;background:#a78bfa"></div></div>
+                  <div class="dim-pct">18.3%</div>
+                  <div style="font-size:10px;color:#64748b;min-width:45px;text-align:right">2065条</div>
+                </div><div class="dim-bar-wrap">
+                  <div class="dim-medal">5️⃣</div>
+                  <div class="dim-name">😐 无聊/乏味</div>
+                  <div class="dim-bar-bg"><div class="dim-bar-fill" style="width:33.5%;background:#ef4444"></div></div>
+                  <div class="dim-pct">16.8%</div>
+                  <div style="font-size:10px;color:#64748b;min-width:45px;text-align:right">1892条</div>
+                </div><div class="dim-bar-wrap">
+                  <div class="dim-medal">6️⃣</div>
+                  <div class="dim-name">😰 肝度/累</div>
+                  <div class="dim-bar-bg"><div class="dim-bar-fill" style="width:29.4%;background:#ec4899"></div></div>
+                  <div class="dim-pct">14.7%</div>
+                  <div style="font-size:10px;color:#64748b;min-width:45px;text-align:right">1659条</div>
+                </div><div class="dim-bar-wrap">
+                  <div class="dim-medal">7️⃣</div>
+                  <div class="dim-name">💰 付费讨论(中性)</div>
+                  <div class="dim-bar-bg"><div class="dim-bar-fill" style="width:16.2%;background:#14b8a6"></div></div>
+                  <div class="dim-pct">8.1%</div>
+                  <div style="font-size:10px;color:#64748b;min-width:45px;text-align:right">916条</div>
+                </div><div class="dim-bar-wrap">
+                  <div class="dim-medal">8️⃣</div>
+                  <div class="dim-name">⏰ 活动/时间</div>
+                  <div class="dim-bar-bg"><div class="dim-bar-fill" style="width:15.2%;background:#f97316"></div></div>
+                  <div class="dim-pct">7.6%</div>
+                  <div style="font-size:10px;color:#64748b;min-width:45px;text-align:right">857条</div>
+                </div><div class="dim-bar-wrap">
+                  <div class="dim-medal">9️⃣</div>
+                  <div class="dim-name">💡 建议/需求</div>
+                  <div class="dim-bar-bg"><div class="dim-bar-fill" style="width:12.8%;background:#84cc16"></div></div>
+                  <div class="dim-pct">6.4%</div>
+                  <div style="font-size:10px;color:#64748b;min-width:45px;text-align:right">724条</div>
+                </div><div class="dim-bar-wrap">
+                  <div class="dim-medal">🔟</div>
+                  <div class="dim-name">📦 资源/材料</div>
+                  <div class="dim-bar-bg"><div class="dim-bar-fill" style="width:4.5%;background:#eab308"></div></div>
+                  <div class="dim-pct">2.2%</div>
+                  <div style="font-size:10px;color:#64748b;min-width:45px;text-align:right">254条</div>
+                </div>
+              <div style="margin-top:10px">
+                  <div style="font-size:11px;color:#64748b;margin-bottom:6px">各区服维度分布（条数 / 占比）</div>
+                  <table style="width:100%;border-collapse:collapse;font-size:10px">
+                    <thead><tr style="border-bottom:1px solid #1e293b">
+                      <th style="padding:3px 6px;text-align:left;color:#64748b">维度</th><th style="padding:3px 6px;text-align:right;color:#64748b">1区</th><th style="padding:3px 6px;text-align:right;color:#64748b">2区</th><th style="padding:3px 6px;text-align:right;color:#64748b">3区</th></tr></thead><tbody><tr style="border-bottom:1px solid rgba(255,255,255,.03)"><td style="padding:3px 6px;color:#94a3b8">🐛 BUG/技术问题</td><td style="padding:3px 6px;text-align:right;color:#60a5fa">1367 (24%)</td><td style="padding:3px 6px;text-align:right;color:#60a5fa">1001 (23%)</td><td style="padding:3px 6px;text-align:right;color:#60a5fa">297 (22%)</td></tr><tr style="border-bottom:1px solid rgba(255,255,255,.03)"><td style="padding:3px 6px;color:#94a3b8">💢 付费不满(负面)</td><td style="padding:3px 6px;text-align:right;color:#60a5fa">1279 (23%)</td><td style="padding:3px 6px;text-align:right;color:#60a5fa">939 (22%)</td><td style="padding:3px 6px;text-align:right;color:#60a5fa">244 (18%)</td></tr><tr style="border-bottom:1px solid rgba(255,255,255,.03)"><td style="padding:3px 6px;color:#94a3b8">⚔️ 战斗/难度</td><td style="padding:3px 6px;text-align:right;color:#60a5fa">1200 (21%)</td><td style="padding:3px 6px;text-align:right;color:#60a5fa">804 (19%)</td><td style="padding:3px 6px;text-align:right;color:#60a5fa">192 (14%)</td></tr><tr style="border-bottom:1px solid rgba(255,255,255,.03)"><td style="padding:3px 6px;color:#94a3b8">🤝 社交/求带</td><td style="padding:3px 6px;text-align:right;color:#60a5fa">989 (18%)</td><td style="padding:3px 6px;text-align:right;color:#60a5fa">813 (19%)</td><td style="padding:3px 6px;text-align:right;color:#60a5fa">263 (20%)</td></tr><tr style="border-bottom:1px solid rgba(255,255,255,.03)"><td style="padding:3px 6px;color:#94a3b8">😐 无聊/乏味</td><td style="padding:3px 6px;text-align:right;color:#60a5fa">1024 (18%)</td><td style="padding:3px 6px;text-align:right;color:#60a5fa">693 (16%)</td><td style="padding:3px 6px;text-align:right;color:#60a5fa">175 (13%)</td></tr><tr style="border-bottom:1px solid rgba(255,255,255,.03)"><td style="padding:3px 6px;color:#94a3b8">😰 肝度/累</td><td style="padding:3px 6px;text-align:right;color:#60a5fa">896 (16%)</td><td style="padding:3px 6px;text-align:right;color:#60a5fa">612 (14%)</td><td style="padding:3px 6px;text-align:right;color:#60a5fa">151 (11%)</td></tr><tr style="border-bottom:1px solid rgba(255,255,255,.03)"><td style="padding:3px 6px;color:#94a3b8">💰 付费讨论(中性)</td><td style="padding:3px 6px;text-align:right;color:#60a5fa">429 (8%)</td><td style="padding:3px 6px;text-align:right;color:#60a5fa">357 (8%)</td><td style="padding:3px 6px;text-align:right;color:#60a5fa">130 (10%)</td></tr><tr style="border-bottom:1px solid rgba(255,255,255,.03)"><td style="padding:3px 6px;color:#94a3b8">⏰ 活动/时间</td><td style="padding:3px 6px;text-align:right;color:#60a5fa">446 (8%)</td><td style="padding:3px 6px;text-align:right;color:#60a5fa">323 (7%)</td><td style="padding:3px 6px;text-align:right;color:#60a5fa">88 (7%)</td></tr><tr style="border-bottom:1px solid rgba(255,255,255,.03)"><td style="padding:3px 6px;color:#94a3b8">💡 建议/需求</td><td style="padding:3px 6px;text-align:right;color:#60a5fa">375 (7%)</td><td style="padding:3px 6px;text-align:right;color:#60a5fa">252 (6%)</td><td style="padding:3px 6px;text-align:right;color:#60a5fa">97 (7%)</td></tr><tr style="border-bottom:1px solid rgba(255,255,255,.03)"><td style="padding:3px 6px;color:#94a3b8">📦 资源/材料</td><td style="padding:3px 6px;text-align:right;color:#64748b">118 (2%)</td><td style="padding:3px 6px;text-align:right;color:#64748b">107 (2%)</td><td style="padding:3px 6px;text-align:right;color:#64748b">29 (2%)</td></tr></tbody></table></div>
+            </div><div class="section">
+              <h2>🔗 信号交叉矩阵</h2>
+              <div style="font-size:10px;color:#64748b;margin-bottom:8px">同时被两个维度命中的消息（≥10条），反映玩家体验中的关联痛点</div>
+              <div class="xsignal-card" style="display:flex;gap:12px;align-items:start">
+                  <div class="xcount">1531<span style="display:block;font-size:9px;color:#64748b">重合</span></div>
+                  <div style="flex:1">
+                    <div class="pair">🔄 付费不满(负面) ↔ BUG/技术问题</div>
+                    
+                    <div class="xsamples"><div>• [1区 第1天] 这什么尼玛代币游戏</div><div>• [1区 第1天] 况且这游戏哪有拖</div><div>• [1区 第1天] 喜欢赤答辩</div></div>
+                  </div>
+                </div><div class="xsignal-card" style="display:flex;gap:12px;align-items:start">
+                  <div class="xcount">1372<span style="display:block;font-size:9px;color:#64748b">重合</span></div>
+                  <div style="flex:1">
+                    <div class="pair">🔄 付费不满(负面) ↔ 无聊/乏味</div>
+                    
+                    <div class="xsamples"><div>• [1区 第1天] 这什么尼玛代币游戏</div><div>• [1区 第1天] 况且这游戏哪有拖</div><div>• [1区 第1天] 喜欢赤答辩</div></div>
+                  </div>
+                </div><div class="xsignal-card" style="display:flex;gap:12px;align-items:start">
+                  <div class="xcount">1357<span style="display:block;font-size:9px;color:#64748b">重合</span></div>
+                  <div style="flex:1">
+                    <div class="pair">🔄 无聊/乏味 ↔ BUG/技术问题</div>
+                    
+                    <div class="xsamples"><div>• [1区 第1天] 这什么尼玛代币游戏</div><div>• [1区 第1天] 况且这游戏哪有拖</div><div>• [1区 第1天] 喜欢赤答辩</div></div>
+                  </div>
+                </div><div class="xsignal-card" style="display:flex;gap:12px;align-items:start">
+                  <div class="xcount">1341<span style="display:block;font-size:9px;color:#64748b">重合</span></div>
+                  <div style="flex:1">
+                    <div class="pair">🔄 战斗/难度 ↔ BUG/技术问题</div>
+                    
+                    <div class="xsamples"><div>• [2区 第3天] 卡点就算了，还占用设备</div><div>• [2区 第3天] (表情: 2.怒)</div><div>• [2区 第3天] 也快打完了</div></div>
+                  </div>
+                </div><div class="xsignal-card" style="display:flex;gap:12px;align-items:start">
+                  <div class="xcount">1252<span style="display:block;font-size:9px;color:#64748b">重合</span></div>
+                  <div style="flex:1">
+                    <div class="pair">🔄 肝度/累 ↔ BUG/技术问题</div>
+                    
+                    <div class="xsamples"><div>• [1区 第1天] 这什么尼玛代币游戏</div><div>• [1区 第1天] 况且这游戏哪有拖</div><div>• [1区 第1天] 喜欢赤答辩</div></div>
+                  </div>
+                </div><div class="xsignal-card" style="display:flex;gap:12px;align-items:start">
+                  <div class="xcount">1228<span style="display:block;font-size:9px;color:#64748b">重合</span></div>
+                  <div style="flex:1">
+                    <div class="pair">🔄 付费不满(负面) ↔ 肝度/累</div>
+                    
+                    <div class="xsamples"><div>• [1区 第1天] 这什么尼玛代币游戏</div><div>• [1区 第1天] 况且这游戏哪有拖</div><div>• [1区 第1天] 喜欢赤答辩</div></div>
+                  </div>
+                </div><div class="xsignal-card" style="display:flex;gap:12px;align-items:start">
+                  <div class="xcount">1157<span style="display:block;font-size:9px;color:#64748b">重合</span></div>
+                  <div style="flex:1">
+                    <div class="pair">🔄 战斗/难度 ↔ 付费不满(负面)</div>
+                    
+                    <div class="xsamples"><div>• [3区 第1天] 过完剧情就有了</div><div>• [3区 第1天] 攒出来的</div><div>• [1区 第4天] 搁这里叫鸡毛</div></div>
+                  </div>
+                </div><div class="xsignal-card" style="display:flex;gap:12px;align-items:start">
+                  <div class="xcount">1141<span style="display:block;font-size:9px;color:#64748b">重合</span></div>
+                  <div style="flex:1">
+                    <div class="pair">🔄 无聊/乏味 ↔ 肝度/累</div>
+                    <div class="interp">💡 又累又无聊，离流失最近</div>
+                    <div class="xsamples"><div>• [1区 第1天] 这什么尼玛代币游戏</div><div>• [1区 第1天] 况且这游戏哪有拖</div><div>• [1区 第1天] 喜欢赤答辩</div></div>
+                  </div>
+                </div><div class="xsignal-card" style="display:flex;gap:12px;align-items:start">
+                  <div class="xcount">1125<span style="display:block;font-size:9px;color:#64748b">重合</span></div>
+                  <div style="flex:1">
+                    <div class="pair">🔄 社交/求带 ↔ BUG/技术问题</div>
+                    
+                    <div class="xsamples"><div>• [1区 第3天] 同道中人</div><div>• [1区 第1天] 喜欢赤答辩</div><div>• [3区 第1天] 攒出来的</div></div>
+                  </div>
+                </div><div class="xsignal-card" style="display:flex;gap:12px;align-items:start">
+                  <div class="xcount">1049<span style="display:block;font-size:9px;color:#64748b">重合</span></div>
+                  <div style="flex:1">
+                    <div class="pair">🔄 战斗/难度 ↔ 肝度/累</div>
+                    
+                    <div class="xsamples"><div>• [3区 第1天] 过完剧情就有了</div><div>• [3区 第1天] 攒出来的</div><div>• [1区 第3天] 我不认可</div></div>
+                  </div>
+                </div>
+            </div><div class="section">
+              <h2>🧠 玩家画像与心理分析</h2>
+              <button class="ev-toggle" data-ev="ev-p" onclick="toggleEvidence('ev-p')" style="margin-bottom:10px">+ 查看推理证据</button>
+              <div class="ev-content" id="ev-p"><div class="ev-inner"><div class="data-ref">📊 疲劳(😰) / 无聊(😐) 信号数（来自每日分析结果）:
+1区: D1😰2😐3 | D2😰3😐2 | D3😰3😐2 | D4😰3😐1 | D5😰3😐2<br>2区: D1😰3😐4 | D2😰5😐2 | D3😰3😐1 | D4😰3😐1<br>3区: D1😰3😐2 | D2😰2😐4</div><div class="reason">🧠 从聊天内容中提炼玩家类型，基于pains和原话分析心理特征。</div><div class="quote">🔍 [1区 第5天 @南宫琪琪] 不是托就是在现实中受到委屈 来游戏中找优越感嘛 (0.64)</div><div class="quote">🔍 [1区 第3天 @武当王也丶] 自游戏有些东西好难得 (0.60)</div><div class="quote">🔍 [2区 第1天 @九天应元] 为啥给我的感觉到处都需要充值才能玩下去 (0.59)</div></div></div>
+              <div class="portrait-grid">
+                <div class="portrait-card">
+                  <h3>玩家类型</h3>
+                  <div style="margin:4px 0"><div class="type-card" style="padding:4px 0"><span class="type">PVP党</span> <span style="font-size:11px;color:#94a3b8;margin-left:4px">关注PVP平衡性，对氪金碾压和活动时间限制敏感，追求公平竞技体验</span> <span style="font-size:10px;color:#64748b;margin-left:4px">(30%)</span></div><div class="type-card" style="padding:4px 0"><span class="type">囤资源党</span> <span style="font-size:11px;color:#94a3b8;margin-left:4px">注重资源获取效率，对突破材料和抽卡爆率有高要求，反感肝度</span> <span style="font-size:10px;color:#64748b;margin-left:4px">(40%)</span></div><div class="type-card" style="padding:4px 0"><span class="type">修仙养老党</span> <span style="font-size:11px;color:#94a3b8;margin-left:4px">偏好轻松挂机玩法，对内容单调和长草期容忍度低，追求持续新鲜感</span> <span style="font-size:10px;color:#64748b;margin-left:4px">(30%)</span></div></div>
+                </div>
+                <div class="portrait-card">
+                  <h3>心理特征</h3>
+                  <p>玩家群体普遍存在资源焦虑和公平性诉求，对肝度容忍度低，期待持续内容更新。</p>
+                </div>
+                <div class="portrait-card">
+                  <h3>吐槽背后的心理诉求</h3>
+                  <p>吐槽背后反映玩家对游戏设计不合理的失望，如资源获取难导致挫败感，氪金碾压引发不公平感，长草期带来无聊感。</p>
+                </div>
+                <div class="portrait-card">
+                  <h3>运营建议</h3>
+                  <ul class="rec-list"><li>优化突破材料和抽卡爆率，增加保底机制，降低资源获取门槛</li><li>调整PVP时间限制，增加零氪玩家补偿机制，平衡氪金与零氪体验</li><li>减少定点活动频率，增加离线收益或挂机玩法，缓解时间冲突</li><li>在第二天加入新玩法或活动，避免长草期，如世界BOSS或限时副本</li></ul>
+                </div>
+              </div>
+            </div><div class="section">
+              <h2>⚠️ 玩家吐槽与建议</h2>
+              <button class="ev-toggle" data-ev="ev-cp" onclick="toggleEvidence('ev-cp')" style="margin-bottom:8px">+ 查看推理证据</button>
+              <div class="ev-content" id="ev-cp"><div class="ev-inner"><div class="data-ref">📊 疲劳(😰) / 无聊(😐) 信号数（来自每日分析结果）:
+1区: D1😰2😐3 | D2😰3😐2 | D3😰3😐2 | D4😰3😐1 | D5😰3😐2<br>2区: D1😰3😐4 | D2😰5😐2 | D3😰3😐1 | D4😰3😐1<br>3区: D1😰3😐2 | D2😰2😐4</div><div class="reason">🧠 基于各区服pains和玩家原话，提炼出资源获取、氪金平衡、活动设计等核心问题。</div><div class="quote">🔍 [2区 第3天 @狄涑] 得用更多资源跟时间去填补 (0.57)</div><div class="quote">🔍 [2区 第2天 @尤紫陌] 资源集中就行 (0.54)</div><div class="quote">🔍 [3区 第1天 @空知道人] 任务是提升修为 (0.53)</div></div></div>
+              <div class="issue-card" style="padding:10px;margin:6px 0;border-radius:6px;background:#1a2332;border-left:3px solid #ef4444">
+                  <div style="display:flex;justify-content:space-between;align-items:start">
+                    <strong style="font-size:12px;color:#f1f5f9">资源获取困难，尤其是突破材料和抽卡爆率低</strong>
+                    <span style="font-size:10px;color:#ef4444;font-weight:600">高</span>
+                  </div>
+                  <div style="font-size:10px;color:#64748b;margin:2px 0 4px">涉及1区、2区、3区</div>
+                  <div style="margin-top:4px"><div class="quote" style="padding:3px 0;font-size:11px">🔍 [2区 第2天 @齐小倩] 平均的话资源会不够 (0.64)</div><div class="quote" style="padding:3px 0;font-size:11px">🔍 [1区 第5天 @李子清] 打造概率又低 (0.62)</div></div>
+                </div><div class="issue-card" style="padding:10px;margin:6px 0;border-radius:6px;background:#1a2332;border-left:3px solid #ef4444">
+                  <div style="display:flex;justify-content:space-between;align-items:start">
+                    <strong style="font-size:12px;color:#f1f5f9">氪金玩家与零氪玩家体验不平衡</strong>
+                    <span style="font-size:10px;color:#ef4444;font-weight:600">高</span>
+                  </div>
+                  <div style="font-size:10px;color:#64748b;margin:2px 0 4px">涉及1区</div>
+                  <div style="margin-top:4px"><div class="quote" style="padding:3px 0;font-size:11px">🔍 [1区 第4天 @南宫琪琪] 没有零氪玩家 氪佬没有成就感也会走 (0.77)</div><div class="quote" style="padding:3px 0;font-size:11px">🔍 [1区 第3天 @南宫琪琪] 游戏不能光靠氪佬 没有零氪玩家的活跃度 游戏等着死吧 (0.77)</div></div>
+                </div><div class="issue-card" style="padding:10px;margin:6px 0;border-radius:6px;background:#1a2332;border-left:3px solid #eab308">
+                  <div style="display:flex;justify-content:space-between;align-items:start">
+                    <strong style="font-size:12px;color:#f1f5f9">活动设计不合理，定点活动过多导致时间冲突</strong>
+                    <span style="font-size:10px;color:#eab308;font-weight:600">中</span>
+                  </div>
+                  <div style="font-size:10px;color:#64748b;margin:2px 0 4px">涉及2区</div>
+                  <div style="margin-top:4px"><div class="quote" style="padding:3px 0;font-size:11px">🔍 [1区 第4天 @凡宸] 这种有时间的活动根本注意不到 (0.68)</div><div class="quote" style="padding:3px 0;font-size:11px">🔍 [1区 第4天 @李子清] 主要是这打的时间太奇葩了。 (0.62)</div></div>
+                </div><div class="issue-card" style="padding:10px;margin:6px 0;border-radius:6px;background:#1a2332;border-left:3px solid #eab308">
+                  <div style="display:flex;justify-content:space-between;align-items:start">
+                    <strong style="font-size:12px;color:#f1f5f9">游戏内容单调，第二天就长草</strong>
+                    <span style="font-size:10px;color:#eab308;font-weight:600">中</span>
+                  </div>
+                  <div style="font-size:10px;color:#64748b;margin:2px 0 4px">涉及3区</div>
+                  <div style="margin-top:4px"><div class="quote" style="padding:3px 0;font-size:11px">🔍 [3区 第1天 @君] 这游戏几点刷新第二天啊 (0.85)</div><div class="quote" style="padding:3px 0;font-size:11px">🔍 [2区 第2天 @狠人] 这种游戏慢慢攒就行 (0.76)</div></div>
+                </div>
+              <p style="margin-top:8px;font-size:12px;color:#ef4444;">🔴 最紧急: 资源获取困难是跨服共性问题，需优先优化突破材料和抽卡爆率。</p>
+            </div></div><div class="tab-content" id="tab-1">
+          <div class="section">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+              <h2 style="margin:0;border:none;padding:0">⚔️ 1区</h2>
+              <span style="font-size:12px;color:#64748b">开服日 2026-05-28 · 5793条 · 282人</span>
+            </div>
+            <div class="ov-grid" style="grid-template-columns:repeat(4,1fr)">
+              <div class="ov-card"><div class="num">5793</div><div class="lbl">消息总量</div></div>
+              <div class="ov-card"><div class="num">3251</div><div class="lbl">世界</div></div>
+              <div class="ov-card"><div class="num">2354</div><div class="lbl">国家</div></div>
+              <div class="ov-card"><div class="num">188</div><div class="lbl">好友</div></div>
+            </div>
+            <div style="margin-top:14px;padding-top:12px;border-top:1px solid #1e293b">
+              <h3 style="font-size:12px;color:#64748b;margin-bottom:6px">📊 每日聊天类型占比</h3>
+              <table style="width:100%;border-collapse:collapse;font-size:12px">
+      <thead><tr style="border-bottom:1px solid #1e293b">
+        <th style="padding:4px 6px;text-align:left;font-size:10px;color:#64748b">天数</th>
+        <th style="padding:4px 6px;text-align:left;font-size:10px;color:#64748b">日期</th>
+        <th style="padding:4px 6px;text-align:left;font-size:10px;color:#64748b">总量</th>
+        <th style="padding:4px 6px;text-align:left;font-size:10px;color:#64748b">世界</th>
+        <th style="padding:4px 6px;text-align:left;font-size:10px;color:#64748b">国家</th>
+        <th style="padding:4px 6px;text-align:left;font-size:10px;color:#64748b">好友</th>
+      </tr></thead>
+      <tbody><tr>
+          <td style="padding:4px 6px;font-size:11px;color:#f1f5f9">第1天</td>
+          <td style="padding:4px 6px;font-size:10px;color:#64748b">05/28</td>
+          <td style="padding:4px 6px;font-size:11px;color:#94a3b8">885</td>
+          <td style="padding:4px 6px;font-size:11px;color:#60a5fa">837 (95%)</td>
+          <td style="padding:4px 6px;font-size:11px;color:#f59e0b">4 (0%)</td>
+          <td style="padding:4px 6px;font-size:11px;color:#34d399">44 (5%)</td>
+        </tr><tr>
+          <td style="padding:4px 6px;font-size:11px;color:#f1f5f9">第2天</td>
+          <td style="padding:4px 6px;font-size:10px;color:#64748b">05/29</td>
+          <td style="padding:4px 6px;font-size:11px;color:#94a3b8">444</td>
+          <td style="padding:4px 6px;font-size:11px;color:#60a5fa">372 (84%)</td>
+          <td style="padding:4px 6px;font-size:11px;color:#f59e0b">68 (15%)</td>
+          <td style="padding:4px 6px;font-size:11px;color:#34d399">4 (1%)</td>
+        </tr><tr>
+          <td style="padding:4px 6px;font-size:11px;color:#f1f5f9">第3天</td>
+          <td style="padding:4px 6px;font-size:10px;color:#64748b">05/30</td>
+          <td style="padding:4px 6px;font-size:11px;color:#94a3b8">1479</td>
+          <td style="padding:4px 6px;font-size:11px;color:#60a5fa">754 (51%)</td>
+          <td style="padding:4px 6px;font-size:11px;color:#f59e0b">709 (48%)</td>
+          <td style="padding:4px 6px;font-size:11px;color:#34d399">16 (1%)</td>
+        </tr><tr>
+          <td style="padding:4px 6px;font-size:11px;color:#f1f5f9">第4天</td>
+          <td style="padding:4px 6px;font-size:10px;color:#64748b">05/31</td>
+          <td style="padding:4px 6px;font-size:11px;color:#94a3b8">1726</td>
+          <td style="padding:4px 6px;font-size:11px;color:#60a5fa">919 (53%)</td>
+          <td style="padding:4px 6px;font-size:11px;color:#f59e0b">725 (42%)</td>
+          <td style="padding:4px 6px;font-size:11px;color:#34d399">82 (5%)</td>
+        </tr><tr>
+          <td style="padding:4px 6px;font-size:11px;color:#f1f5f9">第5天</td>
+          <td style="padding:4px 6px;font-size:10px;color:#64748b">06/01</td>
+          <td style="padding:4px 6px;font-size:11px;color:#94a3b8">1259</td>
+          <td style="padding:4px 6px;font-size:11px;color:#60a5fa">369 (29%)</td>
+          <td style="padding:4px 6px;font-size:11px;color:#f59e0b">848 (67%)</td>
+          <td style="padding:4px 6px;font-size:11px;color:#34d399">42 (3%)</td>
+        </tr><tr style="border-top:2px solid #3b82f6;background:rgba(59,130,246,0.06)">
+      <td style="padding:4px 6px;font-size:11px;color:#60a5fa;font-weight:600">合计/均值</td>
+      <td style="padding:4px 6px;font-size:10px;color:#64748b">5天</td>
+      <td style="padding:4px 6px;font-size:11px;color:#e2e8f0;font-weight:600">5793</td>
+      <td style="padding:4px 6px;font-size:11px;color:#60a5fa;font-weight:600">3251 (56%)</td>
+      <td style="padding:4px 6px;font-size:11px;color:#f59e0b;font-weight:600">2354 (41%)</td>
+      <td style="padding:4px 6px;font-size:11px;color:#34d399;font-weight:600">188 (3%)</td>
+    </tr></tbody>
+    </table><ul style="margin:6px 0 0;padding:0 0 0 14px;font-size:11px;color:#94a3b8;line-height:1.7"><li>世界聊天是主要沟通方式，平均占比 62%</li><li>聊天总量增长显著（42%），第1天 885条 → 第5天 1259条</li><li>世界聊天占比下降，从第1天 95% → 第5天 29%</li><li>势力聊天在第5天达峰值 67%，可能存在帮派活动节点</li><li>开服第1天世界聊天占比 95%，与后续均值 54% 差异明显，初期社交模式不同</li></ul>
+            </div>
+          </div>
+          <div class="day-section">
+              <div class="day-header">
+                <span class="day-title">开服第 <span style="font-size:18px;color:#60a5fa">1</span> 天</span>
+                <span class="day-date">📅 2026-05-28</span>
+                <span class="mood-badge" style="background:#ef444415;color:#ef4444">偏负面</span>
+                <span class="day-stats">0人</span>
+              </div>
+              <div class="day-body">
+                <div class="sent-row">
+                  <div class="sent-pos" style="width:20%"></div>
+                  <div class="sent-neu" style="width:30%"></div>
+                  <div class="sent-neg" style="width:50%"></div>
+                </div>
+                <div class="sent-labels">
+                  <span style="color:#22c55e">🟢 20%</span>
+                  <span style="color:#eab308">🟡 30%</span>
+                  <span style="color:#ef4444">🔴 50%</span>
+                </div>
+                <div class="topics"><span class="topic-tag">氪金与付费 <span style="color:#60a5fa">8</span></span><span class="topic-tag">游戏机制与玩法 <span style="color:#60a5fa">6</span></span><span class="topic-tag">暗号任务 <span style="color:#60a5fa">5</span></span><span class="topic-tag">建模与美术 <span style="color:#60a5fa">3</span></span></div>
+                <div class="feedback-grid"><div class="fb-box fb-pos"><h4>👍 正面</h4><ul><li>游戏还原修仙世界设定</li><li>部分玩家认可建模</li></ul></div><div class="fb-box fb-neg"><h4>👎 负面</h4><ul><li>氪金压力大</li><li>游戏机制垃圾</li><li>玩法无聊无搞头</li><li>暗号任务体验差</li></ul></div></div>
+                <ul class="pain-list"><li class="pain-item pain-high"><strong>氪金门槛高</strong> [高]<div class="ev">💬 大哥你这一个皮肤都288了</div></li><li class="pain-item pain-high"><strong>玩法单调无趣</strong> [高]<div class="ev">💬 目前没玩出啥搞头，采矿，传道，炼药，加入势力有啥玩法吗</div></li><li class="pain-item pain-mid"><strong>暗号任务设计不合理</strong> [中]<div class="ev">💬 那个暗号的标点符号是啥，不是逗号吗。咋不对</div></li></ul>
+                <ul class="sug-list"><li class="sug-item"><strong>把功夫多花点在建模和战斗表现，以及法术、法宝的搭配上</strong> (可行:中)<div class="player">来自 量北斗</div></li><li class="sug-item"><strong>改善暗号任务提示和标点符号问题</strong> (可行:高)<div class="player">来自 米琳</div></li><li class="sug-item"><strong>降低氪金门槛，增加非氪金玩家体验</strong> (可行:低)<div class="player">来自 飞</div></li></ul>
+                <div class="signal-grid"><div class="signal-card signal-fatigue"><h4>😰 肝度信号 (2条)</h4><div class="ex">💬 宗门事务无脑点点点</div><div class="ex">💬 要钱没钱，要人没人就卡在这111w了</div></div><div class="signal-card signal-boredom"><h4>😐 内容节奏信号 (3条)</h4><div class="ex">💬 目前没玩出啥搞头</div><div class="ex">💬 玩了半天不知道在玩啥</div></div></div>
+                <div class="quote-box"><div class="ql">💬 玩家原声</div>这游戏真好玩，完美还原了修仙世界的设定，没钱没资源你修鸡毛仙</div>
+                <p style="font-size:12px;color:#64748b;margin-top:8px;border-top:1px solid #1e293b;padding-top:8px;">📌 开服首日氪金与玩法问题突出</p>
+              </div>
+            </div><div class="day-section">
+              <div class="day-header">
+                <span class="day-title">开服第 <span style="font-size:18px;color:#60a5fa">2</span> 天</span>
+                <span class="day-date">📅 2026-05-29</span>
+                <span class="mood-badge" style="background:#ef444415;color:#ef4444">偏负面</span>
+                <span class="day-stats">0人</span>
+              </div>
+              <div class="day-body">
+                <div class="sent-row">
+                  <div class="sent-pos" style="width:20%"></div>
+                  <div class="sent-neu" style="width:30%"></div>
+                  <div class="sent-neg" style="width:50%"></div>
+                </div>
+                <div class="sent-labels">
+                  <span style="color:#22c55e">🟢 20%</span>
+                  <span style="color:#eab308">🟡 30%</span>
+                  <span style="color:#ef4444">🔴 50%</span>
+                </div>
+                <div class="topics"><span class="topic-tag">元婴BOSS机制问题 <span style="color:#60a5fa">8</span></span><span class="topic-tag">氪金与进度 <span style="color:#60a5fa">6</span></span><span class="topic-tag">卡进度与资源获取 <span style="color:#60a5fa">5</span></span><span class="topic-tag">游戏无聊与退坑 <span style="color:#60a5fa">4</span></span></div>
+                <div class="feedback-grid"><div class="fb-box fb-pos"><h4>👍 正面</h4><ul><li>玩家间有合作打BOSS的互助行为</li></ul></div><div class="fb-box fb-neg"><h4>👎 负面</h4><ul><li>元婴BOSS死亡无奖励机制不合理</li><li>游戏进度卡死，资源获取困难</li><li>游戏被指为圈钱而设计，缺乏趣味</li></ul></div></div>
+                <ul class="pain-list"><li class="pain-item pain-high"><strong>元婴BOSS死亡后无奖励</strong> [高]<div class="ev">💬 死了进去BOSS都死了 没拿到奖励</div></li><li class="pain-item pain-high"><strong>卡进度，资源获取难</strong> [高]<div class="ev">💬 现在动都动不了，直接卡死进度，狗官方</div></li><li class="pain-item pain-mid"><strong>游戏无聊，为圈钱而生</strong> [中]<div class="ev">💬 再见了各位，这傻缺游戏你们慢慢玩，无聊的一批，为了圈米而生</div></li></ul>
+                <ul class="sug-list"><li class="sug-item"><strong>希望BOSS死亡后，参与战斗的玩家也能获得奖励</strong> (可行:高)<div class="player">来自 上官无极</div></li><li class="sug-item"><strong>调整筑基丹合成结丹丹的设定，避免逻辑问题</strong> (可行:中)<div class="player">来自 梦瑶</div></li><li class="sug-item"><strong>优化卡进度问题，增加非氪金资源获取途径</strong> (可行:中)<div class="player">来自 睡觉吧</div></li></ul>
+                <div class="signal-grid"><div class="signal-card signal-fatigue"><h4>😰 肝度信号 (3条)</h4><div class="ex">💬 打完这个BOSS，我就滚去睡觉💤</div><div class="ex">💬 不好意思玩着玩着睡着了 可能上上班太累了</div></div><div class="signal-card signal-boredom"><h4>😐 内容节奏信号 (2条)</h4><div class="ex">💬 再见了各位，这傻缺游戏你们慢慢玩，无聊的一批，为了圈米而生</div><div class="ex">💬 玩一周看看情况，要是觉得不行就不氪，觉得行再氪</div></div></div>
+                <div class="quote-box"><div class="ql">💬 玩家原声</div>再见了各位，这傻缺游戏你们慢慢玩，无聊的一批，为了圈米而生</div>
+                <p style="font-size:12px;color:#64748b;margin-top:8px;border-top:1px solid #1e293b;padding-top:8px;">📌 开服次日，玩家抱怨机制与无聊</p>
+              </div>
+            </div><div class="day-section">
+              <div class="day-header">
+                <span class="day-title">开服第 <span style="font-size:18px;color:#60a5fa">3</span> 天</span>
+                <span class="day-date">📅 2026-05-30</span>
+                <span class="mood-badge" style="background:#ef444415;color:#ef4444">偏负面</span>
+                <span class="day-stats">0人</span>
+              </div>
+              <div class="day-body">
+                <div class="sent-row">
+                  <div class="sent-pos" style="width:20%"></div>
+                  <div class="sent-neu" style="width:35%"></div>
+                  <div class="sent-neg" style="width:45%"></div>
+                </div>
+                <div class="sent-labels">
+                  <span style="color:#22c55e">🟢 20%</span>
+                  <span style="color:#eab308">🟡 35%</span>
+                  <span style="color:#ef4444">🔴 45%</span>
+                </div>
+                <div class="topics"><span class="topic-tag">国战与PVP <span style="color:#60a5fa">8</span></span><span class="topic-tag">活动与资源获取 <span style="color:#60a5fa">6</span></span><span class="topic-tag">游戏难度与卡等级 <span style="color:#60a5fa">5</span></span><span class="topic-tag">玩家流失与游戏热度 <span style="color:#60a5fa">3</span></span></div>
+                <div class="feedback-grid"><div class="fb-box fb-pos"><h4>👍 正面</h4><ul><li>玩家积极讨论国战策略，有团队协作意识</li><li>部分玩家参与活动获取资源</li></ul></div><div class="fb-box fb-neg"><h4>👎 负面</h4><ul><li>游戏难度过高，等级和开图卡死</li><li>BOSS太难打，影响体验</li><li>担心零氪玩家流失，游戏热度不足</li></ul></div></div>
+                <ul class="pain-list"><li class="pain-item pain-high"><strong>等级和开图卡死，进度缓慢</strong> [高]<div class="ev">💬 睡觉吧: 下了下了，开图开不了，等级也卡死，慢慢熬吧</div></li><li class="pain-item pain-mid"><strong>BOSS难度过高，影响战斗体验</strong> [中]<div class="ev">💬 武当王也丶: 刚刚伤害太高拉了仇恨直接被boss秒了</div></li><li class="pain-item pain-mid"><strong>零氪玩家流失风险，游戏热度不足</strong> [中]<div class="ev">💬 南宫琪琪: 如果剧情跟不上，或者活动力度不够，流失零氪玩家 你就看着这游戏爆死吧</div></li></ul>
+                <ul class="sug-list"><li class="sug-item"><strong>增加宗门势力，升级人物需要丹，建议优化资源获取</strong> (可行:中)<div class="player">来自 睡觉吧</div></li><li class="sug-item"><strong>剧情跟不上或活动力度不够会导致零氪玩家流失，建议加强活动</strong> (可行:高)<div class="player">来自 南宫琪琪</div></li><li class="sug-item"><strong>BOSS太难打，建议调整难度或更新内容</strong> (可行:高)<div class="player">来自 武当王也丶</div></li></ul>
+                <div class="signal-grid"><div class="signal-card signal-fatigue"><h4>😰 肝度信号 (3条)</h4><div class="ex">💬 睡觉吧: 下了下了，开图开不了，等级也卡死，慢慢熬吧</div><div class="ex">💬 武当王也丶: 完犊子要打好久 2万多小兵8个人 能刷一个小时吧</div></div><div class="signal-card signal-boredom"><h4>😐 内容节奏信号 (2条)</h4><div class="ex">💬 睡觉吧: 原因都打完了，花生的要开服第四天</div><div class="ex">💬 睡觉吧: 下了下了，开图开不了，等级也卡死，慢慢熬吧</div></div></div>
+                <div class="quote-box"><div class="ql">💬 玩家原声</div>如果剧情跟不上，或者活动力度不够，流失零氪玩家 你就看着这游戏爆死吧</div>
+                <p style="font-size:12px;color:#64748b;margin-top:8px;border-top:1px solid #1e293b;padding-top:8px;">📌 玩家抱怨难度高，担心流失</p>
+              </div>
+            </div><div class="day-section">
+              <div class="day-header">
+                <span class="day-title">开服第 <span style="font-size:18px;color:#60a5fa">4</span> 天</span>
+                <span class="day-date">📅 2026-05-31</span>
+                <span class="mood-badge" style="background:#ef444415;color:#ef4444">偏负面</span>
+                <span class="day-stats">0人</span>
+              </div>
+              <div class="day-body">
+                <div class="sent-row">
+                  <div class="sent-pos" style="width:20%"></div>
+                  <div class="sent-neu" style="width:30%"></div>
+                  <div class="sent-neg" style="width:50%"></div>
+                </div>
+                <div class="sent-labels">
+                  <span style="color:#22c55e">🟢 20%</span>
+                  <span style="color:#eab308">🟡 30%</span>
+                  <span style="color:#ef4444">🔴 50%</span>
+                </div>
+                <div class="topics"><span class="topic-tag">国战与PVP冲突 <span style="color:#60a5fa">8</span></span><span class="topic-tag">好友系统问题 <span style="color:#60a5fa">3</span></span><span class="topic-tag">游戏疲劳与肝度 <span style="color:#60a5fa">3</span></span><span class="topic-tag">氪金与平衡 <span style="color:#60a5fa">3</span></span></div>
+                <div class="feedback-grid"><div class="fb-box fb-pos"><h4>👍 正面</h4><ul><li>漫画风格吸引玩家</li><li>国战策略讨论活跃</li></ul></div><div class="fb-box fb-neg"><h4>👎 负面</h4><ul><li>PVP机制不合理，卡时间且耗时长</li><li>好友上限问题</li><li>氪佬碾压导致零氪玩家流失</li></ul></div></div>
+                <ul class="pain-list"><li class="pain-item pain-high"><strong>PVP时间限制导致玩家被动</strong> [高]<div class="ev">💬 凡宸: 要不就直接可以PVP，别卡时间，时间又这么长，一天没事把它守着么</div></li><li class="pain-item pain-high"><strong>氪佬碾压零氪玩家</strong> [高]<div class="ev">💬 南宫琪琪: 说实在的，那些氪佬杀到零氪玩家或者微氪玩家跑路 这游戏就到头</div></li><li class="pain-item pain-mid"><strong>好友上限问题</strong> [中]<div class="ev">💬 爸爸: 各位大佬，能不能清一下好友，全是上限</div></li></ul>
+                <ul class="sug-list"><li class="sug-item"><strong>建议直接开放PVP，不要卡时间</strong> (可行:中)<div class="player">来自 凡宸</div></li><li class="sug-item"><strong>建议根据推进进度给国家积分，而非单纯击杀</strong> (可行:高)<div class="player">来自 南宫琪琪</div></li><li class="sug-item"><strong>建议调整高级道具数量，如高级技能书从10个改为更合理</strong> (可行:高)<div class="player">来自 贝若溪</div></li></ul>
+                <div class="signal-grid"><div class="signal-card signal-fatigue"><h4>😰 肝度信号 (3条)</h4><div class="ex">💬 烬之余: 我估计我肯定玩不久，这比上班还累的游戏玩不动</div><div class="ex">💬 凡宸: 时间又这么长，一天没事把它守着么</div></div><div class="signal-card signal-boredom"><h4>😐 内容节奏信号 (1条)</h4><div class="ex">💬 南宫琪琪: 我人物名字都是随机的，如果不是漫画风格过场把我勾住了，我早跑了</div></div></div>
+                <div class="quote-box"><div class="ql">💬 玩家原声</div>说实在的，那些氪佬杀到零氪玩家或者微氪玩家跑路 这游戏就到头</div>
+                <p style="font-size:12px;color:#64748b;margin-top:8px;border-top:1px solid #1e293b;padding-top:8px;">📌 PVP机制和氪金平衡引发玩家不满</p>
+              </div>
+            </div><div class="day-section">
+              <div class="day-header">
+                <span class="day-title">开服第 <span style="font-size:18px;color:#60a5fa">5</span> 天</span>
+                <span class="day-date">📅 2026-06-01</span>
+                <span class="mood-badge" style="background:#22c55e15;color:#22c55e">偏正面</span>
+                <span class="day-stats">0人</span>
+              </div>
+              <div class="day-body">
+                <div class="sent-row">
+                  <div class="sent-pos" style="width:40%"></div>
+                  <div class="sent-neu" style="width:35%"></div>
+                  <div class="sent-neg" style="width:25%"></div>
+                </div>
+                <div class="sent-labels">
+                  <span style="color:#22c55e">🟢 40%</span>
+                  <span style="color:#eab308">🟡 35%</span>
+                  <span style="color:#ef4444">🔴 25%</span>
+                </div>
+                <div class="topics"><span class="topic-tag">化神突破与战力 <span style="color:#60a5fa">8</span></span><span class="topic-tag">国战与PVP <span style="color:#60a5fa">7</span></span><span class="topic-tag">抽卡概率 <span style="color:#60a5fa">5</span></span><span class="topic-tag">榜单结算 <span style="color:#60a5fa">3</span></span></div>
+                <div class="feedback-grid"><div class="fb-box fb-pos"><h4>👍 正面</h4><ul><li>玩家认可配合与策略的重要性</li><li>部分玩家对抽卡好运感到满意</li></ul></div><div class="fb-box fb-neg"><h4>👎 负面</h4><ul><li>抽卡概率低，紫装过多</li><li>氪金玩家与零氪玩家体验差距大</li><li>化神突破进度慢</li></ul></div></div>
+                <ul class="pain-list"><li class="pain-item pain-high"><strong>抽卡概率低，紫装过多</strong> [高]<div class="ev">💬 紫月: 这个是第一天开服出的后面出的全是紫。。。。。；贝若溪: 这两天我概率给我弄得不舒服</div></li><li class="pain-item pain-mid"><strong>氪金玩家与零氪玩家体验不平衡</strong> [中]<div class="ev">💬 南宫琪琪: mmp 一个氪金抓着我这零氪打</div></li><li class="pain-item pain-mid"><strong>化神突破进度慢</strong> [中]<div class="ev">💬 南宫琪琪: 哎 算了一下 今天绝逼到不了化神</div></li></ul>
+                <ul class="sug-list"><li class="sug-item"><strong>建议官方补个双词条红武安慰心灵</strong> (可行:低)<div class="player">来自 李子清</div></li><li class="sug-item"><strong>希望成就任务能更易完成</strong> (可行:中)<div class="player">来自 南宫琪琪</div></li><li class="sug-item"><strong>建议优化概率，减少紫装出现</strong> (可行:中)<div class="player">来自 贝若溪</div></li></ul>
+                <div class="signal-grid"><div class="signal-card signal-fatigue"><h4>😰 肝度信号 (3条)</h4><div class="ex">💬 南宫琪琪: 目前这个赛季 如果我稳着刷，这次第一应该我拿了</div><div class="ex">💬 贝若溪: 不过没必要了，我们人不多，都在挂机</div></div><div class="signal-card signal-boredom"><h4>😐 内容节奏信号 (2条)</h4><div class="ex">💬 贝若溪: 不过没必要了，我们人不多，都在挂机</div><div class="ex">💬 南宫琪琪: 混呗 反正大唐那个针对我的 打我我就跑</div></div></div>
+                <div class="quote-box"><div class="ql">💬 玩家原声</div>没法子 别人氪金嘛 要满足他氪金快感嘛</div>
+                <p style="font-size:12px;color:#64748b;margin-top:8px;border-top:1px solid #1e293b;padding-top:8px;">📌 玩家积极冲榜，但抽卡和氪金差距引发不满</p>
+              </div>
+            </div>
+        </div><div class="tab-content" id="tab-2">
+          <div class="section">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+              <h2 style="margin:0;border:none;padding:0">⚔️ 2区</h2>
+              <span style="font-size:12px;color:#64748b">开服日 2026-05-29 · 4423条 · 285人</span>
+            </div>
+            <div class="ov-grid" style="grid-template-columns:repeat(4,1fr)">
+              <div class="ov-card"><div class="num">4423</div><div class="lbl">消息总量</div></div>
+              <div class="ov-card"><div class="num">4113</div><div class="lbl">世界</div></div>
+              <div class="ov-card"><div class="num">188</div><div class="lbl">国家</div></div>
+              <div class="ov-card"><div class="num">122</div><div class="lbl">好友</div></div>
+            </div>
+            <div style="margin-top:14px;padding-top:12px;border-top:1px solid #1e293b">
+              <h3 style="font-size:12px;color:#64748b;margin-bottom:6px">📊 每日聊天类型占比</h3>
+              <table style="width:100%;border-collapse:collapse;font-size:12px">
+      <thead><tr style="border-bottom:1px solid #1e293b">
+        <th style="padding:4px 6px;text-align:left;font-size:10px;color:#64748b">天数</th>
+        <th style="padding:4px 6px;text-align:left;font-size:10px;color:#64748b">日期</th>
+        <th style="padding:4px 6px;text-align:left;font-size:10px;color:#64748b">总量</th>
+        <th style="padding:4px 6px;text-align:left;font-size:10px;color:#64748b">世界</th>
+        <th style="padding:4px 6px;text-align:left;font-size:10px;color:#64748b">国家</th>
+        <th style="padding:4px 6px;text-align:left;font-size:10px;color:#64748b">好友</th>
+      </tr></thead>
+      <tbody><tr>
+          <td style="padding:4px 6px;font-size:11px;color:#f1f5f9">第1天</td>
+          <td style="padding:4px 6px;font-size:10px;color:#64748b">05/29</td>
+          <td style="padding:4px 6px;font-size:11px;color:#94a3b8">680</td>
+          <td style="padding:4px 6px;font-size:11px;color:#60a5fa">639 (94%)</td>
+          <td style="padding:4px 6px;font-size:11px;color:#f59e0b">11 (2%)</td>
+          <td style="padding:4px 6px;font-size:11px;color:#34d399">30 (4%)</td>
+        </tr><tr>
+          <td style="padding:4px 6px;font-size:11px;color:#f1f5f9">第2天</td>
+          <td style="padding:4px 6px;font-size:10px;color:#64748b">05/30</td>
+          <td style="padding:4px 6px;font-size:11px;color:#94a3b8">1508</td>
+          <td style="padding:4px 6px;font-size:11px;color:#60a5fa">1373 (91%)</td>
+          <td style="padding:4px 6px;font-size:11px;color:#f59e0b">70 (5%)</td>
+          <td style="padding:4px 6px;font-size:11px;color:#34d399">65 (4%)</td>
+        </tr><tr>
+          <td style="padding:4px 6px;font-size:11px;color:#f1f5f9">第3天</td>
+          <td style="padding:4px 6px;font-size:10px;color:#64748b">05/31</td>
+          <td style="padding:4px 6px;font-size:11px;color:#94a3b8">1767</td>
+          <td style="padding:4px 6px;font-size:11px;color:#60a5fa">1647 (93%)</td>
+          <td style="padding:4px 6px;font-size:11px;color:#f59e0b">93 (5%)</td>
+          <td style="padding:4px 6px;font-size:11px;color:#34d399">27 (2%)</td>
+        </tr><tr>
+          <td style="padding:4px 6px;font-size:11px;color:#f1f5f9">第4天</td>
+          <td style="padding:4px 6px;font-size:10px;color:#64748b">06/01</td>
+          <td style="padding:4px 6px;font-size:11px;color:#94a3b8">468</td>
+          <td style="padding:4px 6px;font-size:11px;color:#60a5fa">454 (97%)</td>
+          <td style="padding:4px 6px;font-size:11px;color:#f59e0b">14 (3%)</td>
+          <td style="padding:4px 6px;font-size:11px;color:#34d399">0 (0%)</td>
+        </tr><tr style="border-top:2px solid #3b82f6;background:rgba(59,130,246,0.06)">
+      <td style="padding:4px 6px;font-size:11px;color:#60a5fa;font-weight:600">合计/均值</td>
+      <td style="padding:4px 6px;font-size:10px;color:#64748b">4天</td>
+      <td style="padding:4px 6px;font-size:11px;color:#e2e8f0;font-weight:600">4423</td>
+      <td style="padding:4px 6px;font-size:11px;color:#60a5fa;font-weight:600">4113 (93%)</td>
+      <td style="padding:4px 6px;font-size:11px;color:#f59e0b;font-weight:600">188 (4%)</td>
+      <td style="padding:4px 6px;font-size:11px;color:#34d399;font-weight:600">122 (3%)</td>
+    </tr></tbody>
+    </table><ul style="margin:6px 0 0;padding:0 0 0 14px;font-size:11px;color:#94a3b8;line-height:1.7"><li>世界聊天是主要沟通方式，平均占比 94%</li><li>聊天总量萎缩显著（31%），第1天 680条 → 第4天 468条</li></ul>
+            </div>
+          </div>
+          <div class="day-section">
+              <div class="day-header">
+                <span class="day-title">开服第 <span style="font-size:18px;color:#60a5fa">1</span> 天</span>
+                <span class="day-date">📅 2026-05-29</span>
+                <span class="mood-badge" style="background:#ef444415;color:#ef4444">偏负面</span>
+                <span class="day-stats">0人</span>
+              </div>
+              <div class="day-body">
+                <div class="sent-row">
+                  <div class="sent-pos" style="width:20%"></div>
+                  <div class="sent-neu" style="width:30%"></div>
+                  <div class="sent-neg" style="width:50%"></div>
+                </div>
+                <div class="sent-labels">
+                  <span style="color:#22c55e">🟢 20%</span>
+                  <span style="color:#eab308">🟡 30%</span>
+                  <span style="color:#ef4444">🔴 50%</span>
+                </div>
+                <div class="topics"><span class="topic-tag">游戏无聊与流失 <span style="color:#60a5fa">8</span></span><span class="topic-tag">资源不足与卡关 <span style="color:#60a5fa">7</span></span><span class="topic-tag">充值相关 <span style="color:#60a5fa">5</span></span><span class="topic-tag">游戏攻略与任务 <span style="color:#60a5fa">6</span></span></div>
+                <div class="feedback-grid"><div class="fb-box fb-pos"><h4>👍 正面</h4><ul><li>建模好看</li><li>有玩家分享攻略帮助他人</li></ul></div><div class="fb-box fb-neg"><h4>👎 负面</h4><ul><li>游戏无聊、缺乏可玩性</li><li>资源严重不足导致卡关</li><li>充值贬值快，滚服模式令人不满</li></ul></div></div>
+                <ul class="pain-list"><li class="pain-item pain-high"><strong>资源获取困难</strong> [高]<div class="ev">💬 升阶要筑基丹合成金丹合成元婴要多少呀压根就不够</div></li><li class="pain-item pain-high"><strong>游戏内容无聊</strong> [高]<div class="ev">💬 这也太无聊了，像个傻子一样，点点点，溜了溜了</div></li><li class="pain-item pain-mid"><strong>充值体验差</strong> [中]<div class="ev">💬 这种滚服的战力游戏 充值贬值贼厉害</div></li></ul>
+                <ul class="sug-list"><li class="sug-item"><strong>希望增加筑基丹等资源的获取途径</strong> (可行:高)<div class="player">来自 狄涑</div></li><li class="sug-item"><strong>降低充值贬值速度，改善滚服体验</strong> (可行:中)<div class="player">来自 狠人</div></li><li class="sug-item"><strong>增加更多互动或玩法，减少无聊的点点点</strong> (可行:中)<div class="player">来自 贝妙妙</div></li></ul>
+                <div class="signal-grid"><div class="signal-card signal-fatigue"><h4>😰 肝度信号 (3条)</h4><div class="ex">💬 升阶要筑基丹合成金丹合成元婴要多少呀压根就不够</div><div class="ex">💬 我就是这样一大半都升到150级发现药不够零食也不够</div></div><div class="signal-card signal-boredom"><h4>😐 内容节奏信号 (4条)</h4><div class="ex">💬 这也太无聊了，像个傻子一样，点点点，溜了溜了</div><div class="ex">💬 这么无聊的游戏，真的就这么多人充月卡？</div></div></div>
+                <div class="quote-box"><div class="ql">💬 玩家原声</div>这也太无聊了，像个傻子一样，点点点，溜了溜了</div>
+                <p style="font-size:12px;color:#64748b;margin-top:8px;border-top:1px solid #1e293b;padding-top:8px;">📌 开服首日玩家普遍不满，无聊且资源匮乏</p>
+              </div>
+            </div><div class="day-section">
+              <div class="day-header">
+                <span class="day-title">开服第 <span style="font-size:18px;color:#60a5fa">2</span> 天</span>
+                <span class="day-date">📅 2026-05-30</span>
+                <span class="mood-badge" style="background:#ef444415;color:#ef4444">偏负面</span>
+                <span class="day-stats">0人</span>
+              </div>
+              <div class="day-body">
+                <div class="sent-row">
+                  <div class="sent-pos" style="width:20%"></div>
+                  <div class="sent-neu" style="width:30%"></div>
+                  <div class="sent-neg" style="width:50%"></div>
+                </div>
+                <div class="sent-labels">
+                  <span style="color:#22c55e">🟢 20%</span>
+                  <span style="color:#eab308">🟡 30%</span>
+                  <span style="color:#ef4444">🔴 50%</span>
+                </div>
+                <div class="topics"><span class="topic-tag">游戏难度与进度 <span style="color:#60a5fa">8</span></span><span class="topic-tag">资源获取与分配 <span style="color:#60a5fa">6</span></span><span class="topic-tag">活动与奖励 <span style="color:#60a5fa">5</span></span><span class="topic-tag">阵营选择 <span style="color:#60a5fa">4</span></span></div>
+                <div class="feedback-grid"><div class="fb-box fb-pos"><h4>👍 正面</h4><ul><li>人多阵营有优势</li><li>礼包早期有性价比</li></ul></div><div class="fb-box fb-neg"><h4>👎 负面</h4><ul><li>元婴突破难且资源消耗大</li><li>抽卡爆率低、紫色难出</li><li>活动奖励分配不公</li></ul></div></div>
+                <ul class="pain-list"><li class="pain-item pain-high"><strong>元婴突破资源难获取</strong> [高]<div class="ev">💬 呆萌: 不小心筑基了8个人现在元婴突破不了了</div></li><li class="pain-item pain-high"><strong>抽卡爆率低，紫色难出</strong> [高]<div class="ev">💬 狄涑: 出个紫色的求爷爷告奶奶全是绿色的蓝色的有什么用啊</div></li><li class="pain-item pain-mid"><strong>活动奖励被第一名垄断</strong> [中]<div class="ev">💬 狄涑: 你看反正有些东西都是第一名拿哪里人多就去哪里就好了</div></li></ul>
+                <ul class="sug-list"><li class="sug-item"><strong>增加跳槽功能或重新创号</strong> (可行:中)<div class="player">来自 狄涑</div></li><li class="sug-item"><strong>限制国家人数平衡，避免垄断</strong> (可行:中)<div class="player">来自 狄涑</div></li><li class="sug-item"><strong>提高抽卡爆率或保底机制</strong> (可行:高)<div class="player">来自 皮惠</div></li></ul>
+                <div class="signal-grid"><div class="signal-card signal-fatigue"><h4>😰 肝度信号 (5条)</h4><div class="ex">💬 井野: 现在元婴的就要一群人在那磨好久，不敢想象化神以上要磨多久</div><div class="ex">💬 童幽妍: 不知道到时候化神是不是要打半个小时</div></div><div class="signal-card signal-boredom"><h4>😐 内容节奏信号 (2条)</h4><div class="ex">💬 狠人: 说实话这游戏可玩性 如果只是目前这样的话 不太高</div></div></div>
+                <div class="quote-box"><div class="ql">💬 玩家原声</div>说实话这游戏可玩性 如果只是目前这样的话 不太高</div>
+                <p style="font-size:12px;color:#64748b;margin-top:8px;border-top:1px solid #1e293b;padding-top:8px;">📌 开服次日玩家抱怨难度与爆率</p>
+              </div>
+            </div><div class="day-section">
+              <div class="day-header">
+                <span class="day-title">开服第 <span style="font-size:18px;color:#60a5fa">3</span> 天</span>
+                <span class="day-date">📅 2026-05-31</span>
+                <span class="mood-badge" style="background:#ef444415;color:#ef4444">偏负面</span>
+                <span class="day-stats">0人</span>
+              </div>
+              <div class="day-body">
+                <div class="sent-row">
+                  <div class="sent-pos" style="width:20%"></div>
+                  <div class="sent-neu" style="width:30%"></div>
+                  <div class="sent-neg" style="width:50%"></div>
+                </div>
+                <div class="sent-labels">
+                  <span style="color:#22c55e">🟢 20%</span>
+                  <span style="color:#eab308">🟡 30%</span>
+                  <span style="color:#ef4444">🔴 50%</span>
+                </div>
+                <div class="topics"><span class="topic-tag">游戏机制与平衡 <span style="color:#60a5fa">8</span></span><span class="topic-tag">资源获取与氪金 <span style="color:#60a5fa">7</span></span><span class="topic-tag">玩家互动与社交 <span style="color:#60a5fa">5</span></span><span class="topic-tag">游戏进度与策略 <span style="color:#60a5fa">4</span></span></div>
+                <div class="feedback-grid"><div class="fb-box fb-pos"><h4>👍 正面</h4><ul><li>玩家积极分享攻略和礼包码</li><li>部分玩家对红装属性提升表示认可</li></ul></div><div class="fb-box fb-neg"><h4>👎 负面</h4><ul><li>国战和BOSS定点活动太耗时</li><li>红装获取难且词条少</li><li>游戏平衡性差，玩家被赶向同一国家</li></ul></div></div>
+                <ul class="pain-list"><li class="pain-item pain-high"><strong>定点活动过多导致时间冲突</strong> [高]<div class="ev">💬 boss刷新定点、国战定点、夜巡定点，一天不用干别的了</div></li><li class="pain-item pain-mid"><strong>红装获取难且词条随机性大</strong> [中]<div class="ev">💬 现在出了这么多红我就只看到一个有词条的</div></li><li class="pain-item pain-mid"><strong>游戏平衡性差，玩家被赶向同一国家</strong> [中]<div class="ev">💬 这破游戏，把人往一个国家赶，平衡一点没有</div></li></ul>
+                <ul class="sug-list"><li class="sug-item"><strong>减少定点活动，增加灵活参与方式</strong> (可行:中)<div class="player">来自 不良帅</div></li><li class="sug-item"><strong>优化国家平衡，避免玩家过度集中</strong> (可行:中)<div class="player">来自 全某某</div></li><li class="sug-item"><strong>提高礼包性价比，如288礼包优于98</strong> (可行:低)<div class="player">来自 狐狸</div></li></ul>
+                <div class="signal-grid"><div class="signal-card signal-fatigue"><h4>😰 肝度信号 (3条)</h4><div class="ex">💬 boss刷新定点、国战定点、夜巡定点，一天不用干别的了</div><div class="ex">💬 太废弟子了  白打了仨  三万弟子没了</div></div><div class="signal-card signal-boredom"><h4>😐 内容节奏信号 (1条)</h4><div class="ex">💬 是的啥都干不了</div></div></div>
+                <div class="quote-box"><div class="ql">💬 玩家原声</div>boss刷新定点、国战定点、夜巡定点，一天不用干别的了，随缘吧。</div>
+                <p style="font-size:12px;color:#64748b;margin-top:8px;border-top:1px solid #1e293b;padding-top:8px;">📌 玩家抱怨定点活动多，资源获取难</p>
+              </div>
+            </div><div class="day-section">
+              <div class="day-header">
+                <span class="day-title">开服第 <span style="font-size:18px;color:#60a5fa">4</span> 天</span>
+                <span class="day-date">📅 2026-06-01</span>
+                <span class="mood-badge" style="background:#22c55e15;color:#22c55e">偏正面</span>
+                <span class="day-stats">0人</span>
+              </div>
+              <div class="day-body">
+                <div class="sent-row">
+                  <div class="sent-pos" style="width:40%"></div>
+                  <div class="sent-neu" style="width:35%"></div>
+                  <div class="sent-neg" style="width:25%"></div>
+                </div>
+                <div class="sent-labels">
+                  <span style="color:#22c55e">🟢 40%</span>
+                  <span style="color:#eab308">🟡 35%</span>
+                  <span style="color:#ef4444">🔴 25%</span>
+                </div>
+                <div class="topics"><span class="topic-tag">游戏活动与国战 <span style="color:#60a5fa">8</span></span><span class="topic-tag">角色培养与资质 <span style="color:#60a5fa">6</span></span><span class="topic-tag">战斗技巧与BUG <span style="color:#60a5fa">5</span></span><span class="topic-tag">服务器选择与阵营 <span style="color:#60a5fa">4</span></span></div>
+                <div class="feedback-grid"><div class="fb-box fb-pos"><h4>👍 正面</h4><ul><li>玩家分享战斗技巧和策略</li><li>阵营互动有友好行为</li><li>游戏内容丰富有挑战</li></ul></div><div class="fb-box fb-neg"><h4>👎 负面</h4><ul><li>国战活动太频繁</li><li>角色资质提升失败率高</li><li>游戏缺乏公众号等官方渠道</li></ul></div></div>
+                <ul class="pain-list"><li class="pain-item pain-mid"><strong>国战活动过于频繁</strong> [中]<div class="ev">💬 2点还有国战，这活动内容是不是也太勤了</div></li><li class="pain-item pain-mid"><strong>角色资质提升失败率高</strong> [中]<div class="ev">💬 为啥我江剑臣的资质这么难提升啊，一直失败</div></li><li class="pain-item pain-low"><strong>官方沟通渠道缺失</strong> [低]<div class="ev">💬 连个公众号都没有这游戏</div></li></ul>
+                <ul class="sug-list"><li class="sug-item"><strong>官方赶快出个国战调查问卷，向玩家表明态度是诚恳的</strong> (可行:高)<div class="player">来自 不良帅</div></li><li class="sug-item"><strong>2点还有国战，这活动内容是不是也太勤了</strong> (可行:中)<div class="player">来自 上官凌</div></li><li class="sug-item"><strong>连个公众号都没有这游戏</strong> (可行:高)<div class="player">来自 马王爷</div></li></ul>
+                <div class="signal-grid"><div class="signal-card signal-fatigue"><h4>😰 肝度信号 (3条)</h4><div class="ex">💬 没有精力了，让我背包里还有十个令牌可以用</div><div class="ex">💬 后面的境界到时候不是得打一个小时啊</div></div><div class="signal-card signal-boredom"><h4>😐 内容节奏信号 (1条)</h4><div class="ex">💬 我桃子太多了我得消耗一下</div></div></div>
+                <div class="quote-box"><div class="ql">💬 玩家原声</div>2点还有国战，这活动内容是不是也太勤了</div>
+                <p style="font-size:12px;color:#64748b;margin-top:8px;border-top:1px solid #1e293b;padding-top:8px;">📌 国战频繁引疲劳，培养困难需优化</p>
+              </div>
+            </div>
+        </div><div class="tab-content" id="tab-3">
+          <div class="section">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+              <h2 style="margin:0;border:none;padding:0">⚔️ 3区</h2>
+              <span style="font-size:12px;color:#64748b">开服日 2026-05-31 · 1386条 · 297人</span>
+            </div>
+            <div class="ov-grid" style="grid-template-columns:repeat(4,1fr)">
+              <div class="ov-card"><div class="num">1386</div><div class="lbl">消息总量</div></div>
+              <div class="ov-card"><div class="num">1145</div><div class="lbl">世界</div></div>
+              <div class="ov-card"><div class="num">45</div><div class="lbl">国家</div></div>
+              <div class="ov-card"><div class="num">196</div><div class="lbl">好友</div></div>
+            </div>
+            <div style="margin-top:14px;padding-top:12px;border-top:1px solid #1e293b">
+              <h3 style="font-size:12px;color:#64748b;margin-bottom:6px">📊 每日聊天类型占比</h3>
+              <table style="width:100%;border-collapse:collapse;font-size:12px">
+      <thead><tr style="border-bottom:1px solid #1e293b">
+        <th style="padding:4px 6px;text-align:left;font-size:10px;color:#64748b">天数</th>
+        <th style="padding:4px 6px;text-align:left;font-size:10px;color:#64748b">日期</th>
+        <th style="padding:4px 6px;text-align:left;font-size:10px;color:#64748b">总量</th>
+        <th style="padding:4px 6px;text-align:left;font-size:10px;color:#64748b">世界</th>
+        <th style="padding:4px 6px;text-align:left;font-size:10px;color:#64748b">国家</th>
+        <th style="padding:4px 6px;text-align:left;font-size:10px;color:#64748b">好友</th>
+      </tr></thead>
+      <tbody><tr>
+          <td style="padding:4px 6px;font-size:11px;color:#f1f5f9">第1天</td>
+          <td style="padding:4px 6px;font-size:10px;color:#64748b">05/31</td>
+          <td style="padding:4px 6px;font-size:11px;color:#94a3b8">972</td>
+          <td style="padding:4px 6px;font-size:11px;color:#60a5fa">899 (92%)</td>
+          <td style="padding:4px 6px;font-size:11px;color:#f59e0b">9 (1%)</td>
+          <td style="padding:4px 6px;font-size:11px;color:#34d399">64 (7%)</td>
+        </tr><tr>
+          <td style="padding:4px 6px;font-size:11px;color:#f1f5f9">第2天</td>
+          <td style="padding:4px 6px;font-size:10px;color:#64748b">06/01</td>
+          <td style="padding:4px 6px;font-size:11px;color:#94a3b8">414</td>
+          <td style="padding:4px 6px;font-size:11px;color:#60a5fa">246 (59%)</td>
+          <td style="padding:4px 6px;font-size:11px;color:#f59e0b">36 (9%)</td>
+          <td style="padding:4px 6px;font-size:11px;color:#34d399">132 (32%)</td>
+        </tr><tr style="border-top:2px solid #3b82f6;background:rgba(59,130,246,0.06)">
+      <td style="padding:4px 6px;font-size:11px;color:#60a5fa;font-weight:600">合计/均值</td>
+      <td style="padding:4px 6px;font-size:10px;color:#64748b">2天</td>
+      <td style="padding:4px 6px;font-size:11px;color:#e2e8f0;font-weight:600">1386</td>
+      <td style="padding:4px 6px;font-size:11px;color:#60a5fa;font-weight:600">1145 (83%)</td>
+      <td style="padding:4px 6px;font-size:11px;color:#f59e0b;font-weight:600">45 (3%)</td>
+      <td style="padding:4px 6px;font-size:11px;color:#34d399;font-weight:600">196 (14%)</td>
+    </tr></tbody>
+    </table><ul style="margin:6px 0 0;padding:0 0 0 14px;font-size:11px;color:#94a3b8;line-height:1.7"><li>世界聊天是主要沟通方式，平均占比 76%</li><li>聊天总量萎缩显著（57%），第1天 972条 → 第2天 414条</li><li>世界聊天占比下降，从第1天 92% → 第2天 59%</li><li>好友私聊占比稳定在 19% 左右，玩家深度社交需求较强</li><li>开服第1天世界聊天占比 92%，与后续均值 59% 差异明显，初期社交模式不同</li></ul>
+            </div>
+          </div>
+          <div class="day-section">
+              <div class="day-header">
+                <span class="day-title">开服第 <span style="font-size:18px;color:#60a5fa">1</span> 天</span>
+                <span class="day-date">📅 2026-05-31</span>
+                <span class="mood-badge" style="background:#22c55e15;color:#22c55e">偏正面</span>
+                <span class="day-stats">0人</span>
+              </div>
+              <div class="day-body">
+                <div class="sent-row">
+                  <div class="sent-pos" style="width:40%"></div>
+                  <div class="sent-neu" style="width:35%"></div>
+                  <div class="sent-neg" style="width:25%"></div>
+                </div>
+                <div class="sent-labels">
+                  <span style="color:#22c55e">🟢 40%</span>
+                  <span style="color:#eab308">🟡 35%</span>
+                  <span style="color:#ef4444">🔴 25%</span>
+                </div>
+                <div class="topics"><span class="topic-tag">暗号与礼包码 <span style="color:#60a5fa">15</span></span><span class="topic-tag">新手引导与卡境界 <span style="color:#60a5fa">10</span></span><span class="topic-tag">游戏平衡与氪金 <span style="color:#60a5fa">6</span></span><span class="topic-tag">角色培养与选择 <span style="color:#60a5fa">5</span></span></div>
+                <div class="feedback-grid"><div class="fb-box fb-pos"><h4>👍 正面</h4><ul><li>游戏平衡性较好，氪金与零氪差距不大</li><li>礼包码福利丰富，吸引玩家加入群聊</li></ul></div><div class="fb-box fb-neg"><h4>👎 负面</h4><ul><li>新手引导不足，导致资源浪费和卡境界</li><li>暗号系统不清晰，玩家反复尝试失败</li></ul></div></div>
+                <ul class="pain-list"><li class="pain-item pain-high"><strong>新手资源管理困难</strong> [高]<div class="ev">💬 零氪，别乱花筑基丹，要不然第一天会卡境界，难受死我了</div></li><li class="pain-item pain-mid"><strong>暗号系统不友好</strong> [中]<div class="ev">💬 张明怀暗号怎么输入都不对 啊爹笑，拍我腰，男儿立志在远方 哪不对吗</div></li><li class="pain-item pain-mid"><strong>任务与境界卡点</strong> [中]<div class="ev">💬 你提升不了境界，你也没法接任务啊，你也只能卡在那儿啊</div></li></ul>
+                <ul class="sug-list"><li class="sug-item"><strong>零氪玩家应提示不要乱花筑基丹，避免第一天卡境界</strong> (可行:高)<div class="player">来自 宰纤纤</div></li><li class="sug-item"><strong>优化副本和货币系统，避免资源浪费形成闭环</strong> (可行:中)<div class="player">来自 有郁</div></li><li class="sug-item"><strong>暗号输入应增加提示或自动匹配，减少玩家困惑</strong> (可行:高)<div class="player">来自 弓妙妙</div></li></ul>
+                <div class="signal-grid"><div class="signal-card signal-fatigue"><h4>😰 肝度信号 (3条)</h4><div class="ex">💬 浪费了三个筑基丹，货币就差长春观副本。又过不去，完美闭环了</div><div class="ex">💬 我前面不知道在那乱点。要不它右上角有一个提示说全部亮</div></div><div class="signal-card signal-boredom"><h4>😐 内容节奏信号 (2条)</h4><div class="ex">💬 这主线剧情主角是真垃圾啊</div><div class="ex">💬 2   百   五     东西都不发出来，你这个暗号，暗个毛暗</div></div></div>
+                <div class="quote-box"><div class="ql">💬 玩家原声</div>零氪，别乱花筑基丹，要不然第一天会卡境界，难受死我了</div>
+                <p style="font-size:12px;color:#64748b;margin-top:8px;border-top:1px solid #1e293b;padding-top:8px;">📌 开服首日，玩家热情高但新手引导不足</p>
+              </div>
+            </div><div class="day-section">
+              <div class="day-header">
+                <span class="day-title">开服第 <span style="font-size:18px;color:#60a5fa">2</span> 天</span>
+                <span class="day-date">📅 2026-06-01</span>
+                <span class="mood-badge" style="background:#ef444415;color:#ef4444">偏负面</span>
+                <span class="day-stats">0人</span>
+              </div>
+              <div class="day-body">
+                <div class="sent-row">
+                  <div class="sent-pos" style="width:15%"></div>
+                  <div class="sent-neu" style="width:30%"></div>
+                  <div class="sent-neg" style="width:55%"></div>
+                </div>
+                <div class="sent-labels">
+                  <span style="color:#22c55e">🟢 15%</span>
+                  <span style="color:#eab308">🟡 30%</span>
+                  <span style="color:#ef4444">🔴 55%</span>
+                </div>
+                <div class="topics"><span class="topic-tag">游戏玩法单调与长草 <span style="color:#60a5fa">8</span></span><span class="topic-tag">兑换商城与充值跳转问题 <span style="color:#60a5fa">3</span></span><span class="topic-tag">仙玉用途与抽卡成本 <span style="color:#60a5fa">3</span></span><span class="topic-tag">游戏任务与进度困惑 <span style="color:#60a5fa">4</span></span></div>
+                <div class="feedback-grid"><div class="fb-box fb-pos"><h4>👍 正面</h4><ul><li>有玩家分享养成策略（如剑臣养到250）</li><li>有玩家组织社群分享礼包码</li></ul></div><div class="fb-box fb-neg"><h4>👎 负面</h4><ul><li>兑换商城和充值跳转异常</li><li>游戏第二天就长草，玩法单一</li><li>仙玉用途有限，抽卡成本过高</li><li>任务指引不清晰</li></ul></div></div>
+                <ul class="pain-list"><li class="pain-item pain-high"><strong>兑换商城和充值跳转异常</strong> [高]<div class="ev">💬 呆萌: 兑换商城一点就跳转什么鬼；弓幽雨: 不管是点兑换还是点充值，都跳转</div></li><li class="pain-item pain-high"><strong>游戏第二天就长草，玩法单一</strong> [高]<div class="ev">💬 大鱼鱼: 这游戏第二天就长草。。。真无聊；苏轻狂: 都是数值游戏，真是无聊透了</div></li><li class="pain-item pain-mid"><strong>仙玉用途有限，抽卡成本高</strong> [中]<div class="ev">💬 舟饱饱: 这游戏仙玉除了买礼包好像没啥用了；道非道: 除了氪金哥谁抽的动一发2500玉</div></li></ul>
+                <ul class="sug-list"><li class="sug-item"><strong>希望游戏能像割菜游戏一样慢慢玩，不要强制跟进度</strong> (可行:中)<div class="player">来自 王霂微</div></li><li class="sug-item"><strong>第二天就长草，需要增加内容避免无聊</strong> (可行:中)<div class="player">来自 大鱼鱼</div></li><li class="sug-item"><strong>法宝武器等装备获取太依赖运气，希望有保底或稳定途径</strong> (可行:高)<div class="player">来自 白若钧</div></li></ul>
+                <div class="signal-grid"><div class="signal-card signal-fatigue"><h4>😰 肝度信号 (2条)</h4><div class="ex">💬 呆萌: 11.15点开始玩现在才元婴</div><div class="ex">💬 王霂微: 我现在就不想跟进度了</div></div><div class="signal-card signal-boredom"><h4>😐 内容节奏信号 (4条)</h4><div class="ex">💬 大鱼鱼: 这游戏第二天就长草。。。真无聊</div><div class="ex">💬 苏轻狂: 都是数值游戏，真是无聊透了</div></div></div>
+                <div class="quote-box"><div class="ql">💬 玩家原声</div>这游戏第二天就长草。。。真无聊</div>
+                <p style="font-size:12px;color:#64748b;margin-top:8px;border-top:1px solid #1e293b;padding-top:8px;">📌 开服第二天玩家普遍感到无聊和不满</p>
+              </div>
+            </div>
+        </div>
+  <div class="section">
+    <h2>📋 分析方法说明</h2>
+    <div class="method-box">
+      <b>语义模型</b>: <code>paraphrase-multilingual-MiniLM-L12-v2</code> (384维，多语言) |
+      <b>分类方式</b>: 预定义维度→质心向量→余弦相似度→自适应阈值(0.55/0.50/0.45)<br>
+      <b>证据检索</b>: 真实语义检索，非大模型生成 |
+      <b>分析模型</b>: DeepSeek-Chat (temperature 0.15~0.2)<br>
+      <b>数据范围</b>: 2026-05-26~06-01 · 93001~93005,93009 · 排除93010+分享消息 |
+      <b>分类维度</b>: 战斗/难度 · 建议/需求 · 付费讨论(中性) · 付费不满(负面) · 无聊/乏味 · 社交/求带 · 肝度/累 · BUG/技术问题 · 资源/材料 · 活动/时间
+    </div>
+  </div>
+  <div class="footer">📊 数据来源 游戏内聊天 · 智能分析 · 2026-06-01</div>
+</div>
+<script>
+    function switchTab(idx){
+      document.querySelectorAll('.tab-content').forEach((t,i)=>t.classList.toggle('active',i===idx));
+      document.querySelectorAll('.tab-btn').forEach((b,i)=>b.classList.toggle('active',i===idx));
+    }
+    function toggleEvidence(id){
+      var c=document.getElementById(id);
+      if(c){c.classList.toggle('open');var btn=document.querySelector('[data-ev="'+id+'"]');if(btn){btn.textContent=c.classList.contains('open')?'− 收起证据':'+ 查看推理证据'}}
+    }
+    </script>
+</body>
+</html>

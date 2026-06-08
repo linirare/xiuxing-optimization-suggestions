@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QQ群聊报告 - 2026-05-30</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif; background:#f5f7fa; color:#1e293b; padding:20px; }
+.container { max-width:960px; margin:0 auto; }
+.header { text-align:center; padding:40px 20px 30px; background:linear-gradient(135deg,#1a56db 0%,#7c3aed 100%); border-radius:16px; margin-bottom:20px; color:#fff; }
+.header h1 { font-size:24px; font-weight:700; margin-bottom:6px; }
+.header .sub { font-size:13px; opacity:0.85; }
+.stats-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:20px; }
+.stat-card { background:#fff; border-radius:12px; padding:18px; text-align:center; box-shadow:0 1px 3px rgba(0,0,0,0.06); }
+.stat-card .num { font-size:28px; font-weight:700; color:#1a56db; }
+.stat-card .label { font-size:11px; color:#64748b; margin-top:4px; }
+.section { background:#fff; border-radius:12px; padding:20px; margin-bottom:16px; box-shadow:0 1px 3px rgba(0,0,0,0.06); }
+.section h2 { font-size:16px; font-weight:600; color:#1e293b; margin-bottom:12px; padding-bottom:8px; border-bottom:2px solid #1a56db; display:inline-block; }
+.chart-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+.chart-box { background:#f8fafc; border-radius:8px; padding:14px; }
+.chart-box h3 { font-size:12px; color:#64748b; margin-bottom:8px; }
+.bar-chart { display:flex; align-items:flex-end; gap:4px; height:180px; padding:4px 0; }
+.bar { flex:1; min-width:6px; border-radius:3px 3px 0 0; position:relative; transition:height 0.3s; }
+.bar:hover { opacity:0.8; }
+.bar-label { position:absolute; bottom:-18px; left:50%; transform:translateX(-50%); font-size:9px; color:#94a3b8; white-space:nowrap; }
+.word-cloud { display:flex; flex-wrap:wrap; gap:8px 12px; padding:8px 0; line-height:1.4; }
+.word-item { color:#1a56db; text-decoration:none; transition:color 0.2s; }
+.word-item:hover { color:#7c3aed; }
+.topic-card { background:#f8fafc; border-left:3px solid #1a56db; border-radius:6px; padding:12px 14px; margin-bottom:8px; }
+.topic-card .topic-title { font-size:13px; font-weight:600; color:#1e293b; margin-bottom:4px; }
+.topic-card .topic-tags { margin-top:4px; display:flex; gap:4px; flex-wrap:wrap; }
+.topic-tag { font-size:10px; padding:1px 8px; border-radius:8px; background:#e2e8f0; color:#475569; }
+.kw-bar { display:flex; align-items:center; gap:6px; margin:3px 0; font-size:12px; }
+.kw-bar-name { width:55px; text-align:right; color:#64748b; flex-shrink:0; }
+.kw-bar-track { flex:1; height:18px; background:#e2e8f0; border-radius:4px; overflow:hidden; }
+.kw-bar-fill { height:100%; border-radius:4px; transition:width 0.4s; }
+.kw-bar-count { width:32px; color:#94a3b8; }
+.footer { text-align:center; padding:20px; color:#94a3b8; font-size:11px; }
+@media (max-width:600px) { .stats-grid { grid-template-columns:repeat(2,1fr); } .chart-grid { grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+<div class="container">
+
+<div class="header">
+    <h1>📊 QQ群聊报告</h1>
+    <div class="sub">2026-05-30 · 1209条 · 72人</div>
+</div>
+
+<div class="stats-grid">
+    <div class="stat-card"><div class="num">1209</div><div class="label">有效消息</div></div>
+    <div class="stat-card"><div class="num">72</div><div class="label">发言人数</div></div>
+    <div class="stat-card"><div class="num">338</div><div class="label">峰值条/时</div></div>
+    <div class="stat-card"><div class="num">23:00</div><div class="label">最活跃时段</div></div>
+</div>
+
+<div class="section">
+    <h2>📈 时段分布</h2>
+    <div class="chart-box">
+        <div class="bar-chart"><div class="bar" style="height:2.366863905325444%;background:#1a56db" title="00:00 8条"><span class="bar-label">00:00</span></div><div class="bar" style="height:1.7751479289940828%;background:#2563eb" title="01:00 6条"><span class="bar-label">01:00</span></div><div class="bar" style="height:0.591715976331361%;background:#3b82f6" title="02:00 2条"><span class="bar-label">02:00</span></div><div class="bar" style="height:2.366863905325444%;background:#60a5fa" title="03:00 8条"><span class="bar-label">03:00</span></div><div class="bar" style="height:0.8875739644970414%;background:#93c5fd" title="04:00 3条"><span class="bar-label">04:00</span></div><div class="bar" style="height:0.8875739644970414%;background:#a78bfa" title="06:00 3条"><span class="bar-label">06:00</span></div><div class="bar" style="height:2.9585798816568047%;background:#7c3aed" title="07:00 10条"><span class="bar-label">07:00</span></div><div class="bar" style="height:3.2544378698224854%;background:#6d28d9" title="08:00 11条"><span class="bar-label">08:00</span></div><div class="bar" style="height:15.976331360946746%;background:#1a56db" title="09:00 54条"><span class="bar-label">09:00</span></div><div class="bar" style="height:47.337278106508876%;background:#2563eb" title="10:00 160条"><span class="bar-label">10:00</span></div><div class="bar" style="height:7.100591715976331%;background:#3b82f6" title="11:00 24条"><span class="bar-label">11:00</span></div><div class="bar" style="height:9.763313609467456%;background:#60a5fa" title="12:00 33条"><span class="bar-label">12:00</span></div><div class="bar" style="height:18.34319526627219%;background:#93c5fd" title="13:00 62条"><span class="bar-label">13:00</span></div><div class="bar" style="height:8.875739644970414%;background:#a78bfa" title="14:00 30条"><span class="bar-label">14:00</span></div><div class="bar" style="height:16.86390532544379%;background:#7c3aed" title="15:00 57条"><span class="bar-label">15:00</span></div><div class="bar" style="height:6.508875739644971%;background:#6d28d9" title="16:00 22条"><span class="bar-label">16:00</span></div><div class="bar" style="height:10.650887573964498%;background:#1a56db" title="17:00 36条"><span class="bar-label">17:00</span></div><div class="bar" style="height:11.538461538461538%;background:#2563eb" title="18:00 39条"><span class="bar-label">18:00</span></div><div class="bar" style="height:21.301775147928996%;background:#3b82f6" title="19:00 72条"><span class="bar-label">19:00</span></div><div class="bar" style="height:19.82248520710059%;background:#60a5fa" title="20:00 67条"><span class="bar-label">20:00</span></div><div class="bar" style="height:22.485207100591715%;background:#93c5fd" title="21:00 76条"><span class="bar-label">21:00</span></div><div class="bar" style="height:26.035502958579883%;background:#a78bfa" title="22:00 88条"><span class="bar-label">22:00</span></div><div class="bar" style="height:100.0%;background:#7c3aed" title="23:00 338条"><span class="bar-label">23:00</span></div></div>
+    </div>
+</div>
+
+<div class="section">
+    <h2>🔑 关键词分类</h2>
+    <div class="chart-box"><div class="kw-bar"><span class="kw-bar-name">战斗/BOSS</span>
+        <div class="kw-bar-track"><div class="kw-bar-fill" style="width:67.4%;background:#ef4444"></div></div>
+        <span class="kw-bar-count">193</span></div><div class="kw-bar"><span class="kw-bar-name">氪金/付费</span>
+        <div class="kw-bar-track"><div class="kw-bar-fill" style="width:61.8%;background:#f59e0b"></div></div>
+        <span class="kw-bar-count">177</span></div><div class="kw-bar"><span class="kw-bar-name">养成/传功</span>
+        <div class="kw-bar-track"><div class="kw-bar-fill" style="width:45.7%;background:#3b82f6"></div></div>
+        <span class="kw-bar-count">131</span></div><div class="kw-bar"><span class="kw-bar-name">角色/英雄</span>
+        <div class="kw-bar-track"><div class="kw-bar-fill" style="width:17.8%;background:#8b5cf6"></div></div>
+        <span class="kw-bar-count">51</span></div><div class="kw-bar"><span class="kw-bar-name">社交/组队</span>
+        <div class="kw-bar-track"><div class="kw-bar-fill" style="width:4.2%;background:#10b981"></div></div>
+        <span class="kw-bar-count">12</span></div><div class="kw-bar"><span class="kw-bar-name">吐槽/反馈</span>
+        <div class="kw-bar-track"><div class="kw-bar-fill" style="width:3.1%;background:#ec4899"></div></div>
+        <span class="kw-bar-count">9</span></div></div>
+</div>
+
+<div class="section">
+    <h2>☁️ 高频词</h2>
+    <div class="chart-box"><div class="word-cloud"><span class="word-item" style="font-size:24px;opacity:1.00">动画表情</span><span class="word-item" style="font-size:22px;opacity:0.66">哦哦</span><span class="word-item" style="font-size:20px;opacity:0.59">吃瓜</span><span class="word-item" style="font-size:18px;opacity:0.58">服了</span><span class="word-item" style="font-size:16px;opacity:0.56">阿爹笑</span><span class="word-item" style="font-size:14px;opacity:0.56">拍我腰</span><span class="word-item" style="font-size:12px;opacity:0.56">男儿立志在远方</span><span class="word-item" style="font-size:10px;opacity:0.56">化神</span><span class="word-item" style="font-size:24px;opacity:0.56">说是明天</span><span class="word-item" style="font-size:22px;opacity:0.56">兑换码</span><span class="word-item" style="font-size:20px;opacity:0.56">明天开</span><span class="word-item" style="font-size:18px;opacity:0.56">区不</span><span class="word-item" style="font-size:16px;opacity:0.56">大佬</span><span class="word-item" style="font-size:14px;opacity:0.55">条血</span><span class="word-item" style="font-size:12px;opacity:0.55">跟不上</span><span class="word-item" style="font-size:10px;opacity:0.55">说白了</span><span class="word-item" style="font-size:24px;opacity:0.55">氪金</span><span class="word-item" style="font-size:22px;opacity:0.55">啥时候开新区啊</span><span class="word-item" style="font-size:20px;opacity:0.55">张明怀暗号是什么</span><span class="word-item" style="font-size:18px;opacity:0.55">预计是明天</span></div></div>
+</div>
+
+<div class="section">
+    <h2>👤 最活跃成员</h2>
+    <div class="chart-box">
+        <div style="display:flex;align-items:center;gap:8px;margin:4px 0">
+            <span style="width:50px;font-size:11px;color:#64748b;text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">贰佰"</span>
+            <div style="flex:1;height:20px;background:#e2e8f0;border-radius:10px;overflow:hidden">
+                <div style="height:100%;width:100.0%;background:#FF6B35;border-radius:10px;min-width:3px;transition:width 1s"></div>
+            </div>
+            <span style="width:25px;font-size:11px;color:#1a56db;font-weight:600;text-align:right">194</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;margin:4px 0">
+            <span style="width:50px;font-size:11px;color:#64748b;text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">毛民9527</span>
+            <div style="flex:1;height:20px;background:#e2e8f0;border-radius:10px;overflow:hidden">
+                <div style="height:100%;width:71.1%;background:#004E89;border-radius:10px;min-width:3px;transition:width 1s"></div>
+            </div>
+            <span style="width:25px;font-size:11px;color:#1a56db;font-weight:600;text-align:right">138</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;margin:4px 0">
+            <span style="width:50px;font-size:11px;color:#64748b;text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">亮</span>
+            <div style="flex:1;height:20px;background:#e2e8f0;border-radius:10px;overflow:hidden">
+                <div style="height:100%;width:58.2%;background:#E63946;border-radius:10px;min-width:3px;transition:width 1s"></div>
+            </div>
+            <span style="width:25px;font-size:11px;color:#1a56db;font-weight:600;text-align:right">113</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;margin:4px 0">
+            <span style="width:50px;font-size:11px;color:#64748b;text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">、</span>
+            <div style="flex:1;height:20px;background:#e2e8f0;border-radius:10px;overflow:hidden">
+                <div style="height:100%;width:27.8%;background:#2A9D8F;border-radius:10px;min-width:3px;transition:width 1s"></div>
+            </div>
+            <span style="width:25px;font-size:11px;color:#1a56db;font-weight:600;text-align:right">54</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;margin:4px 0">
+            <span style="width:50px;font-size:11px;color:#64748b;text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">哟哟</span>
+            <div style="flex:1;height:20px;background:#e2e8f0;border-radius:10px;overflow:hidden">
+                <div style="height:100%;width:20.6%;background:#7B2D8E;border-radius:10px;min-width:3px;transition:width 1s"></div>
+            </div>
+            <span style="width:25px;font-size:11px;color:#1a56db;font-weight:600;text-align:right">40</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;margin:4px 0">
+            <span style="width:50px;font-size:11px;color:#64748b;text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">渊</span>
+            <div style="flex:1;height:20px;background:#e2e8f0;border-radius:10px;overflow:hidden">
+                <div style="height:100%;width:20.6%;background:#264653;border-radius:10px;min-width:3px;transition:width 1s"></div>
+            </div>
+            <span style="width:25px;font-size:11px;color:#1a56db;font-weight:600;text-align:right">40</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;margin:4px 0">
+            <span style="width:50px;font-size:11px;color:#64748b;text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">坟</span>
+            <div style="flex:1;height:20px;background:#e2e8f0;border-radius:10px;overflow:hidden">
+                <div style="height:100%;width:20.1%;background:#287271;border-radius:10px;min-width:3px;transition:width 1s"></div>
+            </div>
+            <span style="width:25px;font-size:11px;color:#1a56db;font-weight:600;text-align:right">39</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;margin:4px 0">
+            <span style="width:50px;font-size:11px;color:#64748b;text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">房东</span>
+            <div style="flex:1;height:20px;background:#e2e8f0;border-radius:10px;overflow:hidden">
+                <div style="height:100%;width:18.6%;background:#E76F51;border-radius:10px;min-width:3px;transition:width 1s"></div>
+            </div>
+            <span style="width:25px;font-size:11px;color:#1a56db;font-weight:600;text-align:right">36</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;margin:4px 0">
+            <span style="width:50px;font-size:11px;color:#64748b;text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">锦鲤</span>
+            <div style="flex:1;height:20px;background:#e2e8f0;border-radius:10px;overflow:hidden">
+                <div style="height:100%;width:18.0%;background:#D4A017;border-radius:10px;min-width:3px;transition:width 1s"></div>
+            </div>
+            <span style="width:25px;font-size:11px;color:#1a56db;font-weight:600;text-align:right">35</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;margin:4px 0">
+            <span style="width:50px;font-size:11px;color:#64748b;text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">仏</span>
+            <div style="flex:1;height:20px;background:#e2e8f0;border-radius:10px;overflow:hidden">
+                <div style="height:100%;width:17.0%;background:#9B1B30;border-radius:10px;min-width:3px;transition:width 1s"></div>
+            </div>
+            <span style="width:25px;font-size:11px;color:#1a56db;font-weight:600;text-align:right">33</span>
+        </div></div>
+</div>
+
+<div class="section">
+    <h2>📊 时段话题分布</h2>
+    <div class="topic-card" style="border-left-color:#1e3a5f">
+            <div class="topic-title">凌晨 (00-05) · 27条</div>
+            <div class="topic-tags"><span class="topic-tag">弃坑了</span><span class="topic-tag">多一个皮肤都抽不到</span><span class="topic-tag">动画表情</span><span class="topic-tag">这个活动在哪里啊</span><span class="topic-tag">筑基丹没有了</span></div>
+        </div><div class="topic-card" style="border-left-color:#2563eb">
+            <div class="topic-title">早间 (06-09) · 78条</div>
+            <div class="topic-tags"><span class="topic-tag">动画表情</span><span class="topic-tag">神通耐久不足啥意思</span><span class="topic-tag">桃子只有历练有用</span><span class="topic-tag">二级兵不够</span><span class="topic-tag">所以打不了是吗</span></div>
+        </div><div class="topic-card" style="border-left-color:#3b82f6">
+            <div class="topic-title">上午 (10-12) · 217条</div>
+            <div class="topic-tags"><span class="topic-tag">动画表情</span><span class="topic-tag">吃瓜</span><span class="topic-tag">说白了</span><span class="topic-tag">氪金</span><span class="topic-tag">打这个比打其他的慢多了</span></div>
+        </div><div class="topic-card" style="border-left-color:#60a5fa">
+            <div class="topic-title">下午 (13-17) · 207条</div>
+            <div class="topic-tags"><span class="topic-tag">动画表情</span><span class="topic-tag">说是明天</span><span class="topic-tag">啥时候开新区啊</span><span class="topic-tag">阿爹笑</span><span class="topic-tag">拍我腰</span></div>
+        </div><div class="topic-card" style="border-left-color:#7c3aed">
+            <div class="topic-title">晚间 (18-23) · 680条</div>
+            <div class="topic-tags"><span class="topic-tag">动画表情</span><span class="topic-tag">哦哦</span><span class="topic-tag">明天开</span><span class="topic-tag">区不</span><span class="topic-tag">大佬</span></div>
+        </div>
+</div>
+
+<style>
+.ai-section { background:linear-gradient(135deg,#f0f4ff,#e8eefd); border-radius:12px; padding:20px; margin-bottom:16px; border:1px solid rgba(26,86,219,0.15); }
+.ai-summary { font-size:14px; color:#1e293b; line-height:1.7; margin:8px 0; }
+.ai-mood { display:inline-block; padding:2px 12px; border-radius:12px; font-size:11px; background:rgba(26,86,219,0.1); color:#1a56db; margin-bottom:8px; }
+.ai-hot-topic { font-size:13px; color:#475569; background:#f8fafc; padding:8px 12px; border-radius:8px; margin:8px 0; border-left:3px solid #f59e0b; }
+.ai-feedback-item { padding:8px 0; border-bottom:1px solid #e2e8f0; display:flex; gap:8px; font-size:12px; }
+.ai-behavior { background:#f8fafc; border-left:3px solid #f59e0b; padding:10px 14px; border-radius:6px; font-size:12px; color:#475569; margin-top:8px; }
+</style><div class="section" style="background:linear-gradient(135deg,#f0f4ff,#e8eefd);">
+    <h2 style="border-bottom-color:#f59e0b;">🤖 AI 分析</h2>
+    <span class="ai-mood">🎭 焦虑讨论</span>
+    <div class="ai-summary">当日群聊围绕国战玩法、氪金策略和角色培养展开，玩家对国战机制存在困惑，讨论月卡与首充性价比，部分玩家卡关元婴，反馈游戏无法后台挂机及灵气恢复问题。</div>
+    <div class="ai-hot-topic"><strong>🔥 热点：</strong>国战机制引发玩家困惑与吐槽，夜晚集中讨论氪金和阵容搭配。</div>
+    <div class="topic-card" style="border-left-color:#f59e0b;">
+            <div class="topic-title">国战玩法困惑</div>
+            <div class="topic-tags"><span class="topic-tag">国战</span><span class="topic-tag">机制</span><span class="topic-tag">吐槽</span></div>
+            <div style="font-size:12px;color:#64748b;margin-top:4px;line-height:1.6;">玩家‘哟哟’多次表示看不懂国战，‘从百草园杀到三味书屋’说‘国战打不了一点’，‘哟哟’吐槽‘国战也是扯淡。。。打小兵也没有灵气恢复’。</div>
+        </div><div class="topic-card" style="border-left-color:#f59e0b;">
+            <div class="topic-title">氪金与月卡党讨论</div>
+            <div class="topic-tags"><span class="topic-tag">氪金</span><span class="topic-tag">月卡</span><span class="topic-tag">性价比</span></div>
+            <div style="font-size:12px;color:#64748b;margin-top:4px;line-height:1.6;">‘渊’自称月卡党氪了36元，3天550w战力，推荐首冲月卡；‘贰佰’说‘顶多是个赌徒，算不上大佬’；‘坟’问‘咋玩的’；‘、’问‘我只买月卡和年卡怎么样’。</div>
+        </div><div class="topic-card" style="border-left-color:#f59e0b;">
+            <div class="topic-title">卡关元婴与阵容求助</div>
+            <div class="topic-tags"><span class="topic-tag">卡关</span><span class="topic-tag">元婴</span><span class="topic-tag">阵容</span></div>
+            <div style="font-size:12px;color:#64748b;margin-top:4px;line-height:1.6;">‘坟’说‘我现在卡元婴了’；‘贰佰’要求‘看一下你的阵容’；‘渊’分享阵容；‘房东’问‘一区有没有元婴来磨一磨吕云峰’。</div>
+        </div><div class="topic-card" style="border-left-color:#f59e0b;">
+            <div class="topic-title">游戏功能反馈</div>
+            <div class="topic-tags"><span class="topic-tag">后台挂机</span><span class="topic-tag">灵气恢复</span></div>
+            <div style="font-size:12px;color:#64748b;margin-top:4px;line-height:1.6;">‘锦鲤’说‘在一个修仙的休闲游戏不能挂后台不太好’；‘哟哟’反映国战打小兵没有灵气恢复。</div>
+        </div>
+    <div class="ai-feedback-item">
+            <span style="font-size:14px;flex-shrink:0;">🟡</span>
+            <div><strong style="color:#f59e0b;font-size:13px;">游戏无法后台挂机</strong>
+            <div style="font-size:12px;color:#64748b;margin-top:2px;">玩家‘锦鲤’反映修仙游戏不能挂后台影响体验。</div></div>
+        </div><div class="ai-feedback-item">
+            <span style="font-size:14px;flex-shrink:0;">🟡</span>
+            <div><strong style="color:#f59e0b;font-size:13px;">国战机制不合理</strong>
+            <div style="font-size:12px;color:#64748b;margin-top:2px;">‘哟哟’指出国战打小兵没有灵气恢复，玩家普遍困惑国战规则。</div></div>
+        </div><div class="ai-feedback-item">
+            <span style="font-size:14px;flex-shrink:0;">🟢</span>
+            <div><strong style="color:#10b981;font-size:13px;">氪金门槛讨论</strong>
+            <div style="font-size:12px;color:#64748b;margin-top:2px;">玩家热议月卡和首充性价比，部分玩家担心不氪金难以推进。持续影响新玩家留存。</div></div>
+        </div>
+    <div class="ai-behavior">💡 夜晚23点后出现大量重复消息（如‘贰佰’、‘渊’、‘坟’多次发送相同内容），疑似刷屏讨论，显示玩家对阵容和氪金策略的高度关注。</div>
+</div>
+<div class="section">
+    <h2>🆕 新增成员</h2>
+    <p style="font-size:13px;color:#475569">本日新增 <strong>123</strong> 名成员入群</p>
+</div>
+
+<div class="footer">📊 数据来源于 NapCatQQ · 2026-06-03 14:40</div>
+</div>
+</body>
+</html>

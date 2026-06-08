@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>玩家建议汇总 · 向量聚类</title>
+<style>
+* {margin:0;padding:0;box-sizing:border-box}
+body {font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;background:#0f172a;color:#e2e8f0;padding:20px}
+.container {max-width:960px;margin:0 auto}
+.header {text-align:center;padding:30px 20px;background:linear-gradient(135deg,#1e293b,#334155);border-radius:16px;margin-bottom:20px}
+.header h1 {font-size:22px;background:linear-gradient(90deg,#60a5fa,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:4px}
+.header .sub {font-size:12px;color:#94a3b8}
+.stats-grid {display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px}
+.stat-card {background:#1e293b;border-radius:12px;padding:16px;text-align:center}
+.stat-card .num {font-size:26px;font-weight:700;color:#60a5fa}
+.stat-card .label {font-size:11px;color:#64748b;margin-top:2px}
+.section-title {font-size:16px;font-weight:600;color:#f1f5f9;margin:20px 0 12px;padding-bottom:8px;border-bottom:2px solid #334155}
+.summary-item {display:flex;align-items:center;gap:10px;background:#1e293b;padding:12px 16px;border-radius:10px;margin-bottom:8px;transition:transform 0.15s}
+.summary-item:hover {transform:translateX(4px)}
+.summary-num {font-size:11px;font-weight:700;color:#60a5fa;background:rgba(96,165,250,0.15);padding:2px 7px;border-radius:4px;white-space:nowrap}
+.summary-text {font-size:15px;color:#f1f5f9;flex:1}
+.summary-count {font-size:11px;color:#94a3b8;background:#0f172a;padding:2px 8px;border-radius:8px;white-space:nowrap}
+.cluster-card {background:#1e293b;border-radius:12px;padding:16px;margin-bottom:14px}
+.cluster-header {display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.cluster-num {font-size:11px;font-weight:700;color:#60a5fa;background:rgba(96,165,250,0.15);padding:2px 7px;border-radius:4px}
+.cluster-summary {font-size:14px;font-weight:600;color:#f1f5f9;flex:1}
+.cluster-count {font-size:11px;color:#94a3b8;background:#0f172a;padding:2px 8px;border-radius:8px}
+.msg-table {width:100%;border-collapse:collapse;font-size:12px}
+.msg-table td {padding:4px 6px;border-bottom:1px solid rgba(255,255,255,0.03);vertical-align:top}
+.msg-table tr:hover {background:rgba(255,255,255,0.03)}
+.footer {text-align:center;padding:16px;font-size:10px;color:#475569}
+@media (max-width:600px) {.stats-grid{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+    <h1>📋 玩家建议汇总</h1>
+    <div class="sub">MiniMax 去重+向量聚类 · DeepSeek 概括 · 2026-06-03</div>
+</div>
+
+    <div class="stats-grid">
+        <div class="stat-card"><div class="num">10411</div><div class="label">总消息量</div></div>
+        <div class="stat-card"><div class="num">4568</div><div class="label">去重后消息</div></div>
+        <div class="stat-card"><div class="num">68</div><div class="label">建议相关(去重后)</div></div>
+        <div class="stat-card"><div class="num">4</div><div class="label">聚类诉求数</div></div>
+    </div>
+
+<div class="section-title">🎯 玩家核心诉求</div>
+<div class="summary-item" style="border-left:3px solid #3b82f6">
+            <span class="summary-num">#1</span>
+            <span class="summary-text">玩家希望增加国家副本，并反映游戏存在暗改、强度过高问题。</span>
+            <span class="summary-count">32条</span>
+        </div><div class="summary-item" style="border-left:3px solid #8b5cf6">
+            <span class="summary-num">#2</span>
+            <span class="summary-text">根据聊天记录，玩家反映玩法单一、机制需调整、公告板异常。</span>
+            <span class="summary-count">18条</span>
+        </div><div class="summary-item" style="border-left:3px solid #ef4444">
+            <span class="summary-num">#3</span>
+            <span class="summary-text">玩家反映188特性有增伤减伤，质疑属性碾压和暗改平衡。</span>
+            <span class="summary-count">8条</span>
+        </div><div class="summary-item" style="border-left:3px solid #f59e0b">
+            <span class="summary-num">#4</span>
+            <span class="summary-text">玩家反映放大招需打小怪攒体力，体力太少限制大招使用次数。</span>
+            <span class="summary-count">7条</span>
+        </div>
+
+<div class="section-title">📌 聚类详情</div>
+<div class="cluster-card" style="border-left:4px solid #3b82f6">
+            <div class="cluster-header">
+                <span class="cluster-num">#1</span>
+                <span class="cluster-summary">玩家希望增加国家副本，并反映游戏存在暗改、强度过高问题。</span>
+                <span class="cluster-count">32条</span>
+            </div>
+            <table class="msg-table"><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-29 17:57</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">哟哟</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">游戏应该多弄点国家副本</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-30 20:53</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">哟哟</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">这是这个游戏的痛点</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-01 16:23</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">夏风如语</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">看游戏策划的脑子了</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-29 19:08</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">旅途</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">不像有的傻逼游戏没人管</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-28 19:11</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">小竹</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">唉……也罢也罢……并非所有都是良心游戏</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-01 16:33</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">鱼迷音</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">所有游戏被骂的最惨的基本都是因为暗改</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-31 16:07</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">贰佰"</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">现在游戏搞这么累 人会跑完的</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-31 21:08</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">WeiβKreu</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">不要太高估自己游戏的粘度了和玩的强度，官方</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-30 17:31</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">小猫咪</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">玩会游戏</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-01 16:22</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">夏风如语</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">感觉一个好游戏要陨落了</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-03 11:49</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">.</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">你家游戏整体挺好的</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-01 16:24</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">香草巧克力</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">想要打造好游戏真的需要一个好策划</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-01 21:16</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">1/3李子清</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">这游戏只有两个属性</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-02 22:26</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">Badwoman</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">别的游戏</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-28 19:18</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">朗朗</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">游戏都得慢慢玩</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-30 10:49</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">迷路的夜星核</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">这玩意儿跟单机没区别的</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-28 18:43</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">张某人🌳️🌳️</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">自动战斗应该整个不充钱的。</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-01 01:39</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">虚伪的假面</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">想做单机的剧情，结果又坐成氪金网游</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-29 16:33</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">忆灬望</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">那算了，都是那种换皮游戏</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-01 21:40</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">亮</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">大家别玩单机</td>
+            </tr><tr><td colspan="3" style="padding:4px;font-size:11px;color:#64748b;text-align:center">… 还有 12 条</td></tr></table>
+        </div><div class="cluster-card" style="border-left:4px solid #8b5cf6">
+            <div class="cluster-header">
+                <span class="cluster-num">#2</span>
+                <span class="cluster-summary">根据聊天记录，玩家反映玩法单一、机制需调整、公告板异常。</span>
+                <span class="cluster-count">18条</span>
+            </div>
+            <table class="msg-table"><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-02 16:16</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">亮</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">也得优化一下</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-29 15:35</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">陌云</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">在优化了在优化了～再给我们一点点时间</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-31 13:35</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">贰佰"</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">拉满就没什么玩的了</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-28 22:09</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8"> ●。樹o、</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">其实是有做推荐和限制的啦</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-31 10:21</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">꧁༺ぬ人༻꧂</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">连续更新了几次，几率改了</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-29 17:12</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">天空飘来五个字</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">所以赶紧调整下机制吧 心累了</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-31 10:26</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">亮</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">公告版都白了</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-29 17:48</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">小米虫</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">不然这还怎么玩</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-31 16:10</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">长路初心</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">咋玩偏了啊？</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-01 15:42</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">小米虫</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">还能这样玩是吗</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-29 11:13</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">雍和</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">兄弟们我又发现了</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-02 16:25</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">哟哟</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">都更新了</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-01 16:26</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">鱼迷音</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">玩法单一</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-31 19:04</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">ᰔᩚ闹</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">没玩明白，</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-29 17:27</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">Rsong</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">就带了一个数值高的</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-29 17:16</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">天空飘来五个字</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">这系统坑我啊</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-29 18:03</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">朗朗</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">今天不是更新了吗</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-01 09:18</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">毛民9527</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">上限不知道多久了</td>
+            </tr></table>
+        </div><div class="cluster-card" style="border-left:4px solid #ef4444">
+            <div class="cluster-header">
+                <span class="cluster-num">#3</span>
+                <span class="cluster-summary">玩家反映188特性有增伤减伤，质疑属性碾压和暗改平衡。</span>
+                <span class="cluster-count">8条</span>
+            </div>
+            <table class="msg-table"><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-01 08:11</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">羽阿哥</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">188的好像有增10%和减伤10%</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-29 15:50</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">L</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">有次数有什么用，就靠属性碾压的</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-31 21:37</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">.</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">人物的专属特性是叠加的吗</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-01 21:16</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">1/3李子清</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">攻击和血量</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-01 08:13</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">无始有名</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">5%全属性</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-28 18:38</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">佩恩没pain</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">如果你们觉得对游戏平衡影响大</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-01 16:13</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">陆压/尤紫陌</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">如果不是bug那就是暗改了</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-29 17:58</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">雾随雨落</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">这可能就是官方平衡人数的方法</td>
+            </tr></table>
+        </div><div class="cluster-card" style="border-left:4px solid #f59e0b">
+            <div class="cluster-header">
+                <span class="cluster-num">#4</span>
+                <span class="cluster-summary">玩家反映放大招需打小怪攒体力，体力太少限制大招使用次数。</span>
+                <span class="cluster-count">7条</span>
+            </div>
+            <table class="msg-table"><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-30 14:50</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">仏</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">剧情主线没推吧</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-29 17:49</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">小米虫</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">天天被大佬追着杀吗</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-29 17:38</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">雾随雨落</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">好像并不影响，需要用你自身战力的时候可以选人的</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-31 22:32</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">.</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">我也是感觉剧情好玩</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-01 08:53</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">羽阿哥</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">主角是修炼属性加20%</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-29 17:01</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">贰佰"</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">你手贱把所有角色都升筑基当我没说</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-01 09:34</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">_       </td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">有一个设定真够离谱的，我要放大招，还要去别的地方打小怪，还要用体力才能攒，一天就那么点体力，就是说我一天只能放几个大招</td>
+            </tr></table>
+        </div>
+
+<div class="footer">
+    MiniMax embo-01 · 去重阈值0.92 · 聚类阈值0.62 · 17条语义查询 · NapCatQQ · QQ群977805513
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,1068 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>游戏建议汇总 · 语义检索报告</title>
+<style>
+* {margin:0;padding:0;box-sizing:border-box}
+body {font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;background:#0f172a;color:#e2e8f0;padding:20px}
+.container {max-width:960px;margin:0 auto}
+.header {text-align:center;padding:30px 20px;background:linear-gradient(135deg,#1e293b,#334155);border-radius:16px;margin-bottom:20px}
+.header h1 {font-size:22px;background:linear-gradient(90deg,#60a5fa,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:4px}
+.header .sub {font-size:12px;color:#94a3b8}
+.stats-grid {display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px}
+.stat-card {background:#1e293b;border-radius:12px;padding:16px;text-align:center}
+.stat-card .num {font-size:26px;font-weight:700;color:#60a5fa}
+.stat-card .label {font-size:11px;color:#64748b;margin-top:2px}
+.cat-grid {display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-bottom:20px}
+.cat-card {background:#1e293b;border-radius:10px;padding:14px}
+.cat-name {font-size:13px;font-weight:600;color:#f1f5f9}
+.cat-count {font-size:20px;font-weight:700;color:#60a5fa;margin-top:4px}
+.section {background:#1e293b;border-radius:12px;padding:18px;margin-bottom:16px}
+.section h2 {font-size:15px;font-weight:600;color:#f1f5f9;margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid #60a5fa;display:inline-block}
+.section h2 .tag {font-size:11px;color:#64748b;font-weight:400}
+.trend {display:flex;align-items:flex-end;gap:6px;height:120px;padding:8px 0}
+.tbar {flex:1;display:flex;flex-direction:column;align-items:center;height:100%}
+.tbar-fill {width:100%;border-radius:4px 4px 0 0;min-height:4px;transition:height 0.3s}
+.tbar-label {font-size:9px;color:#64748b;margin-top:4px}
+.query-list {display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.q-item {display:flex;justify-content:space-between;padding:6px 10px;background:#0f172a;border-radius:6px;font-size:12px}
+.q-text {color:#94a3b8}
+.q-count {color:#60a5fa;font-weight:600}
+table tr:hover {background:rgba(255,255,255,0.03)}
+.footer {text-align:center;padding:16px;font-size:10px;color:#475569}
+@media (max-width:600px) {.stats-grid{grid-template-columns:repeat(2,1fr)}.query-list{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+    <h1>📋 游戏建议汇总报告</h1>
+    <div class="sub">基于 MiniMax embo-01 语义检索 · 10246条消息中检索 · 2026-06-03</div>
+</div>
+
+<div class="stats-grid">
+    <div class="stat-card"><div class="num">3415</div><div class="label">建议相关消息</div></div>
+    <div class="stat-card"><div class="num">1485</div><div class="label">高置信匹配</div></div>
+    <div class="stat-card"><div class="num">8</div><div class="label">归类类别</div></div>
+    <div class="stat-card"><div class="num">33%</div><div class="label">占全部消息比例</div></div>
+</div>
+
+<div class="section">
+    <h2>📊 类别分布</h2>
+    <div class="cat-grid"><div class="cat-card" style="border-left:3px solid #64748b">
+            <div class="cat-name">其他</div>
+            <div class="cat-count">3162条 <span style="font-size:11px;color:#94a3b8">(高置信 1360)</span></div>
+        </div><div class="cat-card" style="border-left:3px solid #f59e0b">
+            <div class="cat-name">活动/内容</div>
+            <div class="cat-count">95条 <span style="font-size:11px;color:#94a3b8">(高置信 42)</span></div>
+        </div><div class="cat-card" style="border-left:3px solid #8b5cf6">
+            <div class="cat-name">玩法/系统改进</div>
+            <div class="cat-count">58条 <span style="font-size:11px;color:#94a3b8">(高置信 43)</span></div>
+        </div><div class="cat-card" style="border-left:3px solid #ec4899">
+            <div class="cat-name">付费/商业化</div>
+            <div class="cat-count">31条 <span style="font-size:11px;color:#94a3b8">(高置信 5)</span></div>
+        </div><div class="cat-card" style="border-left:3px solid #3b82f6">
+            <div class="cat-name">功能建议</div>
+            <div class="cat-count">28条 <span style="font-size:11px;color:#94a3b8">(高置信 10)</span></div>
+        </div><div class="cat-card" style="border-left:3px solid #ef4444">
+            <div class="cat-name">BUG/技术问题</div>
+            <div class="cat-count">19条 <span style="font-size:11px;color:#94a3b8">(高置信 14)</span></div>
+        </div><div class="cat-card" style="border-left:3px solid #ef4444">
+            <div class="cat-name">平衡性调整</div>
+            <div class="cat-count">12条 <span style="font-size:11px;color:#94a3b8">(高置信 7)</span></div>
+        </div><div class="cat-card" style="border-left:3px solid #10b981">
+            <div class="cat-name">社交/组队</div>
+            <div class="cat-count">10条 <span style="font-size:11px;color:#94a3b8">(高置信 4)</span></div>
+        </div></div>
+</div>
+
+<div class="section">
+    <h2>📈 每日趋势</h2>
+    <div class="trend"><div class="tbar"><div class="tbar-fill" style="height:16.760828625235405%;background:#3b82f6" title="2026-05-28: 178条"></div><div class="tbar-label">05-28</div></div><div class="tbar"><div class="tbar-fill" style="height:72.88135593220339%;background:#2563eb" title="2026-05-29: 774条"></div><div class="tbar-label">05-29</div></div><div class="tbar"><div class="tbar-fill" style="height:38.88888888888889%;background:#60a5fa" title="2026-05-30: 413条"></div><div class="tbar-label">05-30</div></div><div class="tbar"><div class="tbar-fill" style="height:100.0%;background:#7c3aed" title="2026-05-31: 1062条"></div><div class="tbar-label">05-31</div></div><div class="tbar"><div class="tbar-fill" style="height:57.53295668549906%;background:#a78bfa" title="2026-06-01: 611条"></div><div class="tbar-label">06-01</div></div><div class="tbar"><div class="tbar-fill" style="height:34.93408662900188%;background:#f59e0b" title="2026-06-02: 371条"></div><div class="tbar-label">06-02</div></div><div class="tbar"><div class="tbar-fill" style="height:0.5649717514124294%;background:#f97316" title="2026-06-03: 6条"></div><div class="tbar-label">06-03</div></div></div>
+</div>
+
+<div class="section">
+    <h2>🔍 命中查询分布</h2>
+    <div class="query-list"><div class="q-item"><span class="q-text">这个玩法应该改一下</span><span class="q-count">657</span></div><div class="q-item"><span class="q-text">这个设定太坑了建议改改</span><span class="q-count">476</span></div><div class="q-item"><span class="q-text">能不能把某某改一下</span><span class="q-count">451</span></div><div class="q-item"><span class="q-text">希望游戏能改进</span><span class="q-count">432</span></div><div class="q-item"><span class="q-text">游戏这样设计不合理</span><span class="q-count">361</span></div><div class="q-item"><span class="q-text">多出点新内容</span><span class="q-count">173</span></div><div class="q-item"><span class="q-text">我觉得应该优化</span><span class="q-count">163</span></div><div class="q-item"><span class="q-text">出了个问题</span><span class="q-count">145</span></div></div>
+</div>
+
+<div class="section">
+            <h2 style="border-bottom-color:#64748b">其他 <span class="tag">3162条</span></h2>
+            <table style="width:100%;border-collapse:collapse"><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-29 19:20</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">心诚则灵</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">能不能叫策划改一改</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#64748b">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-29 17:57</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">渊</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">所以想让策划搞搞</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#64748b">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-29 17:57</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">哟哟</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">游戏应该多弄点国家副本</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#64748b">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-01 09:56</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">羽阿哥</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">那就 让 策划改</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#64748b">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-31 19:05</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">O.o</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">一直盯着主角升吗</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#64748b">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-31 19:05</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">O.o</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">一直盯着主角升吗</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#64748b">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-30 20:53</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">哟哟</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">这是这个游戏的痛点</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#64748b">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-02 16:16</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">亮</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">也得优化一下</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#64748b">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-31 13:54</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">꧁༺ぬ人༻꧂</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">肯定会继续优化的</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#64748b">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-31 13:54</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">꧁༺ぬ人༻꧂</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">肯定会继续优化的</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#64748b">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-29 16:59</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">朗朗</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">策划你早改不就好了</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#64748b">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-29 16:59</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">朗朗</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">策划你早改不就好了</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#64748b">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-01 16:23</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">夏风如语</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">看游戏策划的脑子了</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#64748b">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-29 17:55</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">朗朗</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">策划你看见我说的了吗</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#64748b">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-01 08:11</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">羽阿哥</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">188的好像有增10%和减伤10%</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#64748b">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-01 08:11</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">羽阿哥</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">188的好像有增10%和减伤10%</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#64748b">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-29 19:08</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">旅途</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">不像有的傻逼游戏没人管</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#64748b">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-28 19:11</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">小竹</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">唉……也罢也罢……并非所有都是良心游戏</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#64748b">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-01 16:33</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">鱼迷音</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">所有游戏被骂的最惨的基本都是因为暗改</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#64748b">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-29 17:48</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">小米虫</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">不然这还怎么玩</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#64748b">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-29 15:35</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">陌云</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">在优化了在优化了～再给我们一点点时间</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#64748b">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-01 16:33</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">镜花水月</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">[回复消息 [镜花水月(1727200936)] 1.游戏要降肝（太肝了巴不得玩家25个小时在游戏里？） ...] 我说的没毛病吧？为了游戏好大家好真听听劝吧</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#64748b">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-31 16:54</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">孤</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">我现在就养主角一个</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#64748b">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-01 21:25</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">1/3李子清</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">喊策划降难度啊</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#64748b">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-31 16:07</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">贰佰"</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">现在游戏搞这么累 人会跑完的</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#64748b">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-31 16:07</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">贰佰"</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">现在游戏搞这么累 人会跑完的</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#64748b">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-30 21:51</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">贰佰"</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">更新之后是不是代码搞错了？</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#64748b">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-30 21:51</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">贰佰"</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">更新之后是不是代码搞错了？</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#64748b">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-31 21:08</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">WeiβKreu</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">不要太高估自己游戏的粘度了和玩的强度，官方</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#64748b">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-02 10:00</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">耶莫拉没有斯对8</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">我以为我在大气层，原来策划比我还高</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#64748b">🟢 高置信</td>
+            </tr><tr><td colspan="4" style="padding:4px;font-size:11px;color:#64748b;text-align:center">… 还有 3132 条</td></tr></table>
+        </div><div class="section">
+            <h2 style="border-bottom-color:#f59e0b">活动/内容 <span class="tag">95条</span></h2>
+            <table style="width:100%;border-collapse:collapse"><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-31 16:16</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">贰佰"</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">我没赶上活动啊</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#f59e0b">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-31 16:16</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">贰佰"</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">我没赶上活动啊</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#f59e0b">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-29 18:48</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">天空飘来五个字</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">看不到活动了</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#f59e0b">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-29 18:48</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">天空飘来五个字</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">看不到活动了</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#f59e0b">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-01 10:43</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">无始有名</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">想去公众号看一下有没有活动预告，结果看到我自己了</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#f59e0b">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-30 23:30</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">贰佰"</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">每天晚上8.7点活动，尽量都参加</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#f59e0b">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-30 01:33</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">糊糊</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">这个活动在哪里啊</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#f59e0b">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-30 01:33</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">糊糊</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">这个活动在哪里啊</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#f59e0b">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-31 21:23</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">房东</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">所有活动奖励差，又臭又长</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#f59e0b">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-31 21:23</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">房东</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">所有活动奖励差，又臭又长</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#f59e0b">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-29 15:42</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">哟哟</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">目前没见到活动投放</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#f59e0b">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-31 19:12</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">酷乐猫</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">这游戏能不能改改模式，国战定点、BOSS定点、夜巡定点，好多活动都这样，一天不用干别的刚掐时间去了，玩的累……</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#f59e0b">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-02 13:14</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">羽阿哥</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">[回复消息 [无始有名(259710657)] 没有新区了 [表情 /菜汪]] 😂</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#f59e0b">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-28 18:08</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">123</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">晚上活动应该就够了</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#f59e0b">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-29 10:58</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">哟哟</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">抽奖活动</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#f59e0b">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-31 21:26</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">WeiβKreu</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">强行通过这种活动来绑活跃度 只会让人退</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#f59e0b">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-31 21:26</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">WeiβKreu</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">强行通过这种活动来绑活跃度 只会让人退</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#f59e0b">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-02 16:16</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">亮</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">新手七天乐过完后续活动也没</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#f59e0b">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-31 19:14</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">酷乐猫</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">不适合上班族，这游戏说他肝吧，上活动就在那盯着看，也干不了啥，说他不肝吧，每天还要保持上线</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#f59e0b">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-29 16:24</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">天空飘来五个字</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">后面活动肯定出</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#f59e0b">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-29 16:24</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">天空飘来五个字</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">后面活动肯定出</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#f59e0b">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-30 20:10</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">糊糊</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">这个活动到几点来着</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#f59e0b">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-02 18:02</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">长路初心</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">有不想玩的，买来肯定也会氪金的，只是不想走前面那些剧情了，除非你开新区</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#f59e0b">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-30 22:16</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">亮</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">后期会更新活动的</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#f59e0b">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-30 22:16</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">亮</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">后期会更新活动的</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#f59e0b">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-28 20:31</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">雾随雨落</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">这游戏没搞个活动日历那种东西吗</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#f59e0b">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-29 17:03</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">贰佰"</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">我活动没打都够 别理他</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#f59e0b">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-29 17:03</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">贰佰"</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">我活动没打都够 别理他</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#f59e0b">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-01 15:41</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">镜花水月</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">福利活动对比同竞品有点少的</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#f59e0b">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-01 09:12</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">一区 南宫琪琪</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">各种呼活动，连微氪零氪的玩家都没有收获。全被氪佬或者托霸占 等着流失吧 [表情 ]</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#f59e0b">🟢 高置信</td>
+            </tr><tr><td colspan="4" style="padding:4px;font-size:11px;color:#64748b;text-align:center">… 还有 65 条</td></tr></table>
+        </div><div class="section">
+            <h2 style="border-bottom-color:#8b5cf6">玩法/系统改进 <span class="tag">58条</span></h2>
+            <table style="width:100%;border-collapse:collapse"><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-29 01:24</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">天空飘来五个字</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">你们这游戏能不能调整机制</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#8b5cf6">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-02 12:15</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">_       </td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">[图片] 这游戏一直会卡在这个界面</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#8b5cf6">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-30 23:53</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">贰佰"</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">毕竟还要自己操作</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#8b5cf6">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-30 10:48</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">哟哟</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">没看到操作的地方</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#8b5cf6">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-30 10:48</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">哟哟</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">没看到操作的地方</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#8b5cf6">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-02 12:15</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">_       </td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">这游戏一直会卡在这个界面</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#8b5cf6">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-01 16:26</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">鱼迷音</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">玩法单一</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#8b5cf6">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-29 20:37</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">张某人🌳️🌳️</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">打怪机制，真的不行。我打半天还有一丝血。怪把我打死了。我在进去怪被打死了我啥也没给。</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#8b5cf6">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-29 20:37</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">张某人🌳️🌳️</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">打怪机制，真的不行。我打半天还有一丝血。怪把我打死了。我在进去怪被打死了我啥也没给。</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#8b5cf6">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-29 17:12</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">天空飘来五个字</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">所以赶紧调整下机制吧 心累了</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#8b5cf6">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-29 17:12</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">天空飘来五个字</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">所以赶紧调整下机制吧 心累了</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#8b5cf6">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-29 20:00</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8"> ●。樹o、</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">关卡操作累的事情，我们已经在讨论解决方案了</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#8b5cf6">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-29 20:00</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8"> ●。樹o、</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">关卡操作累的事情，我们已经在讨论解决方案了</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#8b5cf6">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-31 23:57</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">WeiβKreu</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">宁愿在在一区大凉当个薅系统的零氪</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#8b5cf6">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-31 23:57</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">WeiβKreu</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">宁愿在在一区大凉当个薅系统的零氪</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#8b5cf6">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-29 17:16</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">天空飘来五个字</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">这系统坑我啊</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#8b5cf6">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-29 17:16</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">天空飘来五个字</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">这系统坑我啊</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#8b5cf6">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-01 09:34</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">_       </td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">有一个设定真够离谱的，我要放大招，还要去别的地方打小怪，还要用体力才能攒，一天就那么点体力，就是说我一天只能放几个大招</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#8b5cf6">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-01 09:34</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">_       </td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">有一个设定真够离谱的，我要放大招，还要去别的地方打小怪，还要用体力才能攒，一天就那么点体力，就是说我一天只能放几个大招</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#8b5cf6">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-01 16:26</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">鱼迷音</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">操作点过少</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#8b5cf6">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-30 10:48</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">迷路的夜星核</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">这种挂机游戏也不存在操作了</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#8b5cf6">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-30 10:48</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">迷路的夜星核</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">这种挂机游戏也不存在操作了</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#8b5cf6">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-29 18:04</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8"> ●。樹o、</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">游戏类型不太一样嘛，我们现在的次数基本上都是时间恢复的，所以其实等待也是能获得资源，只是需要操作一下</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#8b5cf6">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-29 18:04</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8"> ●。樹o、</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">游戏类型不太一样嘛，我们现在的次数基本上都是时间恢复的，所以其实等待也是能获得资源，只是需要操作一下</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#8b5cf6">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-01 07:58</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">羽阿哥</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">界面里找了一下，没找到</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#8b5cf6">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-01 07:58</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">羽阿哥</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">界面里找了一下，没找到</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#8b5cf6">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-29 16:54</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">陌云</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">问题我们会努力改的大家有体验上的问题，随时提给我们哈</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#8b5cf6">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-29 16:54</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">陌云</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">问题我们会努力改的大家有体验上的问题，随时提给我们哈</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#8b5cf6">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-02 11:44</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">耶莫拉没有斯对8</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">一点体验感都没有了快</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#8b5cf6">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-02 11:44</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">耶莫拉没有斯对8</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">一点体验感都没有了快</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#8b5cf6">🟢 高置信</td>
+            </tr><tr><td colspan="4" style="padding:4px;font-size:11px;color:#64748b;text-align:center">… 还有 28 条</td></tr></table>
+        </div><div class="section">
+            <h2 style="border-bottom-color:#ec4899">付费/商业化 <span class="tag">31条</span></h2>
+            <table style="width:100%;border-collapse:collapse"><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-01 19:00</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">十九不知红尘苦</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">或许可以来一个每月1号礼包，送十个丹药，十个铁，几个功法</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#ec4899">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-29 15:02</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">哟哟</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">轻松点就上个月卡</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#ec4899">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-01 09:36</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">羽阿哥</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">boss 是人家  用来逼氪克的</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#ec4899">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-01 09:36</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">羽阿哥</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">boss 是人家  用来逼氪克的</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#ec4899">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-30 22:13</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">亮</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">全买商场礼包了</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#ec4899">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-02 21:13</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">陆</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">[回复消息 [1/3李子清(1686006452)] 没太多BT英雄之前好玩，一个赵云一只鲲能越好多] 还好没传奇花钱 @1/3李子清 (1686006452)</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#ec4899">⚪ 相关</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-01 12:14</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">镜花水月</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">怕关怕圈的直接零氪，撑死月卡。倒闭了还能笑话氪的多的，玩的不舒服了直接换游戏，不美滋滋吗</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#ec4899">⚪ 相关</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-01 09:36</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">_       </td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">变相就是要花钱放大招</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#ec4899">⚪ 相关</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-30 21:34</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">贰佰"</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">都是大礼包</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#ec4899">⚪ 相关</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-30 21:34</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">贰佰"</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">都是大礼包</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#ec4899">⚪ 相关</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-02 21:13</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">陆</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">还好没传奇花钱</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#ec4899">⚪ 相关</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-02 21:27</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">.</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">咱们没有氪金礼包吗</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#ec4899">⚪ 相关</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-02 21:27</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">.</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">咱们没有氪金礼包吗</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#ec4899">⚪ 相关</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-01 15:36</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">坟</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">你有可能比一个月卡党战力都第</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#ec4899">⚪ 相关</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-28 18:44</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">贰佰"</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">10连采集要月卡 确实离谱 很劝退人</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#ec4899">⚪ 相关</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-31 15:08</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">计言</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">宝子，那个礼包哦</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#ec4899">⚪ 相关</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-31 15:08</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">计言</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">宝子，那个礼包哦</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#ec4899">⚪ 相关</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-01 15:46</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">旅途</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">[回复消息 [坟(2661911342)] 你有可能比一个月卡党战力都第] @坟 (2661911342)  呀可能 我又不是白痴 几千块不如月卡</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#ec4899">⚪ 相关</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-31 00:09</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">贰佰"</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">其实也没比你多多少，毕竟你氪了月卡，六元首充</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#ec4899">⚪ 相关</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-31 00:09</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">贰佰"</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">其实也没比你多多少，毕竟你氪了月卡，六元首充</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#ec4899">⚪ 相关</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-29 09:56</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">123</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">开月卡就不肝了</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#ec4899">⚪ 相关</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-29 09:56</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">123</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">月卡30</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#ec4899">⚪ 相关</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-31 09:59</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">镜花水月</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">月卡加6块钱玩到倒闭性价比最高</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#ec4899">⚪ 相关</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-31 09:59</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">镜花水月</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">月卡加6块钱玩到倒闭性价比最高</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#ec4899">⚪ 相关</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-30 22:14</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">酷乐猫</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">还不如买礼包</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#ec4899">⚪ 相关</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-30 22:14</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">酷乐猫</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">还不如买礼包</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#ec4899">⚪ 相关</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-01 16:18</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">鱼迷音</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">那个88弟子礼包太恶心了</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#ec4899">⚪ 相关</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-31 14:38</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">旅途</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">这游戏弹窗礼包多不多</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#ec4899">⚪ 相关</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-29 15:40</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">L</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">礼包都没买，就去抽欺负了的，害得排名都跌了</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#ec4899">⚪ 相关</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-01 18:57</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">王孝语</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">目前暂时没有生日相关的礼包哦 [图片]</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#ec4899">⚪ 相关</td>
+            </tr><tr><td colspan="4" style="padding:4px;font-size:11px;color:#64748b;text-align:center">… 还有 1 条</td></tr></table>
+        </div><div class="section">
+            <h2 style="border-bottom-color:#3b82f6">功能建议 <span class="tag">28条</span></h2>
+            <table style="width:100%;border-collapse:collapse"><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-28 18:43</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">张某人🌳️🌳️</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">自动战斗应该整个不充钱的。</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#3b82f6">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-29 19:53</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">哟哟</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">我觉得限时活动取消最好，弄成不限时的，增加次数限制</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#3b82f6">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-28 18:41</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">佩恩没pain</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">这个功能本来就是玩家和官方双赢的</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#3b82f6">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-30 20:53</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">毛民9527</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">剧情现在才金丹，快增加后续的啊</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#3b82f6">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-30 20:53</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">毛民9527</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">剧情现在才金丹，快增加后续的啊</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#3b82f6">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-29 21:29</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">小竹</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">抽奖就会开启</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#3b82f6">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-03 09:15</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">羽阿哥</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">把游戏的分屏和小窗功能增加一下，你这一挂就半小时，还不能分屏，不能小窗，咋想的呀？</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#3b82f6">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-31 15:00</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">王孝语</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">目前暂时没有更换/退出国家的功能哦</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#3b82f6">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-29 19:01</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">雾随雨落</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">话说能不能搞个活动日历的功能，起码把当天有啥活动摆出来</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#3b82f6">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-31 21:07</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">毛民9527</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">其余时间不开启，把积分提高一下</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#3b82f6">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-29 16:18</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">哟哟</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">。。。抽奖概率太低，建议增加</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#3b82f6">⚪ 相关</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-29 19:34</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">哟哟</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">希望增加点副本，还有不限时的活动（免得跟打卡上班一样）</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#3b82f6">⚪ 相关</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-29 19:34</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">哟哟</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">希望增加点副本，还有不限时的活动（免得跟打卡上班一样）</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#3b82f6">⚪ 相关</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-30 17:23</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">锦鲤</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">应该出个一键跳过</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#3b82f6">⚪ 相关</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-29 16:57</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">恭叔</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">卡牌游戏就不能出个重置卡牌资源么，非要换来换去么，换的机制还整不明白</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#3b82f6">⚪ 相关</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-29 16:57</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">恭叔</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">卡牌游戏就不能出个重置卡牌资源么，非要换来换去么，换的机制还整不明白</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#3b82f6">⚪ 相关</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-28 18:36</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">佩恩没pain</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">你们这个游戏有传功这个功能非常加分</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#3b82f6">⚪ 相关</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-29 12:22</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">小楼一夜听春雨</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">弄个长按升级也行啊</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#3b82f6">⚪ 相关</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-29 18:03</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">哟哟</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">增加离线挂机资源产出啊。挂机放置类游戏，这个都没有</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#3b82f6">⚪ 相关</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-29 18:03</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">哟哟</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">增加离线挂机资源产出啊。挂机放置类游戏，这个都没有</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#3b82f6">⚪ 相关</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-28 18:38</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">佩恩没pain</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">那最起码开服前三天开放</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#3b82f6">⚪ 相关</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-30 10:01</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">王孝语</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">预计31日开启3区哦，技术小哥对系统做了些优化，需要一点开发时间~</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#3b82f6">⚪ 相关</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-29 17:58</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">谜鹿</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">建议出个连升5级，10级，50级之类的，一个一个点好累啊</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#3b82f6">⚪ 相关</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-29 17:58</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">谜鹿</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">建议出个连升5级，10级，50级之类的，一个一个点好累啊</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#3b82f6">⚪ 相关</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-28 18:36</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">佩恩没pain</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">关键是既然有传功这个功能就彻底开放出来啊</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#3b82f6">⚪ 相关</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-02 18:03</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">哟哟</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">其实官方出个平台，赚手续费岂不快哉</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#3b82f6">⚪ 相关</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-02 21:30</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">王孝语</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">[回复消息 [.(1198227706)] 参加世界boss怎么一点奖励也没有] 如果世界boss被击败时您还在活动场地内，奖励是直接发放，您可以看看宗门贡献和庚金等数量是否有增加 @. (1198227706)</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#3b82f6">⚪ 相关</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-02 21:30</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">王孝语</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">如果世界boss被击败时您还在活动场地内，奖励是直接发放，您可以看看宗门贡献和庚金等数量是否有增加</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#3b82f6">⚪ 相关</td>
+            </tr></table>
+        </div><div class="section">
+            <h2 style="border-bottom-color:#ef4444">BUG/技术问题 <span class="tag">19条</span></h2>
+            <table style="width:100%;border-collapse:collapse"><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-01 16:32</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">.</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">这么严重的bug</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#ef4444">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-29 19:36</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8"> ●。樹o、</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">收到，我记录个bug</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#ef4444">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-29 19:36</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8"> ●。樹o、</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">收到，我记录个bug</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#ef4444">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-29 09:49</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">哟哟</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">有bug啊</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#ef4444">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-29 09:59</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">佩恩没pain</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">有bug吗</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#ef4444">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-02 10:55</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">无始有名</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">找到bug有没有福利？</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#ef4444">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-02 10:55</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">无始有名</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">@王孝语 (2185681800)  找到bug有没有福利？ [表情 /菜汪]</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#ef4444">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-01 16:13</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">陆压/尤紫陌</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">如果不是bug那就是暗改了</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#ef4444">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-01 16:33</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">鱼迷音</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">而且各类bug和暗改很恶心</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#ef4444">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-02 10:57</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">王孝语</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">[回复消息 [无始有名(259710657)] @王孝语 (2185681800)  找到bug有没有福利？ [表情 /菜汪]] @无始有名 (259710657)  道友遇到异常问题，可以提供相关截图/录屏私聊给下我哦~ [图片]</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#ef4444">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-02 11:49</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">1/3李子清</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">@王孝语 (2185681800)  里程碑难度降低一下啊，一个区这么点活人，都卡死了</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#ef4444">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-02 11:51</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">王孝语</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">[回复消息 [1/3李子清(1686006452)] @王孝语 (2185681800)  里程碑难度降低一下啊，一个区这么点活人，都卡死了] @1/3李子清 (1686006452)  好的，这边登记下建议 ... [图片]</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#ef4444">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-01 16:25</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">陆压/尤紫陌</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">能接受他有bug   补偿呢？  本来榜二的  被搞到榜四</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#ef4444">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-02 10:57</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">王孝语</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">道友遇到异常问题，可以提供相关截图/录屏私聊给下我哦~</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#ef4444">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-01 16:20</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">陆压/尤紫陌</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">这个真的影响公平性了  灵石消耗榜  氪金争不过bug  改了也没补偿</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#ef4444">⚪ 相关</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-30 11:02</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">从百草园杀到三味</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">1区资源用错了  提升不上去卡死了</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#ef4444">⚪ 相关</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-30 11:02</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">从百草园杀到三味</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">1区资源用错了  提升不上去卡死了</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#ef4444">⚪ 相关</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-01 09:02</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">毛民9527</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">灵石其实没啥影响丹药都卡死你</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#ef4444">⚪ 相关</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-01 09:02</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">1/3李子清</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">灵石其实没啥影响丹药都卡死你</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#ef4444">⚪ 相关</td>
+            </tr></table>
+        </div><div class="section">
+            <h2 style="border-bottom-color:#ef4444">平衡性调整 <span class="tag">12条</span></h2>
+            <table style="width:100%;border-collapse:collapse"><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-28 18:38</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">佩恩没pain</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">如果你们觉得对游戏平衡影响大</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#ef4444">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-29 17:16</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">渊</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">太不合理了</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#ef4444">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-29 17:58</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">雾随雨落</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">这可能就是官方平衡人数的方法</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#ef4444">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-29 17:58</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">雾随雨落</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">这可能就是官方平衡人数的方法</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#ef4444">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-01 15:40</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">Alden</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">3万  太强了</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#ef4444">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-29 17:14</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">渊</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">还有野外那种打了半天自己没一点奖励是不是不合理起码給一半以此类推吧万一后边别的国家没人岂不是一点奖励拿不到打个boss还要打半天</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#ef4444">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-29 17:14</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">渊</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">还有野外那种打了半天自己没一点奖励是不是不合理起码給一半以此类推吧万一后边别的国家没人岂不是一点奖励拿不到打个boss还要打半天</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#ef4444">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-29 11:41</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">哟哟</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">完全不合理。。</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#ef4444">⚪ 相关</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-01 16:24</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">鱼迷音</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">过于半成品了</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#ef4444">⚪ 相关</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-01 16:25</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">镜花水月</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">过于半成品了</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#ef4444">⚪ 相关</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-01 16:25</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">夏风如语</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">过于半成品了</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#ef4444">⚪ 相关</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-01 16:25</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">姜尚真</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">我也觉得过于半成品了</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#ef4444">⚪ 相关</td>
+            </tr></table>
+        </div><div class="section">
+            <h2 style="border-bottom-color:#10b981">社交/组队 <span class="tag">10条</span></h2>
+            <table style="width:100%;border-collapse:collapse"><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-29 20:20</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">雾随雨落</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">感觉像是不玩了，势力都被追上了，充几千块不至于这么快</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#10b981">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-01 09:24</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">毛民9527</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">其他都是固定势力，只有升级和丹药和资质才是长久之计</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#10b981">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-01 22:54</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">耶莫拉没有斯对8</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">我觉得官方咋先把活跃拉上来，一上线都没人聊天</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#10b981">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-29 10:56</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">白星不坠月</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">聊天记录找一下，可以让管理员置顶一下消息</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#10b981">🟢 高置信</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-30 10:13</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">毛民9527</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">这游戏有6个属性你打普通小怪看的是势力值</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#10b981">⚪ 相关</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-03 07:18</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">_______尐</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">关卡和势力的排名奖励</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#10b981">⚪ 相关</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-31 08:15</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">亮</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">组队走起</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#10b981">⚪ 相关</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-31 10:09</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">亮</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">组队走起</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#10b981">⚪ 相关</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-31 10:09</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">亮</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">组队走起</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#10b981">⚪ 相关</td>
+            </tr><tr>
+                <td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-01 09:33</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">WeiβKreu</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">势力追不上了</td>
+                <td style="padding:4px 6px;font-size:10px;text-align:right;color:#10b981">⚪ 相关</td>
+            </tr></table>
+        </div>
+
+<div class="footer">
+    检索方法: MiniMax embo-01 (1536维) · 双阈值 0.42/0.55 · 17条语义查询<br>
+    数据来源: NapCatQQ · QQ群 977805513
+</div>
+</div>
+</body>
+</html>

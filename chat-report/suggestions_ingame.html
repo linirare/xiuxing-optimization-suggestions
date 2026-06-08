@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>游戏内建议汇总 · 向量聚类</title>
+<style>
+* {margin:0;padding:0;box-sizing:border-box}
+body {font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;background:#0f172a;color:#e2e8f0;padding:20px}
+.container {max-width:960px;margin:0 auto}
+.header {text-align:center;padding:30px 20px;background:linear-gradient(135deg,#1e293b,#334155);border-radius:16px;margin-bottom:20px}
+.header h1 {font-size:22px;background:linear-gradient(90deg,#60a5fa,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:4px}
+.header .sub {font-size:12px;color:#94a3b8}
+.stats-grid {display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px}
+.stat-card {background:#1e293b;border-radius:12px;padding:16px;text-align:center}
+.stat-card .num {font-size:26px;font-weight:700;color:#60a5fa}
+.stat-card .label {font-size:11px;color:#64748b;margin-top:2px}
+.section-title {font-size:16px;font-weight:600;color:#f1f5f9;margin:20px 0 12px;padding-bottom:8px;border-bottom:2px solid #334155}
+.summary-item {display:flex;align-items:center;gap:10px;background:#1e293b;padding:12px 16px;border-radius:10px;margin-bottom:8px;transition:transform 0.15s}
+.summary-item:hover {transform:translateX(4px)}
+.summary-num {font-size:11px;font-weight:700;color:#60a5fa;background:rgba(96,165,250,0.15);padding:2px 7px;border-radius:4px;white-space:nowrap}
+.summary-text {font-size:15px;color:#f1f5f9;flex:1}
+.summary-count {font-size:11px;color:#94a3b8;background:#0f172a;padding:2px 8px;border-radius:8px;white-space:nowrap}
+.cluster-card {background:#1e293b;border-radius:12px;padding:16px;margin-bottom:14px}
+.cluster-header {display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.cluster-num {font-size:11px;font-weight:700;color:#60a5fa;background:rgba(96,165,250,0.15);padding:2px 7px;border-radius:4px}
+.cluster-summary {font-size:14px;font-weight:600;color:#f1f5f9;flex:1}
+.cluster-count {font-size:11px;color:#94a3b8;background:#0f172a;padding:2px 8px;border-radius:8px}
+.msg-table {width:100%;border-collapse:collapse;font-size:12px}
+.msg-table td {padding:4px 6px;border-bottom:1px solid rgba(255,255,255,0.03);vertical-align:top}
+.msg-table tr:hover {background:rgba(255,255,255,0.03)}
+.footer {text-align:center;padding:16px;font-size:10px;color:#475569}
+@media (max-width:600px) {.stats-grid{grid-template-columns:repeat(2,1fr)}}
+</style></head>
+<body><div class="container">
+<div class="header"><h1>📋 玩家建议汇总 · 游戏内聊天</h1>
+<div class="sub">MiniMax 去重+向量聚类 · DeepSeek 概括 · 2026-06-03</div></div>
+<div class="stats-grid">
+        <div class="stat-card"><div class="num">13435</div><div class="label">总消息量</div></div>
+        <div class="stat-card"><div class="num">7133</div><div class="label">去重后消息</div></div>
+        <div class="stat-card"><div class="num">300</div><div class="label">建议相关</div></div>
+        <div class="stat-card"><div class="num">9</div><div class="label">聚类诉求数</div></div>
+    </div>
+<div class="section-title">🎯 玩家核心诉求</div><div class="summary-item" style="border-left:3px solid #3b82f6">
+            <span class="summary-num">#1</span>
+            <span class="summary-text">玩家反馈活动奖励缺失、难度提升但奖励未变，且论道收益低。</span>
+            <span class="summary-count">127条</span>
+        </div><div class="summary-item" style="border-left:3px solid #8b5cf6">
+            <span class="summary-num">#2</span>
+            <span class="summary-text">玩家反映游戏机制差、数值堆砌、自动战斗不合理、粘性低。</span>
+            <span class="summary-count">47条</span>
+        </div><div class="summary-item" style="border-left:3px solid #ef4444">
+            <span class="summary-num">#3</span>
+            <span class="summary-text">玩家反映游戏无法挂后台、开小窗，操作繁琐且评论功能异常。</span>
+            <span class="summary-count">23条</span>
+        </div><div class="summary-item" style="border-left:3px solid #f59e0b">
+            <span class="summary-num">#4</span>
+            <span class="summary-text">玩家反馈升级需逐一点击、恢复次数消耗道具等设定不合理。</span>
+            <span class="summary-count">23条</span>
+        </div><div class="summary-item" style="border-left:3px solid #10b981">
+            <span class="summary-num">#5</span>
+            <span class="summary-text">玩家反映游戏缺少防御属性，希望明确防御机制的作用。</span>
+            <span class="summary-count">22条</span>
+        </div><div class="summary-item" style="border-left:3px solid #ec4899">
+            <span class="summary-num">#6</span>
+            <span class="summary-text">玩家反映世界BOSS死亡后无奖励，希望优化PVP机制和等待时间。</span>
+            <span class="summary-count">17条</span>
+        </div><div class="summary-item" style="border-left:3px solid #06b6d4">
+            <span class="summary-num">#7</span>
+            <span class="summary-text">玩家反映材料爆率异常，合成途径缺失，材料难攒。</span>
+            <span class="summary-count">14条</span>
+        </div><div class="summary-item" style="border-left:3px solid #f97316">
+            <span class="summary-num">#8</span>
+            <span class="summary-text">玩家希望活动时间更明显，避免错过限时活动。</span>
+            <span class="summary-count">6条</span>
+        </div><div class="summary-item" style="border-left:3px solid #3b82f6">
+            <span class="summary-num">#9</span>
+            <span class="summary-text">玩家反映副本“嘎了就不能进了”，且存在“进不出了”的问题。</span>
+            <span class="summary-count">5条</span>
+        </div>
+<div class="section-title">📌 聚类详情</div><div class="cluster-card" style="border-left:4px solid #3b82f6">
+            <div class="cluster-header"><span class="cluster-num">#1</span>
+            <span class="cluster-summary">玩家反馈活动奖励缺失、难度提升但奖励未变，且论道收益低。</span>
+            <span class="cluster-count">127条</span></div>
+            <table class="msg-table"><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-31 19:00</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">狐狸</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">不懂这个玩法</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-01 19:13</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">齐静春</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">是啊，另外几个也升到200了</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-01 01:11</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">柯傲天</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">这个什么榜的昨天的奖励怎么没了？</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-31 22:16</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">纹</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">你可以算的嘛，然后再看看奖励比对一下😂</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-31 16:17</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">百里飞燕</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">不好拿啊</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-28 20:08</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">孟川</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">没奖励啊</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-30 13:24</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">南宫琪琪</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">够刷 我才四千</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-31 20:23</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">武当王也丶</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">话说变难打了奖励也没有变好呀</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-01 10:07</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">人屠</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">也快了还差一个</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-31 20:27</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">溜溜达达灬</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">我都不知道几点了活动有时</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-30 16:26</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">南宫琪琪</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">我两个五连 三次单发 啥都没有</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-31 13:16</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">贝若溪</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">马上刷满</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-28 11:06</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">醉里挑灯看剑</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">点的费劲不玩了</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-31 17:24</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">正魔</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">至少还要充30才行任务给的不够</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-31 13:39</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">林微明</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">论道收益啊，我给江用了，才800</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-31 08:05</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">李怀真</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">这个点没啥人啊</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-28 19:18</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">皇甫紫陌</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">刚弄到一百万它又让我弄到一百二十万</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-01 18:55</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">无始</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">慢慢玩，我也是今天才玩明白</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-28 20:29</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">封熙熙</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">不加领不到，我第一次输的时候也是这样</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-31 13:25</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">狄涑</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">挺多的吧加上这么多资源我升了100多万</td></tr><tr><td colspan="3" style="padding:4px;font-size:11px;color:#64748b;text-align:center">… 还有 107 条</td></tr></table></div><div class="cluster-card" style="border-left:4px solid #8b5cf6">
+            <div class="cluster-header"><span class="cluster-num">#2</span>
+            <span class="cluster-summary">玩家反映游戏机制差、数值堆砌、自动战斗不合理、粘性低。</span>
+            <span class="cluster-count">47条</span></div>
+            <table class="msg-table"><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-28 19:53</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">飞</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">点点点的数值游戏，你要啥可玩性，氪就完事了</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-31 18:47</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">爸爸</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">原来玩数值游戏真会有玩不起的呀Σ(ﾟ∀ﾟﾉ)ﾉ</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-28 11:01</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">醉里挑灯看剑</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">游戏做的还行  机制垃圾了</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-28 11:35</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">星星</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">垃圾游戏</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-31 16:02</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">南宫琪琪</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">本来这游戏就是堆数据 和谐一点就行了</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-31 19:07</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">斜月三星洞</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">这破分配决定这游戏活不久</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-28 17:37</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">宰元忠</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">这游戏爽感在哪儿啊 一直点点点？</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-30 20:18</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">柯傲天</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">这游戏人真少</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-30 00:25</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">齐小倩</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">谁知道这游戏策划怎么想</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-28 15:21</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">灵虚子</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">踩这个游戏的意义是什么</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-31 15:35</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">南宫琪琪</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">自动只会去打怪 而不是玩家</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-31 12:38</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">南宫琪琪</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">这游戏现在有个鬼粘性</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-30 22:03</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">武当王也丶</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">自游戏有些东西好难得</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-29 14:03</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">万古巨头</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">新游戏怎么会有</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-28 15:19</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">灵虚子</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">玩游戏本来就是打发时间你不想玩直接卸载就行</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-28 15:20</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">灵虚子</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">玩游戏就算宣传吗</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-28 12:06</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">秦华</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">大家好，游戏好玩吗</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-31 18:56</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">凡宸</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">说句实话，这游戏就是这么玩的，真没必要为这个一直说</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-31 14:10</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">楚子航</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">现实人还分三六九等呢，这种游戏还要平衡</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-01 18:29</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">苏轻狂</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">是呗都是数值游戏，真是无聊透了找游戏玩找到这儿来了</td></tr><tr><td colspan="3" style="padding:4px;font-size:11px;color:#64748b;text-align:center">… 还有 27 条</td></tr></table></div><div class="cluster-card" style="border-left:4px solid #ef4444">
+            <div class="cluster-header"><span class="cluster-num">#3</span>
+            <span class="cluster-summary">玩家反映游戏无法挂后台、开小窗，操作繁琐且评论功能异常。</span>
+            <span class="cluster-count">23条</span></div>
+            <table class="msg-table"><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-30 17:19</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">狠人</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">还不能挂后台</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-30 21:44</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">李子清</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">出bug了</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-31 21:21</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">狠人</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">关键后台不了  也开不了小窗</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-28 10:56</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">醉里挑灯看剑</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">太繁琐了一直点</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-30 18:31</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">凡宸</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">不是自己设置？</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-30 18:32</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">李子清</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">应该是系统自己打的</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-30 11:12</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">狄涑</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">就是最一开始点进来的就怎么点出去</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-30 11:13</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">狄涑</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">几秒钟就点完了</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-30 23:21</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">蓝萌菲</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">太长了居然发不出来</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-30 01:19</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">林微明</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">都是敏感词啊</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-29 20:26</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">输入名字...</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">只能骂官方了</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-30 08:31</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">皇甫紫陌</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">应该是有人反馈了</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-30 23:19</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">蓝萌菲</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">咋我啥都编辑不了</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-30 17:34</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">潮汐</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">评论没有啊</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-29 16:30</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">而已</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">你打错字了</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-01 18:31</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">灵儿</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">我去，2个词条</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-29 11:52</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">容蛮儿</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">不行就把符号删了</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-29 16:37</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">伏晨天</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">这什么神人违禁词</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-28 15:17</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">米琳</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">发了不对啊</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-28 15:21</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">吴淋</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">但是输入还是不对</td></tr><tr><td colspan="3" style="padding:4px;font-size:11px;color:#64748b;text-align:center">… 还有 3 条</td></tr></table></div><div class="cluster-card" style="border-left:4px solid #f59e0b">
+            <div class="cluster-header"><span class="cluster-num">#4</span>
+            <span class="cluster-summary">玩家反馈升级需逐一点击、恢复次数消耗道具等设定不合理。</span>
+            <span class="cluster-count">23条</span></div>
+            <table class="msg-table"><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-29 18:58</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">狄涑</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">无脑主角吧</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-28 17:32</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">梦瑶</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">ce，hua玩女频的吗？这设定我就在女频刚看过</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-31 18:25</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">南宫琪琪</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">我被系统分大凉</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-30 00:54</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">穆长生</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">tm升级要一下一下地点，脑残设定啊</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-30 00:17</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">齐小倩</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">反正没钱就主练主角了</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-01 17:57</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">东野极</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">小说你们看完了吗？我只看了十几章</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-30 16:16</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">皮惠</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">我也是小说来玩的</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-31 18:23</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">米古月</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">恢复次数还要东西，这设定有点割</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-28 16:06</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">灵虚子</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">还是要优先升主角</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-30 16:54</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">来了来了来了</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">给了我好多人物，我把资源都给主角了。没关系吧？</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-30 19:59</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">百里飞燕</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">我主角是王孝语</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-30 16:55</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">狄涑</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">好像有两个主角</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-29 18:55</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">邵炫耀</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">我就是主角二百级</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-28 22:53</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">武当王也丶</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">我主角卡丹上了</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-01 12:50</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">南宫琪琪</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">柯傲天我都事先沟通了</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-01 17:55</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">东野极</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">到坠魔谷就能看到侯爷爆种了</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-28 17:46</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">梦瑶</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">有问题………主角是谁？</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-01 10:57</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">输入名字...</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">如果都点满的话，资质比主角高</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-31 18:32</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">南宫琪琪</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">或者系统剧情打到一个势力到一个临界点，外部势力</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-30 13:09</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">爸爸</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">主角250级</td></tr><tr><td colspan="3" style="padding:4px;font-size:11px;color:#64748b;text-align:center">… 还有 3 条</td></tr></table></div><div class="cluster-card" style="border-left:4px solid #10b981">
+            <div class="cluster-header"><span class="cluster-num">#5</span>
+            <span class="cluster-summary">玩家反映游戏缺少防御属性，希望明确防御机制的作用。</span>
+            <span class="cluster-count">22条</span></div>
+            <table class="msg-table"><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-28 18:51</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">李欣灵</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">感觉像是平衡属性，减50攻击相当于战斗时长翻倍</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-01 11:47</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">李子清</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">如果别人不点防御你一样可以打出几倍伤害</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-01 18:43</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">白若钧</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">说实话，别的游戏玩下来也觉得增减伤重要</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-28 18:51</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">李欣灵</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">加100血也就相当于把原本的战斗时长拖到两倍</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-31 16:41</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">狄涑</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">甲的属性高900％</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-31 22:52</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">李子清</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">血量看属性</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-28 18:46</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">封熙熙</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">他应该说的是减伤5%</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-29 19:07</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">人从众</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">进来一看是自动战斗</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-30 21:42</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">武当王也丶</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">不是护盾那为什么没掉血</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-31 18:22</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">米古月</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">防御有啥用啊，打本用吗...又不需要T</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-30 18:09</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">李子清</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">被打的那个设置自动防御没被打就开攻击</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-31 22:51</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">贝若溪</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">不知道你们注意了没，这游戏没有防御属性</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-31 18:21</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">米古月</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">抽了个防御的，30的那个貌似伤害比这个攻击的高</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-31 18:10</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">凡宸</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">就是被法术打自动开防吗？</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-01 12:01</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">李子清</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">你问一下他多少攻击力</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-31 23:18</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">贝若溪</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">初级10个可以，高级还踏马10个，我都感觉策划不动脑子</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-30 16:47</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">南宫琪琪</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">要停顿一下 手控技能释放 别把技能发到怪出减伤技能上了</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-31 20:11</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">南宫琪琪</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">难道这boss是浮动属性?</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-31 21:10</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">马王爷</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">这玩意还有攻速说法？</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-31 22:52</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">李子清</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">只有攻击和血量</td></tr><tr><td colspan="3" style="padding:4px;font-size:11px;color:#64748b;text-align:center">… 还有 2 条</td></tr></table></div><div class="cluster-card" style="border-left:4px solid #ec4899">
+            <div class="cluster-header"><span class="cluster-num">#6</span>
+            <span class="cluster-summary">玩家反映世界BOSS死亡后无奖励，希望优化PVP机制和等待时间。</span>
+            <span class="cluster-count">17条</span></div>
+            <table class="msg-table"><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-30 20:33</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">南宫琪琪</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">世界boss打完 我没退 有人没事打我</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-30 20:21</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">柯傲天</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">杀我有用吗？我就躺外面等BOSS快死了再进去一样</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-31 15:33</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">养养乐多</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">小号被打的，感觉有可能是我们这边刷出来的那些boss打了</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-30 10:02</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">李子清</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">你们还打哪个BOOS</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-01 14:20</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">孝语主人</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">最好20秒后回去，回去后会有个“加载中”的图标，连回去就满血了，还不退本</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-30 00:15</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">薛定谔</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">刷下小怪再过去</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-30 16:10</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">咬咬领先</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">我怎么一进去就拉到仇恨</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-30 21:33</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">武当王也丶</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">先把boss打了其他就好办</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-30 17:10</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">狄涑</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">昨天我8:40上线的那个就打完了</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-29 01:29</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">上官无极</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">死了出去没有奖励 这特么什么机制 糙</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-31 20:10</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">武当王也丶</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">我三区过来的三区都打完了一区一半血都没打到</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-29 14:37</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">咬咬领先</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">剧情过不去了一区还过得去的</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-30 01:03</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">李子清</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">BOOS都还没复活打不了</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-30 21:14</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">南宫琪琪</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">两万出精英和boss</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-31 12:30</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">凡宸</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">要不就直接可以PVP，别卡时间，时间又这么长，一天没事把它守着么</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-29 01:27</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">上官无极</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">死了进去BOSS都死了 没拿到奖励</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-30 21:42</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">武当王也丶</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">这么多人打没掉血</td></tr></table></div><div class="cluster-card" style="border-left:4px solid #06b6d4">
+            <div class="cluster-header"><span class="cluster-num">#7</span>
+            <span class="cluster-summary">玩家反映材料爆率异常，合成途径缺失，材料难攒。</span>
+            <span class="cluster-count">14条</span></div>
+            <table class="msg-table"><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-30 14:37</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">狄涑</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">还加10%的爆率我加他大爷</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-31 17:00</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">养养乐多</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">对啊，我感觉攒材料太难了</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-30 01:08</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">狄涑</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">爆率真的很高</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-30 10:27</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">狄涑</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">概率30多的还没概率20多的爆率高懂的都懂</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-29 22:15</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">张自在</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">第一把武器就是红，算是欧吗？</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-30 01:10</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">狄涑</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">36.4概率的紫没有27.4概率的绿爆率高</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-31 16:20</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">狄涑</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">习惯就好你想出紫慢慢合吧</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-29 18:18</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">邵炫耀</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">打小怪也不爆材料</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-31 20:19</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">狄涑</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">出个紫都求爷爷告奶奶</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-30 20:03</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">狄涑</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">老马怎么用的是金色武器</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-31 16:23</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">洛流吟</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">要10个紫啊。</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-30 16:32</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">狄涑</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">那些东西只能靠合成获得</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-29 18:26</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">邵炫耀</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">还没有合成途径</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-29 16:08</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">养养乐多</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">我感觉材料难攒</td></tr></table></div><div class="cluster-card" style="border-left:4px solid #f97316">
+            <div class="cluster-header"><span class="cluster-num">#8</span>
+            <span class="cluster-summary">玩家希望活动时间更明显，避免错过限时活动。</span>
+            <span class="cluster-count">6条</span></div>
+            <table class="msg-table"><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-30 20:06</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">皮惠</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">一个活动连10个人都不到</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-31 16:07</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">黄枫谷王麻子</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">我昨晚活动都没参加</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-31 13:38</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">童幽妍</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">在哪里看活动时间</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">06-01 12:26</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">米古月</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">错过好多活动</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-31 19:06</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">凡宸</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">这种有时间的活动根本注意不到</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-29 18:47</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">邵炫耀</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">要一个小时后做活动</td></tr></table></div><div class="cluster-card" style="border-left:4px solid #3b82f6">
+            <div class="cluster-header"><span class="cluster-num">#9</span>
+            <span class="cluster-summary">玩家反映副本“嘎了就不能进了”，且存在“进不出了”的问题。</span>
+            <span class="cluster-count">5条</span></div>
+            <table class="msg-table"><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-31 13:56</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">百里飞燕</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">三点在上线了</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-30 20:50</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">芬必不充</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">有个官方的</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-30 18:10</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">李子清</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">嘎了就不能进了</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-30 14:08</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">张风止</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">我们这还80管</td></tr><tr><td style="padding:4px 6px;font-size:10px;color:#64748b;white-space:nowrap">05-30 11:23</td>
+                <td style="padding:4px 6px;font-size:11px;color:#94a3b8">指间</td>
+                <td style="padding:4px 6px;font-size:12px;color:#e2e8f0">进不出了</td></tr></table></div>
+<div class="footer">MiniMax embo-01 · 数据源：游戏内聊天记录_修行.csv · 2026-06-03</div>
+</div></body></html>
