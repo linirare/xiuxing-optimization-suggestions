@@ -92,51 +92,60 @@
   .accent-line .a2 { width: 20px; background: #d946ef; }
   .accent-line .a3 { width: 8px; background: #8b5cf6; }
 
-  /* Cards */
+  /* Cards — large format */
   .section-label {
     font-size: 0.7rem; font-weight: 600; letter-spacing: 0.25em;
-    color: #a1a1aa; margin-bottom: 12px;
+    color: #a1a1aa; margin-bottom: 14px;
   }
-  .cards { display: flex; flex-direction: column; gap: 10px; }
+  .cards { display: flex; flex-direction: column; gap: 14px; }
 
   .card {
-    position: relative; display: flex; align-items: center; gap: 22px;
-    padding: 20px 24px;
+    position: relative; display: block;
+    padding: 28px 30px 22px;
     background: var(--card-bg);
     border: 1px solid var(--hairline);
-    border-radius: 14px;
+    border-radius: 16px;
     text-decoration: none; color: var(--text);
     box-shadow: var(--shadow);
     transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   }
   .card::after {
-    content: ''; position: absolute; inset: -1px; border-radius: 15px; z-index: -1;
+    content: ''; position: absolute; inset: -1px; border-radius: 17px; z-index: -1;
     background: var(--card-glow); opacity: 0; transition: opacity 0.35s;
   }
-  .card:hover { transform: translateY(-2px); box-shadow: var(--shadow-hover); }
+  .card:hover { transform: translateY(-3px); box-shadow: var(--shadow-hover); }
   .card:hover::after { opacity: 1; }
 
-  /* Geo icon */
+  /* Row: icon + text */
+  .card-row { display: flex; gap: 18px; align-items: flex-start; }
   .card .geo {
-    width: 46px; height: 46px; min-width: 46px; border-radius: 12px;
+    width: 48px; height: 48px; min-width: 48px; border-radius: 14px;
     display: flex; align-items: center; justify-content: center;
-    font-size: 18px; transition: all 0.35s;
+    font-size: 20px; transition: all 0.35s; margin-top: 2px;
   }
   .card:hover .geo { transform: scale(1.08); }
 
-  .card .info { flex: 1; min-width: 0; }
+  .card-body { flex: 1; min-width: 0; }
   .card .title {
-    font-size: 15px; font-weight: 600; color: #18181b; letter-spacing: -0.01em;
+    font-size: 1.05rem; font-weight: 600; color: #18181b; letter-spacing: -0.01em;
   }
-  .card .desc { font-size: 0.8rem; color: #71717a; margin-top: 2px; }
-
-  .card .arr {
-    font-size: 0.85rem; color: #d4d4d8; flex-shrink: 0;
-    transition: all 0.35s;
+  .card .summary {
+    font-size: 0.82rem; color: #71717a; margin-top: 6px; line-height: 1.6;
   }
-  .card:hover .arr { color: #52525b; transform: translateX(3px); }
 
-  /* Card accent colors — inline styles used instead, no nth-child needed */
+  /* Bottom meta row */
+  .card-meta {
+    margin-top: 14px; padding-top: 12px; border-top: 1px solid #f0f0f0;
+    display: flex; align-items: center; gap: 16px;
+    font-size: 0.72rem; color: #a1a1aa;
+  }
+  .card-meta .date { display: flex; align-items: center; gap: 4px; }
+  .card-meta .tags { display: flex; gap: 8px; flex-wrap: wrap; }
+  .card-meta .tag {
+    display: inline-block; padding: 2px 10px; border-radius: 20px;
+    background: #f4f4f5; color: #71717a; font-size: 0.68rem; font-weight: 500;
+  }
+  .card:hover .card-meta .tag { background: var(--tag-bg); color: var(--tag-fg); }
 
   /* Divider */
   .divider { display: flex; align-items: center; gap: 12px; margin: 10px 0; }
@@ -154,9 +163,12 @@
 
   @media (max-width: 768px) {
     .main { padding: 6vh 20px 5vh; }
-    .card { padding: 16px 14px; gap: 14px; }
-    .card .geo { width: 38px; height: 38px; min-width: 38px; font-size: 15px; border-radius: 10px; }
-    .card .arr { display: none; }
+    .card { padding: 20px 16px 18px; }
+    .card-row { gap: 12px; }
+    .card .geo { width: 40px; height: 40px; min-width: 40px; font-size: 16px; border-radius: 10px; }
+    .card .title { font-size: 0.95rem; }
+    .card .summary { font-size: 0.78rem; }
+    .card-meta { flex-wrap: wrap; gap: 8px; }
   }
 </style>
 </head>
@@ -184,22 +196,40 @@
   <div class="section-label">分析报告</div>
   <div class="cards">
 
-    <a class="card" href="/chat-report/" style="--card-glow: linear-gradient(135deg, rgba(245,158,11,0.1), transparent 50%);">
-      <div class="geo" style="background:#fef3c7;color:#d97706;">&#9670;</div>
-      <div class="info">
-        <div class="title">修行-群聊分析</div>
-        <div class="desc">活跃度趋势、话题分布、关键词追踪与运营建议</div>
+    <a class="card" href="/chat-report/" style="--card-glow: linear-gradient(135deg, rgba(245,158,11,0.1), transparent 50%); --tag-bg: #fef3c7; --tag-fg: #d97706;">
+      <div class="card-row">
+        <div class="geo" style="background:#fef3c7;color:#d97706;">&#9670;</div>
+        <div class="card-body">
+          <div class="title">修行-群聊分析</div>
+          <div class="summary">《修行那些年》官方交流群 7 天全量聊天数据分析，涵盖活跃度趋势、话题分布、关键词追踪与情感变化，支持多维度筛选与对比。</div>
+        </div>
       </div>
-      <span class="arr">&#8594;</span>
+      <div class="card-meta">
+        <span class="date">&#128197; 2026.05.28 &mdash; 06.03</span>
+        <span class="tags">
+          <span class="tag">活跃趋势</span>
+          <span class="tag">话题分析</span>
+          <span class="tag">情感追踪</span>
+        </span>
+      </div>
     </a>
 
-    <a class="card" href="/chat-analysis/" style="--card-glow: linear-gradient(135deg, rgba(16,185,129,0.1), transparent 50%);">
-      <div class="geo" style="background:#d1fae5;color:#059669;">&#9679;</div>
-      <div class="info">
-        <div class="title">修行-区服分析</div>
-        <div class="desc">跨游戏汇总、情感分析、高频话题提炼</div>
+    <a class="card" href="/chat-analysis/" style="--card-glow: linear-gradient(135deg, rgba(16,185,129,0.1), transparent 50%); --tag-bg: #d1fae5; --tag-fg: #059669;">
+      <div class="card-row">
+        <div class="geo" style="background:#d1fae5;color:#059669;">&#9679;</div>
+        <div class="card-body">
+          <div class="title">修行-区服分析</div>
+          <div class="summary">多维度数据挖掘与跨区服对比分析，深度剖析玩家行为画像、情感趋势变化与高频话题提炼，为运营决策提供数据支撑。</div>
+        </div>
       </div>
-      <span class="arr">&#8594;</span>
+      <div class="card-meta">
+        <span class="date">&#128197; 2026.05.28 &mdash; 06.03</span>
+        <span class="tags">
+          <span class="tag">跨区对比</span>
+          <span class="tag">用户画像</span>
+          <span class="tag">情感分析</span>
+        </span>
+      </div>
     </a>
 
   </div>
@@ -211,13 +241,22 @@
   <div class="section-label">优化方向</div>
   <div class="cards">
 
-    <a class="card" href="suggestions.html" style="--card-glow: linear-gradient(135deg, rgba(249,115,22,0.1), transparent 50%);">
-      <div class="geo" style="background:#fff7ed;color:#ea580c;">&#9830;</div>
-      <div class="info">
-        <div class="title">修行-产品建议</div>
-        <div class="desc">基于玩家社群反馈的 13 条 P0-P2 优化方向</div>
+    <a class="card" href="suggestions.html" style="--card-glow: linear-gradient(135deg, rgba(249,115,22,0.1), transparent 50%); --tag-bg: #fff7ed; --tag-fg: #ea580c;">
+      <div class="card-row">
+        <div class="geo" style="background:#fff7ed;color:#ea580c;">&#9830;</div>
+        <div class="card-body">
+          <div class="title">修行-产品建议</div>
+          <div class="summary">基于玩家社群真实反馈梳理的 13 条产品优化方向，涵盖玩法、数值、社交、体验四大维度，按 P0-P2 优先级排列。</div>
+        </div>
       </div>
-      <span class="arr">&#8594;</span>
+      <div class="card-meta">
+        <span class="date">&#128197; 2026.05</span>
+        <span class="tags">
+          <span class="tag">13条建议</span>
+          <span class="tag">P0-P2</span>
+          <span class="tag">玩家反馈</span>
+        </span>
+      </div>
     </a>
 
   </div>
