@@ -296,12 +296,18 @@
     'vec3 co=vec3(1.);float t=iTime*.35;\n'+
     'vec2 RA=vec2(cos(t*.83),sin(t*.83));vec2 RB=vec2(sin(t*.83),-cos(t*.83));\n'+
     'vec2 CT=vec2(sin(t*.2)*.4,cos(t*.3)*.4);vec2 A=vec2(-2.5,-1.5)+CT;vec2 B=vec2(2.5,1.5)+CT;float m;\n'+
-    'm=1.-DrawOutlinePix(U,A,B,vec2(40.),0.,1.);co=mix(co,AM,m*.12);\n'+
-    'm=1.-DrawOutlinePix(U,A,B,vec2(28.),10.,1.);co=mix(co,PU,m*.10);\n'+
-    'm=1.-DrawOutlinePix(U,A,B,vec2(14.),5.,1.);co=mix(co,PI,m*.12);\n'+
-    'vec2 C2=A+vec2(0.,3.)+RA*1.2;vec2 D=B+vec2(0.,-3.)+RB*1.2;m=1.-FillLinePix(U,C2,D,vec2(.8,.8),0.);co=mix(co,GR,m*.15);\n'+
-    'vec2 E=A+vec2(-1.5,0.)+RB;vec2 F2=B+vec2(1.5,0.)+RA;m=1.-FillLineDash(U,E,F2,vec2(0.,.3),0.);co=mix(co,BL,m*.10);\n'+
-    'vec2 M=iMouse.xy/iResolution.xy;if(M.x>=0.&&M.x<=1.&&M.y>=0.&&M.y<=1.){vec2 MU=M-.5;MU.x*=iResolution.x/iResolution.y;MU*=8.;float D2=length(U-MU);float G=exp(-D2*D2*.6)*.2;co=mix(co,AM,G);}\n'+
+    'm=1.-DrawOutlinePix(U,A,B,vec2(40.),0.,1.);co=mix(co,AM,m*.45);\n'+
+    'm=1.-DrawOutlinePix(U,A,B,vec2(28.),10.,1.);co=mix(co,PU,m*.35);\n'+
+    'm=1.-DrawOutlinePix(U,A,B,vec2(14.),5.,1.);co=mix(co,PI,m*.40);\n'+
+    'vec2 C2=A+vec2(0.,3.)+RA*1.2;vec2 D=B+vec2(0.,-3.)+RB*1.2;m=1.-FillLinePix(U,C2,D,vec2(1.2,1.2),0.);co=mix(co,GR,m*.50);\n'+
+    'vec2 E=A+vec2(-1.5,0.)+RB;vec2 F2=B+vec2(1.5,0.)+RA;m=1.-FillLineDash(U,E,F2,vec2(0.,.5),0.);co=mix(co,BL,m*.35);\n'+
+    'vec2 N=A+vec2(0.,-3.)+RB*.8;vec2 O=B+vec2(0.,3.)+RA*.8;m=1.-FillLinePix(U,N,O,vec2(.6,.6),0.);co=mix(co,PI,m*.40);\n'+
+    'vec2 K=A+vec2(-3.,1.5);vec2 L=B+vec2(3.,-1.5);m=1.-FillLineDash(U,K,L,vec2(0.,.35),0.);co=mix(co,AM,m*.30);\n'+
+    'm=1.-FillLinePix(U,A,A+vec2(0.,.1),vec2(5.,5.),5.);co=mix(co,AM,m*.6);\n'+
+    'm=1.-FillLinePix(U,vec2(A.x,B.y),vec2(A.x,B.y)+vec2(0.,.1),vec2(5.,5.),5.);co=mix(co,PU,m*.6);\n'+
+    'm=1.-FillLinePix(U,vec2(B.x,A.y),vec2(B.x,A.y)+vec2(0.,.1),vec2(5.,5.),5.);co=mix(co,PI,m*.6);\n'+
+    'm=1.-FillLinePix(U,B,B+vec2(0.,.1),vec2(5.,5.),5.);co=mix(co,GR,m*.6);\n'+
+    'vec2 M=iMouse.xy/iResolution.xy;if(M.x>=0.&&M.x<=1.&&M.y>=0.&&M.y<=1.){vec2 MU=M-.5;MU.x*=iResolution.x/iResolution.y;MU*=8.;float D2=length(U-MU);float G=exp(-D2*D2*.4)*.5;co=mix(co,AM,G);m=1.-DrawOutlinePix(U,MU,MU,vec2(30.),30.,2.);co=mix(co,PU,m*.6);}\n'+
     'C=vec4(sqrt(clamp(co,0.,1.)),1.);}\n'+
     'void main(){mainImage(gl_FragColor,gl_FragCoord.xy);}';
 
