@@ -3,130 +3,213 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>gh.lirare.xyz · 导航</title>
+<title>gh.lirare.xyz</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
-    background: linear-gradient(135deg, #0f0c29 0%, #1a1a3e 40%, #24243e 100%);
+    background: #0a0a0f;
     min-height: 100vh;
-    font-family: -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    font-family: 'Inter', 'Noto Sans SC', -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 48px 24px;
-    color: #e0e0e0;
+    padding: 80px 24px 60px;
+    color: rgba(255,255,255,0.75);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
-  .container { max-width: 680px; width: 100%; }
+
+  /* Ambient light glow */
+  .ambient {
+    position: fixed;
+    top: -30%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 800px;
+    height: 600px;
+    background: radial-gradient(ellipse at center, rgba(99,102,241,0.08) 0%, rgba(168,85,247,0.04) 40%, transparent 70%);
+    pointer-events: none;
+    z-index: -1;
+  }
+  .ambient-b {
+    position: fixed;
+    bottom: -20%;
+    right: -10%;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(ellipse at center, rgba(251,191,36,0.04) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  .container { max-width: 640px; width: 100%; }
 
   /* Header */
   .header {
     text-align: center;
-    margin-bottom: 48px;
+    margin-bottom: 64px;
   }
-  .header .logo {
-    width: 64px;
-    height: 64px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border-radius: 18px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 28px;
-    margin-bottom: 20px;
-    box-shadow: 0 8px 32px rgba(102,126,234,0.3);
+  .header .domain {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.25);
+    margin-bottom: 16px;
   }
   .header h1 {
-    font-size: 24px;
-    font-weight: 700;
+    font-size: 36px;
+    font-weight: 300;
     color: #fff;
-    letter-spacing: 1px;
+    letter-spacing: -0.5px;
+    line-height: 1.2;
+  }
+  .header h1 strong {
+    font-weight: 500;
+    background: linear-gradient(135deg, #fbbf24, #f59e0b);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
   .header .sub {
-    color: #8888b0;
+    color: rgba(255,255,255,0.3);
     font-size: 14px;
-    margin-top: 8px;
-    font-weight: 400;
-  }
-  .header .tagline {
-    display: inline-block;
-    margin-top: 14px;
-    padding: 4px 14px;
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 20px;
-    font-size: 11px;
-    color: #6666aa;
-    letter-spacing: 2px;
+    font-weight: 300;
+    margin-top: 12px;
+    letter-spacing: 1px;
   }
 
-  /* Links */
-  .links { display: flex; flex-direction: column; gap: 16px; }
+  /* Section */
+  .section-label {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.2);
+    margin-bottom: 20px;
+    padding-left: 4px;
+  }
+  .links { display: flex; flex-direction: column; gap: 12px; }
   .card {
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 14px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 16px;
     padding: 20px 24px;
     text-decoration: none;
     color: inherit;
     display: flex;
-    align-items: flex-start;
-    gap: 16px;
-    transition: all 0.25s ease;
-    backdrop-filter: blur(4px);
+    align-items: center;
+    gap: 18px;
+    transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    position: relative;
+    overflow: hidden;
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.04) 0%, transparent 50%);
+    opacity: 0;
+    transition: opacity 0.35s ease;
   }
   .card:hover {
-    background: rgba(255,255,255,0.08);
-    border-color: rgba(255,255,255,0.15);
-    transform: translateY(-2px);
-    box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+    border-color: rgba(255,255,255,0.12);
+    background: rgba(255,255,255,0.05);
+    transform: translateY(-1px);
+  }
+  .card:hover::before {
+    opacity: 1;
   }
   .card:active {
     transform: translateY(0);
+    transition-duration: 0.1s;
   }
-  .card .icon {
+
+  /* Card icon */
+  .card .icon-wrap {
     width: 44px;
     height: 44px;
     min-width: 44px;
     border-radius: 12px;
-    display: inline-flex;
+    display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 20px;
+    font-size: 18px;
+    position: relative;
+    flex-shrink: 0;
   }
-  .card .icon-reports { background: linear-gradient(135deg, #667eea, #764ba2); }
-  .card .icon-chat    { background: linear-gradient(135deg, #f093fb, #f5576c); }
-  .card .icon-board   { background: linear-gradient(135deg, #4facfe, #00f2fe); }
+  .card .icon-wrap::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 12px;
+    opacity: 0.15;
+  }
+  .card .icon-reports {
+    background: linear-gradient(135deg, rgba(99,102,241,0.15), rgba(139,92,246,0.15));
+    border: 1px solid rgba(99,102,241,0.2);
+  }
+  .card .icon-chat {
+    background: linear-gradient(135deg, rgba(236,72,153,0.15), rgba(244,63,94,0.15));
+    border: 1px solid rgba(236,72,153,0.2);
+  }
+  .card .icon-suggest {
+    background: linear-gradient(135deg, rgba(251,191,36,0.15), rgba(245,158,11,0.15));
+    border: 1px solid rgba(251,191,36,0.2);
+  }
+
+  /* Card body */
   .card .body { flex: 1; min-width: 0; }
   .card .title {
     font-size: 15px;
-    font-weight: 600;
-    color: #fff;
-    margin-bottom: 4px;
+    font-weight: 500;
+    color: rgba(255,255,255,0.9);
+    margin-bottom: 3px;
+    line-height: 1.4;
   }
   .card .desc {
     font-size: 13px;
-    color: #9999bb;
+    color: rgba(255,255,255,0.35);
     line-height: 1.6;
+    font-weight: 300;
   }
   .card .meta {
     display: flex;
     align-items: center;
     gap: 8px;
-    margin-top: 10px;
+    margin-top: 8px;
   }
   .card .tag {
     font-size: 10px;
     padding: 2px 8px;
     border-radius: 4px;
-    font-weight: 500;
+    font-weight: 400;
+    letter-spacing: 0.3px;
   }
-  .tag-report { background: rgba(102,126,234,0.2); color: #99aaff; }
-  .tag-chat   { background: rgba(245,87,108,0.2); color: #ff99aa; }
-  .tag-board  { background: rgba(79,172,254,0.2); color: #99ddff; }
-  .card .external {
-    font-size: 11px;
-    color: #555577;
-    word-break: break-all;
+  .tag-report {
+    background: rgba(99,102,241,0.1);
+    color: rgba(129,140,248,0.7);
+  }
+  .tag-chat {
+    background: rgba(236,72,153,0.1);
+    color: rgba(244,114,182,0.7);
+  }
+  .tag-suggest {
+    background: rgba(251,191,36,0.1);
+    color: rgba(251,191,36,0.7);
+  }
+  .card .arrow {
+    font-size: 14px;
+    color: rgba(255,255,255,0.15);
+    flex-shrink: 0;
+    transition: all 0.3s ease;
+  }
+  .card:hover .arrow {
+    color: rgba(255,255,255,0.5);
+    transform: translateX(3px);
   }
 
   /* Divider */
@@ -134,14 +217,9 @@
     display: flex;
     align-items: center;
     gap: 16px;
-    margin: 32px 0 24px;
-    color: #444466;
-    font-size: 11px;
-    letter-spacing: 2px;
+    margin: 48px 0 36px;
   }
-  .divider::before,
-  .divider::after {
-    content: '';
+  .divider-line {
     flex: 1;
     height: 1px;
     background: linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent);
@@ -149,122 +227,93 @@
 
   /* Footer */
   .footer {
-    margin-top: 48px;
     text-align: center;
-    color: #444466;
+  }
+  .footer p {
+    color: rgba(255,255,255,0.15);
     font-size: 11px;
-    letter-spacing: 1px;
+    font-weight: 300;
+    letter-spacing: 1.5px;
   }
   .footer a {
-    color: #6666aa;
+    color: rgba(255,255,255,0.25);
     text-decoration: none;
+    transition: color 0.2s;
   }
   .footer a:hover {
-    color: #8888cc;
-  }
-
-  /* Particles background */
-  .particles {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    pointer-events: none;
-    overflow: hidden;
-    z-index: -1;
-  }
-  .particle {
-    position: absolute;
-    width: 2px;
-    height: 2px;
-    background: rgba(255,255,255,0.15);
-    border-radius: 50%;
-    animation: float linear infinite;
-  }
-  @keyframes float {
-    0%   { transform: translateY(100vh) rotate(0deg); opacity: 0; }
-    10%  { opacity: 1; }
-    90%  { opacity: 1; }
-    100% { transform: translateY(-10vh) rotate(720deg); opacity: 0; }
+    color: rgba(255,255,255,0.45);
   }
 
   @media (max-width: 500px) {
-    body { padding: 24px 16px; }
-    .header { margin-bottom: 32px; }
-    .card { padding: 16px; }
-    .card .icon { width: 36px; height: 36px; min-width: 36px; font-size: 16px; }
+    body { padding: 48px 16px 40px; }
+    .header { margin-bottom: 44px; }
+    .header h1 { font-size: 28px; }
+    .card { padding: 16px 18px; gap: 14px; }
+    .card .icon-wrap { width: 38px; height: 38px; min-width: 38px; font-size: 15px; }
+    .card .arrow { display: none; }
   }
 </style>
 </head>
 <body>
 
-<div class="particles" id="particles"></div>
+<div class="ambient"></div>
+<div class="ambient-b"></div>
 
 <div class="container">
   <div class="header">
-    <div class="logo">✦</div>
-    <h1>gh.lirare.xyz</h1>
-    <div class="sub">数据分析与报告集合</div>
-    <div class="tagline">✦ 数据驱动 · 洞察为先 ✦</div>
+    <div class="domain">gh.lirare.xyz</div>
+    <h1>数据 · <strong>洞察</strong> · 产品</h1>
+    <div class="sub">数据分析与产品优化报告集</div>
   </div>
+
+  <div class="section-label">报告与建议</div>
 
   <div class="links">
     <a class="card" href="https://linirare.github.io/xiuxing-chat-report/" target="_blank">
-      <span class="icon icon-reports">📊</span>
+      <span class="icon-wrap icon-reports">📊</span>
       <div class="body">
-        <div class="title">修行那些年 · 玩家聊天数据分析报告</div>
-        <div class="desc">全周期聊天记录分析，包含玩家活跃度、话题分布、关键词趋势等数据可视化报告。</div>
+        <div class="title">玩家聊天数据分析报告</div>
+        <div class="desc">修行那些年 · 活跃度 / 话题分布 / 关键词趋势</div>
         <div class="meta">
-          <span class="tag tag-report">📈 数据报告</span>
-          <span class="external">linirare.github.io</span>
+          <span class="tag tag-report">数据报告</span>
         </div>
       </div>
+      <span class="arrow">→</span>
     </a>
 
     <a class="card" href="https://linirare.github.io/chat-analysis-report/" target="_blank">
-      <span class="icon icon-chat">💬</span>
+      <span class="icon-wrap icon-chat">💬</span>
       <div class="body">
         <div class="title">通用聊天分析报告</div>
-        <div class="desc">多游戏聊天记录汇总分析，涵盖情感分析、高频话题、玩家反馈提炼等。</div>
+        <div class="desc">多游戏汇总 · 情感分析 / 高频话题 / 反馈提炼</div>
         <div class="meta">
-          <span class="tag tag-chat">🗣️ 聊天分析</span>
-          <span class="external">linirare.github.io</span>
+          <span class="tag tag-chat">聊天分析</span>
         </div>
       </div>
+      <span class="arrow">→</span>
     </a>
 
     <a class="card" href="suggestions.html">
-      <span class="icon icon-board">🎯</span>
+      <span class="icon-wrap icon-suggest">✦</span>
       <div class="body">
-        <div class="title">修行那些年 · 产品优化建议</div>
-        <div class="desc">基于玩家社群反馈的 13 条优化建议，按 P0/P1/P2 优先级排序，附玩家原话证据。</div>
+        <div class="title">产品优化建议</div>
+        <div class="desc">修行那些年 · 基于玩家社群反馈的 13 条 P0-P2 优化建议</div>
         <div class="meta">
-          <span class="tag tag-board">📋 产品建议</span>
-          <span class="external">gh.lirare.xyz/suggestions</span>
+          <span class="tag tag-suggest">产品建议</span>
         </div>
       </div>
+      <span class="arrow">→</span>
     </a>
   </div>
 
-  <div class="divider">✦ ✦ ✦</div>
+  <div class="divider">
+    <span class="divider-line"></span>
+  </div>
 
   <div class="footer">
-    <p>gh.lirare.xyz · 由 GitHub Pages 驱动</p>
+    <p><a href="https://github.com/linirare/xiuxing-optimization-suggestions">GitHub Pages</a> · gh.lirare.xyz</p>
   </div>
 </div>
-
-<script>
-  // Generate floating particles
-  const container = document.getElementById('particles');
-  for (let i = 0; i < 30; i++) {
-    const p = document.createElement('div');
-    p.className = 'particle';
-    p.style.left = Math.random() * 100 + '%';
-    p.style.width = p.style.height = (Math.random() * 3 + 1) + 'px';
-    p.style.animationDuration = (Math.random() * 20 + 15) + 's';
-    p.style.animationDelay = (Math.random() * 20) + 's';
-    container.appendChild(p);
-  }
-</script>
 
 </body>
 </html>
