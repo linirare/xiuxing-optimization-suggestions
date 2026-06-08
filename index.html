@@ -52,9 +52,9 @@
     66% { transform: translate(-30px,20px) scale(0.94); }
   }
 
-  /* Glass shard canvas */
+  /* Particle canvas */
   #fx-canvas {
-    position: fixed; inset: 0; z-index: 1; pointer-events: none; opacity: 0.6;
+    position: fixed; inset: 0; z-index: 1; pointer-events: none;
   }
 
   /* Main */
@@ -278,44 +278,131 @@
 </main>
 
 <script>
-// Glass shard canvas
+// Particle constellation network
 const canvas = document.getElementById('fx-canvas');
 const ctx = canvas.getContext('2d');
-let shards = [], mx = -1000, my = -1000, tmx = 0, tmy = 0;
+const PALETTE = ['#f59e0b','#d946ef','#8b5cf6','#3b82f6','#ec4899','#f97316','#14b8a6'];
+const PARTICLE_COUNT = 200;
+const ACTIVATE_RADIUS = 250;
+const LINK_RADIUS = 130;
 
-function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-resize(); window.addEventListener('resize', resize);
+let particles = [];
+let mouseX = -1000, mouseY = -1000;
+let targetMX = 0, targetMY = 0;
 
-function build() {
-  shards = [];
-  const cols = 14, rows = 10;
-  const w = canvas.width / cols, h = canvas.height / rows;
-  for (let r = 0; r < rows; r++)
-    for (let c = 0; c < cols; c++)
-      shards.push({ x: c*w+w/2, y: r*h+h/2, ox: c*w+w/2, oy: r*h+h/2, w: w+2, h: h+2, a: 0 });
+function resize() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
 }
-build(); window.addEventListener('resize', build);
+resize();
+window.addEventListener('resize', () => { resize(); initParticles(); });
 
-document.addEventListener('mousemove', e => { tmx = e.clientX; tmy = e.clientY; });
+function initParticles() {
+  particles = [];
+  for (let i = 0; i < PARTICLE_COUNT; i++) {
+    particles.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      ox: Math.random() * canvas.width,
+      oy: Math.random() * canvas.height,
+      r: 1.5 + Math.random() * 1.5,
+      vx: 0, vy: 0,
+      color: PALETTE[Math.floor(Math.random() * PALETTE.length)],
+      active: 0
+    });
+  }
+}
+initParticles();
+window.addEventListener('resize', initParticles);
+
+document.addEventListener('mousemove', e => { targetMX = e.clientX; targetMY = e.clientY; });
+document.addEventListener('mouseleave', () => { targetMX = -1000; targetMY = -1000; });
 
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  mx += (tmx - mx) * 0.07; my += (tmy - my) * 0.07;
-  const R = 300;
-  for (const s of shards) {
-    const dx = s.ox - mx, dy = s.oy - my;
-    const d = Math.sqrt(dx*dx + dy*dy);
-    let ta = 0;
-    if (d < R) {
-      ta = (1 - d/R) * 0.1;
-      const push = (1 - d/R) * 14;
-      const ang = Math.atan2(dy, dx);
-      s.x = s.ox + Math.cos(ang) * push;
-      s.y = s.oy + Math.sin(ang) * push;
-    } else { s.x += (s.ox - s.x) * 0.08; s.y += (s.oy - s.y) * 0.08; }
-    s.a += (ta - s.a) * 0.12;
-    if (s.a > 0.002) { ctx.fillStyle = `rgba(100,100,120,${s.a})`; ctx.fillRect(s.x-s.w/2, s.y-s.h/2, s.w, s.h); }
+
+  mouseX += (targetMX - mouseX) * 0.12;
+  mouseY += (targetMY - mouseY) * 0.12;
+
+  // Update particles
+  for (const p of particles) {
+    const dx = p.x - mouseX;
+    const dy = p.y - mouseY;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+    const isActive = dist < ACTIVATE_RADIUS;
+
+    // Activation level (lerp toward 0 or 1)
+    p.active += ((isActive ? 1 : 0) - p.active) * 0.08;
+
+    if (isActive) {
+      // Push away from cursor
+      const force = (1 - dist / ACTIVATE_RADIUS) * 2;
+      p.vx += (dx / (dist + 1)) * force * 0.3;
+      p.vy += (dy / (dist + 1)) * force * 0.3;
+    }
+
+    // Random drift
+    p.vx += (Math.random() - 0.5) * 0.15;
+    p.vy += (Math.random() - 0.5) * 0.15;
+
+    // Spring back to origin
+    p.vx += (p.ox - p.x) * 0.003;
+    p.vy += (p.oy - p.y) * 0.003;
+
+    // Damping
+    p.vx *= 0.94;
+    p.vy *= 0.94;
+
+    p.x += p.vx;
+    p.y += p.vy;
   }
+
+  // Draw connections (between active particles)
+  for (let i = 0; i < particles.length; i++) {
+    for (let j = i + 1; j < particles.length; j++) {
+      const a = particles[i], b = particles[j];
+      const act = Math.min(a.active, b.active);
+      if (act < 0.1) continue;
+      const dx = a.x - b.x, dy = a.y - b.y;
+      const d = Math.sqrt(dx * dx + dy * dy);
+      if (d < LINK_RADIUS) {
+        const alpha = (1 - d / LINK_RADIUS) * 0.35 * act;
+        ctx.strokeStyle = `rgba(150,140,170,${alpha})`;
+        ctx.lineWidth = 0.5;
+        ctx.beginPath();
+        ctx.moveTo(a.x, a.y);
+        ctx.lineTo(b.x, b.y);
+        ctx.stroke();
+      }
+    }
+  }
+
+  // Draw particles
+  for (const p of particles) {
+    const r = p.r + p.active * 3;
+    const alpha = 0.15 + p.active * 0.7;
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, r, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(100,100,120,${alpha * 0.5})`;
+    ctx.fill();
+
+    if (p.active > 0.15) {
+      // Color glow
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, r + 2, 0, Math.PI * 2);
+      const colorAlpha = p.active * 0.7;
+      ctx.fillStyle = p.color.replace(')', `, ${colorAlpha})`).replace('rgb', 'rgba');
+      if (p.color.startsWith('#')) {
+        const hex = p.color;
+        const ri = parseInt(hex.slice(1,3), 16);
+        const gi = parseInt(hex.slice(3,5), 16);
+        const bi = parseInt(hex.slice(5,7), 16);
+        ctx.fillStyle = `rgba(${ri},${gi},${bi},${colorAlpha})`;
+      }
+      ctx.fill();
+    }
+  }
+
   requestAnimationFrame(draw);
 }
 requestAnimationFrame(draw);
