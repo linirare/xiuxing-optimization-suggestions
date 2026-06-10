@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="assets/fonts.css">
 <link rel="stylesheet" href="assets/base.css">
 <link rel="stylesheet" href="assets/animations/animations.css">
-<link rel="stylesheet" href="assets/themes/tokyo-night.css">
+<link rel="stylesheet" href="assets/themes/tokyo-night.css" id="theme-link">
 <style>
 /* ── Custom ── */
 body { background: var(--bg); }
@@ -178,18 +178,72 @@ body { background: var(--bg); }
 .ov-row .cost-tag { font-size: 10px; text-align: center; }
 .ov-row .risk { font-size: 10px; text-align: center; }
 
-/* Responsive */
-@media (max-width: 900px) {
-  .slide { padding: 40px 24px; }
-  .cover-slide h1 { font-size: 32px; }
-  .cols-2, .cols-3, .cols-4, .theme-grid { grid-template-columns: 1fr 1fr; }
-  .cols-12 { grid-template-columns: repeat(3,1fr); }
-  .ov-row { grid-template-columns: 24px 70px 1fr 50px; }
-  .ov-row .risk, .ov-row .cost-tag { display: none; }
+/* ── Responsive ── */
+@media (max-width: 1100px) {
+  .slide { padding: 48px 32px; }
+  .cover-slide h1 { font-size: 36px; }
+  .card-custom { padding: 14px; }
+  .tbl { font-size: 12px; }
+  .tbl th, .tbl td { padding: 7px 8px; }
+  .map-tbl { font-size: 12px; }
+  .map-tbl td, .map-tbl th { padding: 6px 8px; }
+  .name-tags { gap: 4px; }
+  .name-tag { font-size: 11px; padding: 3px 8px; }
 }
-@media (max-width: 600px) {
+@media (max-width: 860px) {
+  .slide { padding: 36px 20px; }
+  .cover-slide h1 { font-size: 28px; }
+  .h2 { font-size: 22px; }
+  .cols-2, .cols-3 { grid-template-columns: 1fr; gap: 14px; }
+  .cols-4 { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .cols-12 { grid-template-columns: repeat(3,1fr); gap: 6px; }
+  .theme-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .theme-card { padding: 10px; }
+  .tbl-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .cover-slide .meta-line { gap: 16px; font-size: 11px; flex-wrap: wrap; }
+  .cover-slide .lede { font-size: 14px; }
+  .deck-footer { font-size: 10px; }
+  .metric-box .n { font-size: 24px; }
+  .metric-box .l { font-size: 10px; }
+  .card-custom h4 { font-size: 13px; }
+  .card-custom p { font-size: 11px; line-height: 1.5; }
+  .verdict { font-size: 12px; padding: 10px 14px; }
+  .ov-row { grid-template-columns: 24px 70px 1fr 50px; font-size: 11px; padding: 5px 8px; }
+  .ov-row .risk, .ov-row .cost-tag { display: none; }
+  .risk-legend { gap: 12px; font-size: 10px; }
+  .pills { gap: 6px; }
+  .pill { font-size: 11px; padding: 4px 10px; }
+  .name-tags { gap: 4px; }
+  .name-tag { font-size: 10px; padding: 3px 7px; }
+}
+@media (max-width: 520px) {
+  .slide { padding: 24px 14px; }
+  .cover-slide h1 { font-size: 22px; }
+  .h2 { font-size: 18px; }
+  .kicker { font-size: 10px; letter-spacing: 1px; }
   .cols-2, .cols-3, .cols-4, .theme-grid { grid-template-columns: 1fr; }
-  .tbl { font-size: 11px; }
+  .cols-12 { grid-template-columns: repeat(2,1fr); }
+  .tbl { font-size: 10px; }
+  .tbl th { font-size: 9px; padding: 5px 4px; }
+  .tbl td { font-size: 10px; padding: 5px 4px; }
+  .section-tag { font-size: 9px; letter-spacing: 1px; }
+  .cover-slide .lede { font-size: 12px; }
+  .cover-slide .meta-line { gap: 10px; font-size: 10px; flex-direction: column; }
+  .subsec { font-size: 10px; }
+  .map-tbl { font-size: 10px; }
+  .map-tbl td, .map-tbl th { padding: 4px 5px; }
+  .map-tbl .arrow-cell { font-size: 12px; width: 24px; }
+  .badge { font-size: 8px; padding: 1px 5px; }
+  .stars { font-size: 10px; }
+  .card-custom { padding: 10px; }
+  .card-custom p, .card-custom li { font-size: 10px; }
+  .name-tag { font-size: 9px; padding: 2px 6px; }
+  .verdict { font-size: 11px; padding: 8px 10px; }
+  .metric-box { padding: 14px 10px; }
+  .metric-box .n { font-size: 20px; }
+  .theme-card .id { font-size: 12px; }
+  .theme-card .name { font-size: 11px; }
+  .theme-card .cost { font-size: 9px; }
 }
 </style>
 </head>
