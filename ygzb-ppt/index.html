@@ -254,7 +254,7 @@ body { background: var(--bg); }
 <!-- ════════════════════════════════════════════ -->
 <!-- SLIDE 1 · Cover -->
 <!-- ════════════════════════════════════════════ -->
-<section class="slide cover-slide is-active" data-title="封面" data-fx="starfield">
+<section class="slide cover-slide is-active" data-title="封面">
   <div class="cover-content" style="position:relative;z-index:1">
     <div class="subtitle" data-anim="rise-in" data-gsap="rise" data-gsap-delay="0">Competitive Analysis &amp; New Project Initiation</div>
     <h1 data-anim="rise-in" data-anim-delay="200" data-gsap="rise" data-gsap-delay="0.15">狱国争霸<br><span class="grad">竞品拆解</span> &amp; 新项目立项</h1>
@@ -755,103 +755,66 @@ body { background: var(--bg); }
 <!-- ════════════════════════════════════════════ -->
 <!-- SLIDE 13 · 结尾 -->
 <!-- ════════════════════════════════════════════ -->
-<section class="slide cover-slide" data-title="结尾" style="justify-content:center;min-height:100vh;padding:60px 80px;" data-fx="constellation">
-  <div class="cover-content" style="position:relative;z-index:1;text-align:center;">
-    <div class="subtitle" data-anim="rise-in" data-gsap="rise" data-gsap-delay="0">Thank You</div>
-    <h1 style="font-size:48px;font-weight:800;letter-spacing:-1px;" data-anim="rise-in" data-anim-delay="200" data-gsap="rise" data-gsap-delay="0.15">
-      数据驱动<br><span class="grad">决策先行</span>
-    </h1>
-    <p class="lede" style="max-width:400px;font-size:14px;margin:0 auto;" data-anim="rise-in" data-anim-delay="400" data-gsap="rise" data-gsap-delay="0.3">
-      本报告基于引力引擎 / 抖音畅销公开数据整理 · 2026 年 6 月
-    </p>
-  </div>
+<section class="slide cover-slide" data-title="结尾" style="justify-content:center;min-height:100vh;padding:60px 80px;">
+  <div class="subtitle" data-anim="rise-in" data-gsap="rise">Thank You</div>
+  <h1 style="font-size:48px;font-weight:800;letter-spacing:-1px;" data-anim="rise-in" data-anim-delay="200" data-gsap="rise" data-gsap-delay="0.2">
+    数据驱动<br><span class="grad">决策先行</span>
+  </h1>
+  <p class="lede" style="max-width:400px;font-size:14px;margin:20px auto 0;" data-anim="rise-in" data-anim-delay="400" data-gsap="rise" data-gsap-delay="0.4">
+    本报告基于引力引擎 / 抖音畅销公开数据整理 · 2026 年 6 月
+  </p>
   <div class="deck-footer"><span class="slide-number" data-current="13" data-total="13"></span></div>
 </section>
 
 </div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
 <script>
 /* ── GSAP Slide Animator ── */
 (function(){
   'use strict';
-  function gsapReady(fn){
-    var check = function(){ typeof gsap !== 'undefined' ? fn() : requestAnimationFrame(check); };
-    check();
-  }
-  gsapReady(function(){
-    // Register ScrollTrigger
-    gsap.registerPlugin(ScrollTrigger);
+  function init(){
+    if (typeof gsap === 'undefined') return;
+    var prefix = function(t,d){ return { opacity:0, y:t||50, scale:d||1 }; };
+    var presets = {
+      rise:  { y:100, scale:0.92 },
+      blur:  { y:0, filter:'blur(12px)' },
+      scale: { y:40, scale:0.75 },
+      left:  { x:-80 },
+      right: { x:80 }
+    };
 
-    // Main animation runner for a slide
-    function playSlide(slide){
-      // Reset any pinned GSAP tweens on this slide
-      var existing = slide.__gsapTimeline;
-      if (existing) { existing.progress(1).kill(); }
-
-      // Animate elements with data-gsap attribute
-      var items = slide.querySelectorAll('[data-gsap]');
-      if (!items.length) return;
-
-      var tl = gsap.timeline({ paused: true });
-      items.forEach(function(el, i){
+    function play(slide){
+      slide.__gsapDone = 1;
+      var els = slide.querySelectorAll('[data-gsap]');
+      var tl = gsap.timeline({delay:0.15});
+      els.forEach(function(el){
         var type = el.getAttribute('data-gsap') || 'rise';
-        var delay = parseFloat(el.getAttribute('data-gsap-delay')) || 0;
-        var dur   = parseFloat(el.getAttribute('data-gsap-dur')) || 0.8;
-
-        // Define animation presets
-        var from = {};
-        switch(type){
-          case 'rise': case 'fade-up': from = { opacity:0, y:40 }; break;
-          case 'up':                  from = { opacity:0, y:30 }; break;
-          case 'blur':                from = { opacity:0, filter:'blur(8px)' }; break;
-          case 'scale':               from = { opacity:0, scale:0.85, y:20 }; break;
-          case 'left':                from = { opacity:0, x:-40 }; break;
-          case 'right':               from = { opacity:0, x:40 }; break;
-          default:                    from = { opacity:0, y:30 };
-        }
-        gsap.set(el, from);
-        tl.to(el, {
-          opacity:1, y:0, x:0, scale:1, filter:'blur(0px)',
-          duration: dur, ease: 'power3.out', delay: delay
-        }, i * 0.1 + 0.05);
+        var del  = parseFloat(el.getAttribute('data-gsap-delay')) || 0;
+        var dur  = parseFloat(el.getAttribute('data-gsap-dur')) || 1.0;
+        var p = presets[type] || presets.rise;
+        gsap.set(el, p);
+        // dramatic power4.out — starts fast, eases at end
+        tl.to(el, { opacity:1, y:0, x:0, scale:1, filter:'blur(0px)', duration:dur, ease:'power4.out' }, del);
       });
-
-      slide.__gsapTimeline = tl;
-      tl.play();
+      if (els.length) tl.play();
     }
 
-    // Cleanup when leaving a slide
-    function resetSlide(slide){
-      var tl = slide.__gsapTimeline;
-      if (tl) { tl.progress(1).kill(); delete slide.__gsapTimeline; }
-      var items = slide.querySelectorAll('[data-gsap]');
-      items.forEach(function(el){ gsap.set(el, { clearProps: 'all' }); });
-    }
+    // initial
+    var a = document.querySelector('.slide.is-active');
+    if (a) play(a);
 
-    // Watch for slide changes
-    document.addEventListener('DOMContentLoaded', function(){
-      var slides = document.querySelectorAll('.slide');
-      slides.forEach(function(sl){
-        var mo = new MutationObserver(function(muts){
-          muts.forEach(function(m){
-            if (m.attributeName === 'class'){
-              if (sl.classList.contains('is-active')) playSlide(sl);
-              else resetSlide(sl);
-            }
-          });
-        });
-        mo.observe(sl, { attributes: true, attributeFilter: ['class'] });
+    // watch
+    document.querySelectorAll('.slide').forEach(function(s){
+      var mo = new MutationObserver(function(){
+        if (s.classList.contains('is-active')) play(s);
       });
-
-      // Play initial active slide
-      var active = document.querySelector('.slide.is-active');
-      if (active) playSlide(active);
+      mo.observe(s, {attributes:true, attributeFilter:['class']});
     });
-  });
+  }
+  if (document.readyState==='loading') document.addEventListener('DOMContentLoaded', init);
+  else init();
 })();
 </script>
-<script src="assets/animations/fx-runtime.js"></script>
 <script src="assets/runtime.js"></script>
 </body>
 </html>
