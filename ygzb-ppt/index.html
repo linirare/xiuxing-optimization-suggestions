@@ -10,6 +10,11 @@
 <style>
 /* ── Custom ── */
 body { background: var(--bg); }
+
+/* GSAP elements start hidden — GSAP animates them visible. Fallback fade-in if GSAP fails. */
+[data-gsap] { opacity: 0; }
+.slide.is-active [data-gsap] { animation: gsap-fb 1.5s ease-out forwards; }
+@keyframes gsap-fb { to { opacity: 1; } }
 .deck { max-width: 1280px; margin: 0 auto; }
 
 /* Slide spacing */
@@ -256,10 +261,10 @@ body { background: var(--bg); }
 <!-- ════════════════════════════════════════════ -->
 <section class="slide cover-slide is-active" data-title="封面">
   <div class="cover-content" style="position:relative;z-index:1">
-    <div class="subtitle" data-anim="rise-in" data-gsap="rise" data-gsap-delay="0">Competitive Analysis &amp; New Project Initiation</div>
-    <h1 data-anim="rise-in" data-anim-delay="200" data-gsap="rise" data-gsap-delay="0.15">狱国争霸<br><span class="grad">竞品拆解</span> &amp; 新项目立项</h1>
-    <p class="lede" data-anim="rise-in" data-anim-delay="400" data-gsap="rise" data-gsap-delay="0.3">拉线出兵 + 城池攻防核心玩法复刻 × 新题材/美术重构<br>参考蓝本 · 买量策略 · 12 题材方向 · 深度融合方案</p>
-    <div class="meta-line" data-anim="rise-in" data-anim-delay="600" data-gsap="rise" data-gsap-delay="0.45">
+    <div class="subtitle" data-gsap="drop" data-gsap-delay="0">Competitive Analysis &amp; New Project Initiation</div>
+    <h1 data-gsap="drop" data-gsap-delay="0.2">狱国争霸<br><span class="grad">竞品拆解</span> &amp; 新项目立项</h1>
+    <p class="lede" data-gsap="rise" data-gsap-delay="0.45">拉线出兵 + 城池攻防核心玩法复刻 × 新题材/美术重构<br>参考蓝本 · 买量策略 · 12 题材方向 · 深度融合方案</p>
+    <div class="meta-line" data-gsap="fade" data-gsap-delay="0.7">
       <span>2026 年 6 月</span>
       <span>基于引力引擎/抖音畅销公开数据</span>
     </div>
@@ -271,7 +276,7 @@ body { background: var(--bg); }
 <!-- SLIDE 2 · 参考蓝本 -->
 <!-- ════════════════════════════════════════════ -->
 <section class="slide" data-title="参考蓝本">
-  <p class="section-tag accent" data-anim="blur-in" data-gsap="blur">Reference Blueprint</p>
+  <p class="section-tag accent" data-gsap="blur">Reference Blueprint</p>
   <h2 class="h2" data-gsap="up" data-gsap-delay="0.1">参考蓝本 · 狱国争霸</h2>
   <div class="cols-2 mt-l anim-stagger-list" style="align-items:stretch;">
     <div>
@@ -313,7 +318,7 @@ body { background: var(--bg); }
 <!-- SLIDE 3 · 买量素材方向 -->
 <!-- ════════════════════════════════════════════ -->
 <section class="slide" data-title="买量素材">
-  <p class="section-tag accent" data-anim="blur-in" data-gsap="blur">UA Creative Strategy</p>
+  <p class="section-tag accent" data-gsap="blur">UA Creative Strategy</p>
   <h2 class="h2" data-gsap="up" data-gsap-delay="0.1">买量素材方向</h2>
   <p class="lede mt-s" style="color:var(--text-3);">核心公式：拉线操作视觉秀 + 兵种克制展示 + 翻盘爽点</p>
 
@@ -355,7 +360,7 @@ body { background: var(--bg); }
 <!-- SLIDE 4 · 直接竞品 -->
 <!-- ════════════════════════════════════════════ -->
 <section class="slide" data-title="竞品分析">
-  <p class="section-tag accent" data-anim="blur-in" data-gsap="blur">Market Landscape</p>
+  <p class="section-tag accent" data-gsap="blur">Market Landscape</p>
   <h2 class="h2" data-gsap="up" data-gsap-delay="0.1">引力畅销排行 · 直接竞品</h2>
   <p class="lede mt-s" style="color:var(--text-3);">基于 2026 年 5 月引力引擎微信小游戏 Top 100</p>
 
@@ -381,7 +386,7 @@ body { background: var(--bg); }
 <!-- SLIDE 5 · SLG题材分布 -->
 <!-- ════════════════════════════════════════════ -->
 <section class="slide" data-title="SLG题材分布">
-  <p class="section-tag accent" data-anim="blur-in" data-gsap="blur">SLG Theme Distribution</p>
+  <p class="section-tag accent" data-gsap="blur">SLG Theme Distribution</p>
   <h2 class="h2" data-gsap="up" data-gsap-delay="0.1">畅销 SLG 题材分布 · 适配分析</h2>
 
   <div class="tbl-wrap mt-l">
@@ -415,7 +420,7 @@ body { background: var(--bg); }
 <!-- SLIDE 6 · 12个新题材方向 -->
 <!-- ════════════════════════════════════════════ -->
 <section class="slide" data-title="12题材方向">
-  <p class="section-tag accent" data-anim="blur-in" data-gsap="blur">New Theme Directions</p>
+  <p class="section-tag accent" data-gsap="blur">New Theme Directions</p>
   <h2 class="h2" data-gsap="up" data-gsap-delay="0.1">12 个新项目题材方向</h2>
   <p class="lede mt-s" style="color:var(--text-3);">保留「拉线出兵+城防」核心，完整题材/美术重构</p>
 
@@ -451,7 +456,7 @@ body { background: var(--bg); }
 <!-- SLIDE 7 · 对比矩阵 -->
 <!-- ════════════════════════════════════════════ -->
 <section class="slide" data-title="对比矩阵">
-  <p class="section-tag accent" data-anim="blur-in" data-gsap="blur">Comparison Matrix</p>
+  <p class="section-tag accent" data-gsap="blur">Comparison Matrix</p>
   <h2 class="h2" data-gsap="up" data-gsap-delay="0.1">方案对比矩阵</h2>
 
   <div class="tbl-wrap mt-l">
@@ -480,7 +485,7 @@ body { background: var(--bg); }
 <!-- SLIDE 8 · 末日废土 -->
 <!-- ════════════════════════════════════════════ -->
 <section class="slide" data-title="末日废土">
-  <p class="section-tag accent" data-anim="blur-in" data-gsap="blur">Deep Integration · Option A</p>
+  <p class="section-tag accent" data-gsap="blur">Deep Integration · Option A</p>
   <div style="display:flex;align-items:center;gap:16px;">
     <h2 class="h2" style="margin:0;" data-gsap="up" data-gsap-delay="0.1">末日废土深度融合</h2>
     <span class="badge badge-yellow" style="font-size:12px;padding:4px 10px;">开发成本 中</span>
@@ -531,7 +536,7 @@ body { background: var(--bg); }
 <!-- SLIDE 9 · 星际太空 -->
 <!-- ════════════════════════════════════════════ -->
 <section class="slide" data-title="星际太空">
-  <p class="section-tag accent" data-anim="blur-in" data-gsap="blur">Deep Integration · Option B</p>
+  <p class="section-tag accent" data-gsap="blur">Deep Integration · Option B</p>
   <div style="display:flex;align-items:center;gap:16px;">
     <h2 class="h2" style="margin:0;" data-gsap="up" data-gsap-delay="0.1">星际太空深度融合</h2>
     <span class="badge badge-red" style="font-size:12px;padding:4px 10px;">开发成本 大</span>
@@ -586,7 +591,7 @@ body { background: var(--bg); }
 <!-- SLIDE 10 · 动物王国 -->
 <!-- ════════════════════════════════════════════ -->
 <section class="slide" data-title="动物王国">
-  <p class="section-tag accent" data-anim="blur-in" data-gsap="blur">Deep Integration · Option C</p>
+  <p class="section-tag accent" data-gsap="blur">Deep Integration · Option C</p>
   <div style="display:flex;align-items:center;gap:16px;">
     <h2 class="h2" style="margin:0;" data-gsap="up" data-gsap-delay="0.1">动物王国深度融合</h2>
     <span class="badge badge-red" style="font-size:12px;padding:4px 10px;">开发成本 大</span>
@@ -633,7 +638,7 @@ body { background: var(--bg); }
 <!-- SLIDE 11 · A/B/C 对比 -->
 <!-- ════════════════════════════════════════════ -->
 <section class="slide" data-title="方案对比ABC">
-  <p class="section-tag accent" data-anim="blur-in" data-gsap="blur">Final Comparison</p>
+  <p class="section-tag accent" data-gsap="blur">Final Comparison</p>
   <h2 class="h2" data-gsap="up" data-gsap-delay="0.1">重点方案 · A / B / C 选哪个？</h2>
 
   <div class="cols-3 mt-l anim-stagger-list">
@@ -685,7 +690,7 @@ body { background: var(--bg); }
 <!-- SLIDE 12 · 行动建议 -->
 <!-- ════════════════════════════════════════════ -->
 <section class="slide" data-title="行动建议">
-  <p class="section-tag accent" data-anim="blur-in" data-gsap="blur">Action Plan</p>
+  <p class="section-tag accent" data-gsap="blur">Action Plan</p>
   <h2 class="h2" data-gsap="up" data-gsap-delay="0.1">行动建议 · 决策路径</h2>
 
   <div class="cols-2 mt-l anim-stagger-list">
@@ -756,63 +761,84 @@ body { background: var(--bg); }
 <!-- SLIDE 13 · 结尾 -->
 <!-- ════════════════════════════════════════════ -->
 <section class="slide cover-slide" data-title="结尾" style="justify-content:center;min-height:100vh;padding:60px 80px;">
-  <div class="subtitle" data-anim="rise-in" data-gsap="rise">Thank You</div>
-  <h1 style="font-size:48px;font-weight:800;letter-spacing:-1px;" data-anim="rise-in" data-anim-delay="200" data-gsap="rise" data-gsap-delay="0.2">
+  <div class="subtitle" data-gsap="drop" data-gsap-delay="0">Thank You</div>
+  <h1 style="font-size:48px;font-weight:800;letter-spacing:-1px;" data-gsap="drop" data-gsap-delay="0.2">
     数据驱动<br><span class="grad">决策先行</span>
   </h1>
-  <p class="lede" style="max-width:400px;font-size:14px;margin:20px auto 0;" data-anim="rise-in" data-anim-delay="400" data-gsap="rise" data-gsap-delay="0.4">
+  <p class="lede" style="max-width:400px;font-size:14px;margin:20px auto 0;" data-gsap="rise" data-gsap-delay="0.45">
     本报告基于引力引擎 / 抖音畅销公开数据整理 · 2026 年 6 月
   </p>
   <div class="deck-footer"><span class="slide-number" data-current="13" data-total="13"></span></div>
 </section>
 
 </div>
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script>
 /* ── GSAP Slide Animator ── */
 (function(){
   'use strict';
-  function init(){
-    if (typeof gsap === 'undefined') return;
-    var prefix = function(t,d){ return { opacity:0, y:t||50, scale:d||1 }; };
-    var presets = {
-      rise:  { y:100, scale:0.92 },
-      blur:  { y:0, filter:'blur(12px)' },
-      scale: { y:40, scale:0.75 },
-      left:  { x:-80 },
-      right: { x:80 }
-    };
+  var P = {
+    rise:  { y:140, scale:0.9 },
+    drop:  { y:-200, scale:0.85 },
+    blur:  { filter:'blur(15px)' },
+    scale: { scale:0.5, y:80 },
+    left:  { x:-160 },
+    right: { x:160 },
+    fade:  {}
+  };
+  var E = {
+    rise:'power4.out', drop:'back.out(1.7)', blur:'power3.out',
+    scale:'back.out(2)', left:'power4.out', right:'power4.out', fade:'power2.out'
+  };
 
+  function waitG(cb){ var ck=function(){typeof gsap!=='undefined'?cb():requestAnimationFrame(ck)}; ck(); }
+
+  waitG(function(){
     function play(slide){
-      slide.__gsapDone = 1;
       var els = slide.querySelectorAll('[data-gsap]');
-      var tl = gsap.timeline({delay:0.15});
+      if (!els.length) return;
+      var tl = gsap.timeline();
       els.forEach(function(el){
-        var type = el.getAttribute('data-gsap') || 'rise';
-        var del  = parseFloat(el.getAttribute('data-gsap-delay')) || 0;
-        var dur  = parseFloat(el.getAttribute('data-gsap-dur')) || 1.0;
-        var p = presets[type] || presets.rise;
-        gsap.set(el, p);
-        // dramatic power4.out — starts fast, eases at end
-        tl.to(el, { opacity:1, y:0, x:0, scale:1, filter:'blur(0px)', duration:dur, ease:'power4.out' }, del);
+        var t = el.getAttribute('data-gsap')||'rise';
+        var d = parseFloat(el.getAttribute('data-gsap-delay'))||0;
+        var u = parseFloat(el.getAttribute('data-gsap-dur'))||1.0;
+        var from = P[t]||P.rise;
+        el.style.removeProperty('opacity');
+        el.style.removeProperty('animation');
+        gsap.set(el, from);
+        tl.to(el, { opacity:1, y:0, x:0, scale:1, filter:'blur(0px)', duration:u, ease:E[t]||'power3.out' }, d);
       });
-      if (els.length) tl.play();
+      // Ambient continuous floating on cover/end slides
+      if (slide.classList.contains('cover-slide')) {
+        var lastDelay = 0;
+        els.forEach(function(el){ lastDelay = Math.max(lastDelay, parseFloat(el.getAttribute('data-gsap-delay'))||0); });
+        var ambDelay = lastDelay + 1.5;
+        var h1 = slide.querySelector('h1');
+        if (h1) tl.to(h1, { y:-10, duration:2.8, ease:'sine.inOut', yoyo:true, repeat:-1 }, ambDelay);
+        var sub = slide.querySelector('.subtitle');
+        if (sub) tl.to(sub, { y:-5, duration:2.2, ease:'sine.inOut', yoyo:true, repeat:-1 }, ambDelay + 0.3);
+      }
     }
 
-    // initial
+    // Initial slide with small delay to let CSS settle
     var a = document.querySelector('.slide.is-active');
-    if (a) play(a);
+    if (a) setTimeout(function(){ play(a); }, 80);
 
-    // watch
+    // Watch slide changes
     document.querySelectorAll('.slide').forEach(function(s){
       var mo = new MutationObserver(function(){
         if (s.classList.contains('is-active')) play(s);
       });
       mo.observe(s, {attributes:true, attributeFilter:['class']});
     });
-  }
-  if (document.readyState==='loading') document.addEventListener('DOMContentLoaded', init);
-  else init();
+  });
+
+  // Fallback: if GSAP didn't load in 4s, show everything
+  var fbTimer = setTimeout(function(){
+    if (typeof gsap !== 'undefined') return;
+    document.querySelectorAll('[data-gsap]').forEach(function(el){ el.style.opacity = '1'; });
+  }, 4000);
+  (function ck(){ if (typeof gsap !== 'undefined') clearTimeout(fbTimer); else requestAnimationFrame(ck); })();
 })();
 </script>
 <script src="assets/runtime.js"></script>
